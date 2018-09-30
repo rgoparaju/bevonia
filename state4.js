@@ -18,7 +18,7 @@ demo.state4.prototype = {
         
         console.log("state4");
         
-        game.world.setBounds(0, 0, 1000, 450);
+        game.world.setBounds(0, 0, 2026, 608);
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         
         // Add map
@@ -37,7 +37,7 @@ demo.state4.prototype = {
         Bevonia.animations.add("idle", [0], 0, true);
         game.physics.enable(Bevonia);
         game.camera.follow(Bevonia);
-        game.camera.deadzone = new Phaser.Rectangle(300, 0, 600, 1000);
+        game.camera.deadzone = new Phaser.Rectangle(centerX - 300, 0, 600, 608);
         
         Bevonia.body.gravity.y = 1100;
         
@@ -46,7 +46,6 @@ demo.state4.prototype = {
     },
     update: function(){
         game.physics.arcade.collide(Bevonia, bossPlats);
-        //Bevonia.body.bounce.y = .2 * Bevonia.body.velocity.y;
         
         
         // Player movement
@@ -61,6 +60,7 @@ demo.state4.prototype = {
             Bevonia.scale.setTo(bevoFace, 1);
             Bevonia.animations.play("run", 8, true);
         }
+            
         
         if(game.input.keyboard.isDown(Phaser.Keyboard.W) && Bevonia.body.blocked.down) {
             Bevonia.body.velocity.y -= 550;
