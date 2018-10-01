@@ -161,10 +161,12 @@ demo.state4.prototype = {
         if(game.time.now < aoeNextCast) {
             if(game.physics.arcade.collide(aoe, dragonSprite)) {
                 var boom = game.add.sprite(aoe.x, aoe.y, "aoeBlast");
-                boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6]);
+                boom.anchor.setTo(.5, .5);
+                boom.scale.setTo(1.5, 1.5);
+                boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
                 aoe.kill();
-                boom.animations.play("explode", 8, true);
-                boom.kill(); dragonSprite.kill();
+                boom.animations.play("explode", 8, false);
+                dragonSprite.kill();
                 
             }
         }
