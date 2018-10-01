@@ -79,6 +79,7 @@ demo.state4.prototype = {
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true)
         bevonia.animations.add('jump', [1], 0, true)
         bevonia.animations.add('idle', [0], 0, true)
+        bevonia.animations.add('melee',[6],0,true)
         
         bevonia.body.gravity.y = 1200
         //bevonia.body.collideWorldBounds = true
@@ -123,7 +124,7 @@ demo.state4.prototype = {
         
         dragonSprite.animations.play('attack',1,true) //dragonBehavior(bevonia.x,bevonia.y)
         
-        
+        if(game.input.activePointer.isDown) bevonia.animations.play('melee',1,true)
         
         
     }
