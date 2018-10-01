@@ -1,6 +1,9 @@
 var demo = {}, bevonia, bevX, bevY, dragonSprite
 var centerX = 533, centerY = 250;
 var aoe, aoeNextCast = 0, aoeCastRate = 1000;
+var shot_delay = 1000;
+var bullet_speed = 100;
+var num_bullets = 1;
 demo.state4 = function(){}
 demo.state4.prototype = {
     preload: function(){
@@ -12,6 +15,9 @@ demo.state4.prototype = {
         // SPELL SPRITES
         game.load.spritesheet('aoeProjectile', "assets/sprites/AoE Projectile.png", 32, 32);
         game.load.spritesheet("aoeBlast", "assets/sprites/AoE Blast.png", 96, 96);
+        
+        //FIREBALL
+        game.load.image('bullet','assets/sprites/fireballPrelim.png');
         
         
     },
@@ -98,8 +104,43 @@ demo.state4.prototype = {
         dragonSprite.animations.add('attack',[0,1],5,true)
         game.physics.enable([dragonSprite])
         dragonSprite.scale.setTo(2,2)
-        dragonSprite.body.immovable = true       
+        dragonSprite.body.immovable = true 
+        
+        bulletPool = this.game.add.group();
+        for(var i = 0; i < num_bullets; i++){
+            var bullet = this.game.add.sprite(425, game.world.height-300, 'bullet');
+            bulletPool.add(bullet);
+            
+            bullet.scale.setTo(1.15,1.15);
+            
+            this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
+            
+            bullet.kill();
+        }
     },
+    
+    shootBullet: function(){
+        dragonSprite.animations.play('throw');
+        var lastBulletShotAt = 0;
+        if (game.time.now - lastBulletShotAt < shot_delay) return;
+        lastBulletShotAt = game.time.now;
+        
+        var bullet = bulletPool.getFirstDead();
+        
+        if (bullet === null || bullet === undefined) return;
+        
+        bullet.revive();
+        
+        bullet.checkWorldBounds = true;
+        bullet.outOfBoundsKill = true;
+        
+        bullet.reset(dragonSprite.x, dragonSprite.y+60);
+        bullet.outOfBoundsKill = true;
+        bullet.body.velocity.x = -(Math.cos(0) * bullet_speed);
+        bullet.body.velocity.y = Math.sin(-45) * bullet_speed;
+        
+    },
+    
     update: function(){
         var collision = game.physics.arcade.collide(bevonia,[wallGroup1,wallGroup2,wallGroup3,wallGroup4,wallGroup5,wallGroup6,wall1,wallGroup7,wallGroup8,wallGroup9,dragonSprite])
         
@@ -148,7 +189,22 @@ demo.state4.prototype = {
             aoe.body.gravity.y = 1200;
             
             // Quick solution to making explosion animation
-        }   
+        }
+        
+        this.game.physics.arcade.collide(bulletPool, bevonia, function(bullet,ground){
+        bevonia.kill();
+    }, null, this);
+        
+        bulletPool.forEachAlive(function(bullet){
+            bullet.rotation = Math.atan2(bullet.body.velocity.y, bullet.body.velocity.x);
+        }, this);
+        
+        var i = Math.floor(Math.random()*(10-1))+1;
+        
+        if (i == 5){
+            this.shootBullet();
+        }
+        
         if(game.time.now < aoeNextCast) {
             if(game.physics.arcade.overlap(aoe, dragonSprite)) {
                 var boom = game.add.sprite(aoe.x, aoe.y, "aoeBlast");
