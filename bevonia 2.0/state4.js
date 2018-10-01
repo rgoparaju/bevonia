@@ -92,6 +92,7 @@ demo.state4.prototype = {
         game.camera.follow(bevonia)
         game.camera.deadzone = new Phaser.Rectangle(centerX - 300, 0, 600, 500)
         
+        
         // Add dragon and animations
         dragonSprite = game.add.sprite(1500,300,'dragon')
         dragonSprite.animations.add('attack',[0,1],5,true)
@@ -119,6 +120,9 @@ demo.state4.prototype = {
         
         if(bevonia.x < 0) bevonia.x = 0
         if(bevonia.x > 2000) bevonia.x = 2000
+        if(bevonia.y > 460) {
+            game.state.start(game.state.current);
+        }
         
         dragonBehavior()
            
@@ -152,14 +156,14 @@ demo.state4.prototype = {
             game.physics.enable(aoe);
             aoe.animations.add("exist", [0, 1]);
             aoe.animations.play("exist", 10, true);
-            aoe.body.velocity.x = 300;
+            aoe.body.velocity.x = 500;
             aoe.body.velocity.y = -150;
-            aoe.body.gravity.y = 500;
+            aoe.body.gravity.y = 1200;
             
             // Quick solution to making explosion animation
         }   
         if(game.time.now < aoeNextCast) {
-            if(game.physics.arcade.collide(aoe, dragonSprite)) {
+            if(game.physics.arcade.overlap(aoe, dragonSprite)) {
                 var boom = game.add.sprite(aoe.x, aoe.y, "aoeBlast");
                 boom.anchor.setTo(.5, .5);
                 boom.scale.setTo(1.5, 1.5);
