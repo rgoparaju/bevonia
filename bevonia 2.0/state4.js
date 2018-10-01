@@ -155,7 +155,19 @@ demo.state4.prototype = {
             aoe.body.velocity.x = 300;
             aoe.body.velocity.y = -150;
             aoe.body.gravity.y = 500;
+            
+            // Quick solution to making explosion animation
         }   
+        if(game.time.now < aoeNextCast) {
+            if(game.physics.arcade.collide(aoe, dragonSprite)) {
+                var boom = game.add.sprite(aoe.x, aoe.y, "aoeBlast");
+                boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6]);
+                aoe.kill();
+                boom.animations.play("explode", 8, true);
+                boom.kill(); dragonSprite.kill();
+                
+            }
+        }
     },
 }
 
@@ -165,7 +177,6 @@ function dragonBehavior(){
         if(dragonSprite.y > 400) dragonSprite.body.velocity.y = -100
         if(dragonSprite.y < 100) dragonSprite.body.velocity.y = 100
 }
-
 
 
 
