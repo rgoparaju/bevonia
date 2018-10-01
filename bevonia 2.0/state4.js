@@ -1,5 +1,5 @@
 var demo = {}, bevonia, bevX, bevY, dragonSprite
-var centerX = 1000, centerY = 250;
+var centerX = 533, centerY = 250;
 demo.state4 = function(){}
 demo.state4.prototype = {
     preload: function(){
