@@ -1,5 +1,6 @@
 var demo = {}, bevonia, bevX, bevY, dragonSprite
 var centerX = 533, centerY = 250;
+var aoe;
 demo.state4 = function(){}
 demo.state4.prototype = {
     preload: function(){
@@ -7,6 +8,10 @@ demo.state4.prototype = {
         game.load.image('background','assets/sprites/blank background 2.png')
         game.load.spritesheet('bevonia', 'assets/sprites/Bevonia.png',32,48)
         game.load.spritesheet('dragon','assets/sprites/dragon1.png',64,128)
+        
+        // SPELL SPRITES
+        game.load.spritesheet('aoeProjectile', "assets/sprites/AoE Projectile.png", 32, 32);
+        game.load.spritesheet("aoeBlast", "assets/sprites/AoE Blast.png", 96, 96);
         
         
     },
@@ -59,6 +64,7 @@ demo.state4.prototype = {
             for(var y = 400; y < 500; y += 36)
                 wallGroup9.create(x,y,'walls')
         
+        
         bevonia = game.add.sprite(100, 275, 'bevonia')
         
         // Setup physics for environment 
@@ -92,6 +98,15 @@ demo.state4.prototype = {
         game.physics.enable([dragonSprite])
         dragonSprite.scale.setTo(2,2)
         dragonSprite.body.immovable = true
+        
+        // SPELL ANIMATIONS
+        // AoE
+        aoe = game.add.group();
+        aoe.enableBody = true;
+        aoe.physicsBodyType = Phaser.Physics.ARCADE;
+        bullets.createMultiple(50, "aoeProjectile");
+        
+        
         
     },
     update: function(){
