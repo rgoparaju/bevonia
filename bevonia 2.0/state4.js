@@ -1,10 +1,11 @@
-var demo = {}, bevonia
+var demo = {}, bevonia, bevX, bevY, dragonSprite
 demo.state4 = function(){}
 demo.state4.prototype = {
     preload: function(){
         game.load.image('walls','assets/sprites/wall sprite 2.png')
         game.load.image('background','assets/sprites/blank background 2.png')
         game.load.spritesheet('bevonia', 'assets/sprites/Bevonia.png',32,48)
+        game.load.spritesheet('dragon','assets/sprites/dragon1.png',64,128)
         
         
     },
@@ -72,7 +73,7 @@ demo.state4.prototype = {
         
         
         bevonia.anchor.setTo(.5, .5)
-        bevonia.animations.add('run', [2, 3, 4, 5], 10, true)
+        bevonia.animations.add('run', [2, 3, 4, 5], 0, true)
         bevonia.animations.add('jump', [1], 0, true)
         bevonia.animations.add('idle', [0], 0, true)
         
@@ -80,14 +81,25 @@ demo.state4.prototype = {
         //bevonia.body.collideWorldBounds = true
         game.camera.follow(bevonia)
         game.camera.deadzone = new Phaser.Rectangle(500, 0, 500, 500)
-       
+        
+        
+        dragonSprite = game.add.sprite(1500,300,'dragon')
+        dragonSprite.animations.add('attack',[0,1],5,true)
+        game.physics.enable([dragonSprite])
+        dragonSprite.scale.setTo(2,2)
+        dragonSprite.body.immovable = true
         
     },
     update: function(){
-        var collision = game.physics.arcade.collide(bevonia,[wallGroup1,wallGroup2,wallGroup3,wallGroup4,wallGroup5,wallGroup6,wall1,wallGroup7,wallGroup8])
+        var collision = game.physics.arcade.collide(bevonia,[wallGroup1,wallGroup2,wallGroup3,wallGroup4,wallGroup5,wallGroup6,wall1,wallGroup7,wallGroup8,wallGroup9,dragonSprite])
         
         bevonia.body.velocity.x = 0
         
+        if(bevonia.x < 0) bevonia.x = 0
+        if(bevonia.x > 2000) bevonia.x = 2000
+        
+        dragonBehavior()
+           
         bevoFace = game.input.keyboard.isDown(Phaser.Keyboard.D) -game.input.keyboard.isDown(Phaser.Keyboard.A);     
         if(bevoFace == 0) bevonia.animations.play('idle',0,false)
         
@@ -106,12 +118,20 @@ demo.state4.prototype = {
         }
         if(!bevonia.body.touching.down) bevonia.animations.play('jump', 1, true)
         
+        dragonSprite.animations.play('attack',1,true) //dragonBehavior(bevonia.x,bevonia.y)
+        
+        
+        
+        
     }
 }
 
 
-
-
+function dragonBehavior(){
+        dragonSprite.body.velocity.y = 100
+        if(dragonSprite.y > 400) dragonSprite.body.velocity.y = -100
+        if(dragonSprite.y < 100) dragonSprite.body.velocity.y = 100
+}
 
 
 
