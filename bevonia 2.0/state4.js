@@ -1,6 +1,6 @@
 var demo = {}, bevonia, bevX, bevY, dragonSprite
 var centerX = 533, centerY = 250;
-var aoe;
+var aoe, aoeNextCast = 0, aoeCastRate = 1000;
 demo.state4 = function(){}
 demo.state4.prototype = {
     preload: function(){
@@ -101,10 +101,13 @@ demo.state4.prototype = {
         
         // SPELL ANIMATIONS
         // AoE
-        aoe = game.add.group();
-        aoe.enableBody = true;
-        aoe.physicsBodyType = Phaser.Physics.ARCADE;
-        bullets.createMultiple(50, "aoeProjectile");
+//        aoe = game.add.group();
+//        aoe.enableBody = true;
+//        aoe.physicsBodyType = Phaser.Physics.ARCADE;
+//        aoe.createMultiple(50, "aoeProjectile");
+//        aoe.setAll("checkWorldBounds", true);
+//        aoe.setAll("outOfBoundsKill", true);
+//        aoe.animations.add("ball", [0, 1], 10, true);
         
         
         
@@ -139,10 +142,21 @@ demo.state4.prototype = {
         
         dragonSprite.animations.play('attack',1,true) //dragonBehavior(bevonia.x,bevonia.y)
         
-        if(game.input.activePointer.isDown) bevonia.animations.play('melee',1,true)
+        if(game.input.activePointer.isDown) bevonia.animations.play('melee',1,true);
         
-        
-    }
+        if(game.input.keyboard.isDown(Phaser.Keyboard.K) && game.time.now >= aoeNextCast) {
+            // Only AoE spell, will have to work out more efficient way later
+            aoeNextCast = game.time.now + aoeCastRate;
+            aoe = game.add.sprite(bevonia.x, bevonia.y, "aoeProjectile");
+            aoe.anchor.setTo(.5, .5);
+            game.physics.enable(aoe);
+            aoe.animations.add("exist", [0, 1]);
+            aoe.animations.play("exist", 10, true);
+            aoe.body.velocity.x = 300;
+            aoe.body.velocity.y = -150;
+            aoe.body.gravity.y = 500;
+        }   
+    },
 }
 
 
