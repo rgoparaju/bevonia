@@ -19,6 +19,9 @@ demo.state4.prototype = {
         //FIREBALL
         game.load.image('bullet','assets/sprites/fireballPrelim.png');
         
+        // Dragon health
+        game.load.image('health bar', 'assets/sprites/health bar.png');
+        
         
     },
     create: function(){
@@ -196,7 +199,7 @@ demo.state4.prototype = {
         }
         
         this.game.physics.arcade.collide(bulletPool, bevonia, function(bullet,ground){
-        bevonia.kill();
+        bevonia.kill(); game.state.start(game.state.current);
     }, null, this);
         
         bulletPool.forEachAlive(function(bullet){
