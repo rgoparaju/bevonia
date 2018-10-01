@@ -98,20 +98,7 @@ demo.state4.prototype = {
         dragonSprite.animations.add('attack',[0,1],5,true)
         game.physics.enable([dragonSprite])
         dragonSprite.scale.setTo(2,2)
-        dragonSprite.body.immovable = true
-        
-        // SPELL ANIMATIONS
-        // AoE
-//        aoe = game.add.group();
-//        aoe.enableBody = true;
-//        aoe.physicsBodyType = Phaser.Physics.ARCADE;
-//        aoe.createMultiple(50, "aoeProjectile");
-//        aoe.setAll("checkWorldBounds", true);
-//        aoe.setAll("outOfBoundsKill", true);
-//        aoe.animations.add("ball", [0, 1], 10, true);
-        
-        
-        
+        dragonSprite.body.immovable = true       
     },
     update: function(){
         var collision = game.physics.arcade.collide(bevonia,[wallGroup1,wallGroup2,wallGroup3,wallGroup4,wallGroup5,wallGroup6,wall1,wallGroup7,wallGroup8,wallGroup9,dragonSprite])
