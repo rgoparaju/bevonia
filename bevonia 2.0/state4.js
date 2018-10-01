@@ -1,4 +1,4 @@
-var demo = {}, bevonia, bevX, bevY, dragonSprite
+var demo = {}, bevonia, bevX, bevY, dragonSprite, healthBar, dragonHealth = 100, healthBarScaleX = 12
 var centerX = 533, centerY = 250;
 var aoe, aoeNextCast = 0, aoeCastRate = 1000;
 var shot_delay = 1000;
@@ -104,7 +104,11 @@ demo.state4.prototype = {
         dragonSprite.animations.add('attack',[0,1],5,true)
         game.physics.enable([dragonSprite])
         dragonSprite.scale.setTo(2,2)
-        dragonSprite.body.immovable = true 
+        dragonSprite.body.immovable = true
+        
+        //Dragon health bar
+        healthBar = game.add.sprite(1000,40,'health bar')
+        healthBar.scale.setTo(healthBarScaleX,3)
         
         bulletPool = this.game.add.group();
         for(var i = 0; i < num_bullets; i++){
@@ -213,7 +217,13 @@ demo.state4.prototype = {
                 boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
                 aoe.kill();
                 boom.animations.play("explode", 8, false);
-                dragonSprite.kill();
+                
+                //lowers dragon health, then kills when depleted
+                healthBarScaleX -= 0.1*12
+                healthBar.scale.setTo(healthBarScaleX,3)
+                dragonHealth -= 10
+                
+                if(dragonHealth <= 0) dragonSprite.kill();
                 
             }
         }
