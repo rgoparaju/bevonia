@@ -1,4 +1,5 @@
 var demo = {}, bevonia, bevX, bevY, dragonSprite
+var centerX = 1000, centerY = 250;
 demo.state4 = function(){}
 demo.state4.prototype = {
     preload: function(){
@@ -11,11 +12,11 @@ demo.state4.prototype = {
     },
     create: function(){
         game.physics.startSystem(Phaser.Physics.ARCADE)
-        game.world.setBounds(0,0, 800, 500)
+        game.world.setBounds(0,0, 2000, 500)
         
         game.add.sprite(0,0,'background')
         
-        
+        // Set up wall objects
         wallGroup1 = game.add.group()
         for(var x = 0; x < (15*32); x += 32)
             for(var y = 0; y < (6*36); y += 36)
@@ -59,6 +60,8 @@ demo.state4.prototype = {
                 wallGroup9.create(x,y,'walls')
         
         bevonia = game.add.sprite(100, 275, 'bevonia')
+        
+        // Setup physics for environment 
         game.physics.enable([bevonia, wallGroup1,wallGroup2,wallGroup3,wallGroup4,wall1,wallGroup5,wallGroup6,wallGroup7,wallGroup8,wallGroup9])
         wallGroup1.setAll('body.immovable',true)
         wallGroup2.setAll('body.immovable',true)
@@ -71,7 +74,7 @@ demo.state4.prototype = {
         wallGroup9.setAll('body.immovable',true)
         wall1.body.immovable = true
         
-        
+        // Add Bevonia's animations
         bevonia.anchor.setTo(.5, .5)
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true)
         bevonia.animations.add('jump', [1], 0, true)
@@ -80,9 +83,9 @@ demo.state4.prototype = {
         bevonia.body.gravity.y = 1200
         //bevonia.body.collideWorldBounds = true
         game.camera.follow(bevonia)
-        game.camera.deadzone = new Phaser.Rectangle(500, 0, 500, 500)
+        game.camera.deadzone = new Phaser.Rectangle(centerX - 300, 0, 600, 500)
         
-        
+        // Add dragon and animations
         dragonSprite = game.add.sprite(1500,300,'dragon')
         dragonSprite.animations.add('attack',[0,1],5,true)
         game.physics.enable([dragonSprite])
