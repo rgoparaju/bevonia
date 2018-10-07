@@ -9,7 +9,7 @@ demo.state1.prototype = {
         game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("platforms", "assets/sprites/wall sprite 2.png", 32, 32);
         game.load.image("spikes", "assets/sprites/deathSpikes.png");
-        game.load.image('bg1', 'assets/sprites/test background v3.png', 2000, 650);
+        game.load.image('bg1', 'assets/sprites/test background v4.png', 2624, 1344);
         
         // Bevonia
         game.load.spritesheet("bevonia", "assets/sprites/Bevonia.png", 32, 48);
@@ -85,17 +85,17 @@ demo.state1.prototype = {
             bevonia.body.velocity.x = 0;
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.A)){
-            bevonia.body.velocity.x = -250
+            bevonia.body.velocity.x = -300
             bevonia.animations.play('run', 8, true)
             bevonia.scale.x = -1
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.D)){
-            bevonia.body.velocity.x = 250
+            bevonia.body.velocity.x = 300
             bevonia.animations.play('run', 8, true)
             bevonia.scale.x = 1
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.W) && grounded){
-            bevonia.body.velocity.y = -700
+            bevonia.body.velocity.y = -650
         }
         if(!grounded) bevonia.animations.play('jump', 1, true)
     }
