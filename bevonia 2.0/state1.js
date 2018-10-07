@@ -18,13 +18,13 @@ demo.state1.prototype = {
         
         // Enemies
         game.load.spritesheet("bat", "assets/sprites/bat.png", 32, 32);
-        game.load.spritesheet("chest", "assets/sprites/chest.png", 64, 64);
         game.load.spritesheet("spider", "assets/sprites/spider.png", 48, 48); 
         
         // Items
-        game.load.spritesheet("helmet", "assets/sprites/helmet.png", 32, 48);
-        game.load.spritesheet("key", "assets/sprites/key.png", 32, 48);
+        game.load.spritesheet("helmet", "assets/sprites/helmet.png", 32, 32);
+        game.load.spritesheet("key", "assets/sprites/key.png", 32, 32);
         game.load.spritesheet("sword", "assets/sprites/sword.png", 32, 64);   
+        game.load.spritesheet("chest", "assets/sprites/chest.png", 64, 64);
         
         // Misc.
         game.load.spritesheet("healthBar", "assets/sprites/healthBar.png", 256, 16);
@@ -60,14 +60,42 @@ demo.state1.prototype = {
         game.physics.enable(bevonia);
         
         bevonia.body.gravity.y = 1200;
-        //bevonia.body.collideWorldBounds = true
         game.camera.follow(bevonia);
-//        game.camera.deadzone = new Phaser.Rectangle(centerX - 300, centerY - 200, 600, 400);
+        
+        // Initialize technical variables
+        bevonia.has_sword = false;
+        bevonia.armored = "";
+        bevonia.has_key = false;
+        
         
         bevonia.anchor.setTo(.5, .5);
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true);
         bevonia.animations.add('jump', [1], 0, true);
         bevonia.animations.add('idle', [0], 0, true);
+        bevonia.animations.add("ARMOREDrun", [9, 10, 11, 12], 0, true);
+        bevonia.animations.add("ARMOREDjump", [8], 0, true);
+        bevonia.animations.add("ARMOREDidle", [7], 0, true);
+        
+        // Set up powerups
+        // Sword
+        sword = game.add.sprite(350, 510, "sword");
+        sword.animations.add('spin', [0, 1], 0, true);
+        sword.animations.play("spin", 4, true);
+        // Armor
+        armor = game.add.sprite(1311, 880, "helmet");
+        armor.animations.add("spin", [0, 1, 2, 3], 0, true);
+        armor.animations.play("spin", 4, true);        
+        // Key
+        key = game.add.sprite(1977, 1260, "key");
+        key.animations.add("spin", [0,1, 2, 3, 4, 5, 6, 7]);
+        key.animations.play("spin", 4, true);        
+        // Chest
+        chest = game.add.sprite(2560, 176, "chest");
+        chest.animations.add("closed", [0], 0, true);
+        chest.animations.add("open", [1], 0, true);
+        
+        powerups = [sword, armor, key, chest];
+        game.physics.enable(powerups);
         
         
         
@@ -75,33 +103,55 @@ demo.state1.prototype = {
         
     },
     update: function () {
-        game.physics.arcade.collide(bevonia, platforms1);
-        
+        game.physics.arcade.collide(bevonia, platforms1);        
         
         // Bevonia movement
         bevoFace = game.input.keyboard.isDown(Phaser.Keyboard.D) -game.input.keyboard.isDown(Phaser.Keyboard.A);
         grounded = bevonia.body.blocked.down
+        // Walking
         if(bevoFace == 0) {
-            bevonia.animations.play('idle',0,false)
+            bevonia.animations.play(bevonia.armored + 'idle',0,false)
             bevonia.body.velocity.x = 0;
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.A)){
             bevonia.body.velocity.x = -300
-            bevonia.animations.play('run', 8, true)
+            bevonia.animations.play(bevonia.armored + 'run', 8, true)
             bevonia.scale.x = -1
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.D)){
             bevonia.body.velocity.x = 300
-            bevonia.animations.play('run', 8, true)
+            bevonia.animations.play(bevonia.armored + 'run', 8, true)
             bevonia.scale.x = 1
+        // Jumping
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.W) && grounded){
             bevonia.body.velocity.y = -650
         }
-        if(!grounded) bevonia.animations.play('jump', 1, true)
-        
-        if (game.physics.arcade.collide(bevonia, traps1)) {
+        if(!grounded) bevonia.animations.play(bevonia.armored + 'jump', 1, true)
+        // Dying
+        if (game.physics.arcade.collide(bevonia, traps1) || bevonia.body.y > 1344) {
             game.state.start(game.state.current);
         }
+        
+        
+        // Powerup interactions
+        // Sword
+        if (game.physics.arcade.overlap(bevonia, sword)) {
+            sword.kill();
+            bevonia.has_sword = true;
+        }
+        if (game.physics.arcade.overlap(bevonia, armor)) {
+            armor.kill();
+            bevonia.armored = "ARMORED";
+            
+        }
+        if (game.physics.arcade.overlap(bevonia, key)) {
+            key.kill();
+            bevonia.has_key = true;
+        }
+        if (game.physics.arcade.overlap(bevonia, chest) && bevonia.has_key) {
+            chest.animations.play("open", 0, true);
+        }
+        
     }
 }
