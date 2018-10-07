@@ -1,12 +1,13 @@
+var demo = {};
 demo.state1 = function(){}
 demo.state1.prototype = {
     preload: function(){
         // LOAD ASSETS
         // Tile map
-        game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
-        game.load.image("brick", "assets/sprites/wall sprite 2.png");
-        game.load.image("spikes", "assets/sprites/deathSpikes.png");
-        game.load.image('bg1', 'assets/sprites/test background v2.png');
+//        game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
+//        game.load.image("brick", "assets/sprites/wall sprite 2.png");
+//        game.load.image("spikes", "assets/sprites/deathSpikes.png");
+        game.load.image('bg1', 'assets/sprites/test background v2.png', 2000, 650);
         
         // Bevonia
         game.load.spritesheet("bevonia", "assets/sprites/Bevonia.png", 32, 48);
@@ -43,29 +44,6 @@ demo.state1.prototype = {
         var map1 = game.add.tilemap("level1");
         map.addTilesetImage("brick");
         map.addTilesetImage("spikes");
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         
