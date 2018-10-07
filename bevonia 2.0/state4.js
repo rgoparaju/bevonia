@@ -1,9 +1,6 @@
 var bevonia, bevX, bevY, dragonSprite, healthBar, dragonHealth = 100, healthBarScaleX = 12
 var centerX = 533, centerY = 250;
 var aoe, aoeNextCast = 0, aoeCastRate = 1000;
-var shot_delay = 1000;
-var bullet_speed = 100;
-var num_bullets = 1;
 demo.state4 = function(){}
 demo.state4.prototype = {
     preload: function(){
@@ -17,7 +14,7 @@ demo.state4.prototype = {
         game.load.spritesheet("aoeBlast", "assets/sprites/AoE Blast.png", 96, 96);
         
         //FIREBALL
-        game.load.image('bullet','assets/sprites/fireballPrelim.png');
+        game.load.image('fireball','assets/sprites/fireballPrelim.png');
         
         // Dragon health
         game.load.image('health bar', 'assets/sprites/health bar.png');
@@ -121,41 +118,12 @@ demo.state4.prototype = {
         //Dragon health bar
         healthBar = game.add.sprite(1000,40,'health bar')
         healthBar.scale.setTo(healthBarScaleX,3)
-        
-        bulletPool = this.game.add.group();
-        for(var i = 0; i < num_bullets; i++){
-            var bullet = this.game.add.sprite(425, game.world.height-300, 'bullet');
-            bulletPool.add(bullet);
-            
-            bullet.scale.setTo(1.15,1.15);
-            
-            this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
-            
-            bullet.kill();
-        }
-    },
     
-    shootBullet: function(){
-        dragonSprite.animations.play('throw');
-        var lastBulletShotAt = 0;
-        if (game.time.now - lastBulletShotAt < shot_delay) return;
-        lastBulletShotAt = game.time.now;
-        
-        var bullet = bulletPool.getFirstDead();
-        
-        if (bullet === null || bullet === undefined) return;
-        
-        bullet.revive();
-        
-        bullet.checkWorldBounds = true;
-        bullet.outOfBoundsKill = true;
-        
-        bullet.reset(dragonSprite.x, dragonSprite.y+60);
-        bullet.outOfBoundsKill = true;
-        bullet.body.velocity.x = -(Math.cos(0) * bullet_speed);
-        bullet.body.velocity.y = Math.sin(-45) * bullet_speed;
-        
     },
+
+    shotMe: function(bevonia, fireball){
+        fireball.kill();
+    }, 
     
     update: function(){
         var collision = game.physics.arcade.collide(bevonia,[wallGroup1,wallGroup2,wallGroup3,wallGroup4,wallGroup5,wallGroup6,wall1,wallGroup7,wallGroup8,wallGroup9,dragonSprite])
@@ -209,19 +177,39 @@ demo.state4.prototype = {
             // Quick solution to making explosion animation
         }
         
-        this.game.physics.arcade.collide(bulletPool, bevonia, function(bullet,ground){
-        bevonia.kill(); game.state.start(game.state.current);
-    }, null, this);
-        
-        bulletPool.forEachAlive(function(bullet){
-            bullet.rotation = Math.atan2(bullet.body.velocity.y, bullet.body.velocity.x);
+        fireballs.forEach(function(fireball){
+            game.physics.arcade.accelerateToObject(fireball, bevonia, 500);
+            
         }, this);
         
-        var i = Math.floor(Math.random()*(10-1))+1;
         
-        if (i == 5){
-            this.shootBullet();
-        }
+        game.physics.arcade.collide(bevonia, fireballs, this.shotMe);
+        
+        fireballs.forEachExists(function(fireball){
+            if (fireball.outOfBoundsKill) {
+//                fireball.kill();
+            }
+        }, this);
+        
+            if (dragonSprite.lastShotFired < game.time.time){
+            dragonSprite.lastShotFired = game.time.time + 2500;
+            var fireball = fireballs.getFirstDead();
+            if (fireball == null){
+                if (bevonia.x > 1000){
+                fireball = fireballs.create(dragonSprite.x, dragonSprite.y+60, 'fireball');
+                fireball.lifespan = 2500;
+                game.physics.arcade.enable(fireball);
+                fireball.checkWorldBounds = true;
+                fireball.outOfBoundsKill = true;
+                console.log(fireball.body.x);
+                
+                }
+
+            } else {
+                fireball.reset(dragonSprite.x, dragonSprite.y + 60);
+            }
+            }
+        
         
         if(game.time.now < aoeNextCast) {
             if(game.physics.arcade.overlap(aoe, dragonSprite)) {
