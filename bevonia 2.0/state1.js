@@ -9,7 +9,7 @@ demo.state1.prototype = {
         game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("platforms", "assets/sprites/wall sprite 2.png", 32, 32);
         game.load.image("spikes", "assets/sprites/deathSpikes.png");
-        game.load.image('bg1', 'assets/sprites/test background v4.png', 2624, 1344);
+        game.load.image('bg1', 'assets/sprites/test background v5.png', 2624, 1344);
         
         // Bevonia
         game.load.spritesheet("bevonia", "assets/sprites/Bevonia.png", 32, 48);
@@ -53,6 +53,7 @@ demo.state1.prototype = {
         traps1 = map1.createLayer("traps");
         
         map1.setCollision(1, true, "platforms");
+        map1.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
         
         // Bevonia set up
         bevonia = game.add.sprite(128, 128, "bevonia");
@@ -98,5 +99,9 @@ demo.state1.prototype = {
             bevonia.body.velocity.y = -650
         }
         if(!grounded) bevonia.animations.play('jump', 1, true)
+        
+        if (game.physics.arcade.collide(bevonia, traps1)) {
+            game.state.start(game.state.current);
+        }
     }
 }
