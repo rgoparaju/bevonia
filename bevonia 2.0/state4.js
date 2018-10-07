@@ -1,4 +1,4 @@
-var demo = {}, bevonia, bevX, bevY, dragonSprite, healthBar, dragonHealth = 100, healthBarScaleX = 12
+var bevonia, bevX, bevY, dragonSprite, healthBar, dragonHealth = 100, healthBarScaleX = 12
 var centerX = 533, centerY = 250;
 var aoe, aoeNextCast = 0, aoeCastRate = 1000;
 var shot_delay = 1000;
