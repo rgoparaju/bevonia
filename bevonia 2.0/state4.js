@@ -22,6 +22,11 @@ demo.state4.prototype = {
         // Dragon health
         game.load.image('health bar', 'assets/sprites/health bar.png');
         
+        //SOUNDS
+        game.load.audio('jump', 'assets/sounds/jump.mp3');
+        game.load.audio('aoe', 'assets/sounds/aoe.mp3');
+        game.load.audio('cast', 'assets/sounds/cast.mp3');
+        
         
     },
     create: function(){
@@ -29,6 +34,10 @@ demo.state4.prototype = {
         game.world.setBounds(0,0, 2000, 500)
         
         game.add.sprite(0,0,'background')
+        
+        jumpSound = game.sound.add("jump");
+        aoeSound = game.sound.add('aoe');
+        castSound = game.sound.add('cast');
         
         // Set up wall objects
         wallGroup1 = game.add.group()
@@ -176,6 +185,7 @@ demo.state4.prototype = {
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.W) && bevonia.body.touching.down){
             bevonia.body.velocity.y = -600
+            jumpSound.play()
         }
         if(!bevonia.body.touching.down) bevonia.animations.play('jump', 1, true)
         
@@ -190,6 +200,7 @@ demo.state4.prototype = {
             aoe.anchor.setTo(.5, .5);
             game.physics.enable(aoe);
             aoe.animations.add("exist", [0, 1]);
+            castSound.play();
             aoe.animations.play("exist", 10, true);
             aoe.body.velocity.x = 500;
             aoe.body.velocity.y = -150;
@@ -218,6 +229,7 @@ demo.state4.prototype = {
                 boom.anchor.setTo(.5, .5);
                 boom.scale.setTo(1.5, 1.5);
                 boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                aoeSound.play();
                 aoe.kill();
                 boom.animations.play("explode", 8, false);
                 
