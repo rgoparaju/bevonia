@@ -11,8 +11,8 @@ demo.state1.prototype = {
         
         // Bevonia
         game.load.spritesheet("bevonia", "assets/sprites/Bevonia.png", 32, 48);
-        game.load.spritesheet("armoredBevonia", "assets/sprites/bevoniaArmored.png", 32, 48);
-        game.load.spritesheet("stabBevonia", "assets/sprites/bevoThrust", 48, 48);   
+        game.load.spritesheet("armoredBevonia", "assets/sprites/bevoniaArmor.png", 32, 48);
+        game.load.spritesheet("stabBevonia", "assets/sprites/bevoThrust.png", 48, 48);   
         
         // Enemies
         game.load.spritesheet("bat", "assets/sprites/bat.png", 32, 32);
@@ -29,7 +29,7 @@ demo.state1.prototype = {
         game.load.spritesheet("manaBar", "assets/sprites/manaBar.png", 256, 16);
     },
     create: function(){
-        game.physics.startSystem(Phaser.Physcis.ARCADE);
+        game.physics.startSystem(Phaser.Physics.ARCADE);
         
         console.log("state1");
         
