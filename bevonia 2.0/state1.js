@@ -71,14 +71,26 @@ demo.state1.prototype = {
         bevonia.has_sword = false;
         bevonia.armored = "";
         bevonia.has_key = false;
+        bevonia.looking = 1;
         
         bevonia.anchor.setTo(.5, .5);
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true);
         bevonia.animations.add('jump', [1], 0, true);
         bevonia.animations.add('idle', [0], 0, true);
+        bevonia.animations.add("hide", [6], 0, true);
         bevonia.animations.add("ARMOREDrun", [9, 10, 11, 12], 0, true);
         bevonia.animations.add("ARMOREDjump", [8], 0, true);
         bevonia.animations.add("ARMOREDidle", [7], 0, true);
+        
+        // Bevonia melee attack sprite
+        bevoniaStab = game.add.sprite(128, 128, "stabBevonia");
+        bevoniaStab.anchor.setTo(.5, .5);
+        bevoniaStab.animations.add("hide",[0], 0, true);
+        bevoniaStab.animations.add("stab",[1], 0, true);
+        bevoniaStab.animations.add("ARMOREDstab",[2], 0, true);
+        bevoniaStab.animations.play("hide", 0, true);
+        game.physics.enable(bevoniaStab);
+        
         
         // Set up powerups
         // Sword
@@ -117,9 +129,39 @@ demo.state1.prototype = {
         game.physics.arcade.collide(bevonia, platforms1);
         skelCollide = game.physics.arcade.collide(skel1,platforms1)
         
+        // Powerup interactions
+        // Sword
+        if (game.physics.arcade.overlap(bevonia, sword)) {
+            sword.kill();
+            bevonia.has_sword = true;
+        }
+        if (game.physics.arcade.overlap(bevonia, armor)) {
+            armor.kill();
+            bevonia.armored = "ARMORED";
+        }
+        if (game.physics.arcade.overlap(bevonia, key)) {
+            key.kill();
+            bevonia.has_key = true;
+        }
+        if (game.physics.arcade.overlap(bevonia, chest) && bevonia.has_key) {
+            chest.animations.play("open", 0, true);
+        }
+        if (game.physics.arcade.overlap(bevonia, door)) {
+            game.state.start("state4");
+        }
+        
         // Bevonia movement
-        bevoFace = game.input.keyboard.isDown(Phaser.Keyboard.D) -game.input.keyboard.isDown(Phaser.Keyboard.A);
-        grounded = bevonia.body.blocked.down
+        bevoFace = game.input.keyboard.isDown(Phaser.Keyboard.D) - game.input.keyboard.isDown(Phaser.Keyboard.A);
+        grounded = bevonia.body.blocked.down;
+        stabTimer = 0;
+        if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+            bevonia.looking = 1;
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+            bevonia.looking = -1;
+        }
+        
+        
         // Walking
         if(bevoFace == 0) {
             bevonia.animations.play(bevonia.armored + 'idle',0,false)
@@ -145,29 +187,17 @@ demo.state1.prototype = {
         if (game.physics.arcade.collide(bevonia, traps1) || bevonia.body.y > 1344) {
             game.state.start(game.state.current);
         }
-        
-        
-        // Powerup interactions
-        // Sword
-        if (game.physics.arcade.overlap(bevonia, sword)) {
-            sword.kill();
-            bevonia.has_sword = true;
+        // Melee attack
+        bevoniaStab.body.x = bevonia.body.x;
+        bevoniaStab.body.y = bevonia.body.y;
+        if (bevonia.has_sword && game.input.keyboard.isDown(Phaser.Keyboard.L)) {
+            bevoniaStab.scale.x = bevonia.looking;
+            bevoniaStab.animations.play(bevonia.armored + "stab", 1, false);
+            bevonia.animations.play("hide", 1, false);
         }
-        if (game.physics.arcade.overlap(bevonia, armor)) {
-            armor.kill();
-            bevonia.armored = "ARMORED";
+        else {
+            bevoniaStab.animations.play("hide", 1, true);
         }
-        if (game.physics.arcade.overlap(bevonia, key)) {
-            key.kill();
-            bevonia.has_key = true;
-        }
-        if (game.physics.arcade.overlap(bevonia, chest) && bevonia.has_key) {
-            chest.animations.play("open", 0, true);
-        }
-        if (game.physics.arcade.overlap(bevonia, door)) {
-            game.state.start("state4");
-        }
-        
     }
 }
 
