@@ -176,7 +176,7 @@ demo.state1.prototype = {
             chest.animations.play("open", 0, true);
         }
         if (game.physics.arcade.overlap(bevonia, door)) {
-            game.state.start("state4");
+            game.state.start("state1");
         }
         
         // Bevonia movement
