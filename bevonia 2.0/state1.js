@@ -72,6 +72,7 @@ demo.state1.prototype = {
         bevonia.armored = "";
         bevonia.has_key = false;
         bevonia.looking = 1;
+        bevonia.stabbing = false;
         
         bevonia.anchor.setTo(.5, .5);
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true);
@@ -120,27 +121,42 @@ demo.state1.prototype = {
         skel1.animations.play('walking',4,true)
         game.physics.enable(skel1);
         skel1.body.collideWorldBounds = true;
-        skel1.body.velocity.x = 100;
+        skel1.body.velocity.x = 200;
         skel1.body.gravity.y = 100;
         skeletonCollide = game.physics.arcade.collide(skel1,platforms1)
 //        skeletonBehavior(skel1,50,1000)
         
         //first bat
-        bat1 = game.add.sprite(1070,50, 'bat');
-        bat1.animations.add('flying',[0,1,2,3],0,true);
+        bat1 = game.add.sprite(1070, 377, 'bat');
+        bat1.animations.add('flying',[1,2,3],0,true);
         bat1.anchor.set(0.5,0.5);
         bat1.animations.play('flying',4,true);
         game.physics.enable(bat1);
-        skel1.body.collideWorldBounds = true;
-        skel1.body.velocity.y = 100;
-        batCollide = game.physics.arcade.collide(bat1,platforms1);          
+        bat1.body.collideWorldBounds = true;
+        bat1.body.velocity.y = 100;
+        batCollide = game.physics.arcade.collide(bat1,platforms1);
+        
+        // First spider
+        spider1 = game.add.sprite(1358, 328, "spider");
+        spider1.animations.add("walking", [0, 1, 2], 0, true);
+        spider1.anchor.setTo(.5, .5);
+        spider1.animations.play("walking", 6, true);
+        game.physics.enable(spider1);
+        spider1.body.velocity.x = 100;
+        game.physics.arcade.collide(spider1, platforms1);
+        
+        enemies = [skel1, bat1, spider1];
+        
         
         
         
     },
     update: function () {
         game.physics.arcade.collide(bevonia, platforms1);
-        skelCollide = game.physics.arcade.collide(skel1,platforms1)
+        skelCollide = game.physics.arcade.collide(skel1,platforms1);
+        
+        
+        
         
         // Powerup interactions
         // Sword
@@ -166,7 +182,6 @@ demo.state1.prototype = {
         // Bevonia movement
         bevoFace = game.input.keyboard.isDown(Phaser.Keyboard.D) - game.input.keyboard.isDown(Phaser.Keyboard.A);
         grounded = bevonia.body.blocked.down;
-        stabTimer = 0;
         if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
             bevonia.looking = 1;
         }
@@ -205,33 +220,60 @@ demo.state1.prototype = {
         bevoniaStab.body.y = bevonia.body.y;
         if (bevonia.has_sword && game.input.keyboard.isDown(Phaser.Keyboard.L)) {
             bevoniaStab.scale.x = bevonia.looking;
+            bevonia.stabbing = true;
             bevoniaStab.animations.play(bevonia.armored + "stab", 1, false);
             bevonia.animations.play("hide", 1, false);
         }
         else {
             bevoniaStab.animations.play("hide", 1, true);
+            bevonia.stabbing = false;
         }
         
         //SKELETON PATROL
         if (skel1.x > 750){
-            skel1.body.velocity.x = -100;
+            skel1.body.velocity.x = -300;
+            skel1.scale.x = -1
         } else if (skel1.x < 75) {
-            skel1.body.velocity.x = 100;
+            skel1.body.velocity.x = 300;
+            skel1.scale.x = 1
         }
         
         //Bat Patrol
-        if (bat1.y > 1150){
+        if (bat1.y > 833){
             bat1.body.velocity.y = -100;
-        } else if (bat1.y < 250){
+        } else if (bat1.y < 377){
             bat1.body.velocity.y = 100;
         }
         
+        // Spider patrol
+        if (spider1.body.x > 1597) {
+            spider1.body.velocity.x = -100;
+            spider1.scale.x = 1
+        }
+        else if (spider1.body.x < 1312) {
+            spider1.body.velocity.x = 100;
+            spider1.scale.x = -1
+        }
+            
+        // Bevonia enemy interaction
+        if (game.physics.arcade.collide(bevoniaStab, skel1) && bevonia.stabbing) {
+            skel1.kill();
+        }
+        if (game.physics.arcade.collide(bevoniaStab, bat1) && bevonia.stabbing) {
+            bat1.kill();
+        }
+        if (game.physics.arcade.collide(bevoniaStab, spider1) && bevonia.stabbing) {
+            spider1.kill();
+        }
+        else if (game.physics.arcade.collide(bevonia, enemies) && !bevonia.stabbing) {
+            game.state.start(game.state.current);
+        }        
     }
 }
 
 function skeletonBehavior(skel,xBoundLeft,xBoundRight){
     if(skelCollide) skel.body.velocity.x = -skel.body.velocity.x
-    skel.body.velocity.x = -50
+    //skel.body.velocity.x = -50
     
 }
 
