@@ -5,11 +5,12 @@ demo.state1 = function(){}
 demo.state1.prototype = {
     preload: function(){
         // LOAD ASSETS
-        // Tile map
+        // Tile map and other environment assets
         game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("platforms", "assets/sprites/wall sprite 2.png", 32, 32);
         game.load.image("spikes", "assets/sprites/deathSpikes.png");
         game.load.image('bg1', 'assets/sprites/test background v5.png', 2624, 1344);
+        game.load.image("door", "assets/sprites/door.png", 32, 96);
         
         // Bevonia
         game.load.spritesheet("bevonia", "assets/sprites/Bevonia.png", 32, 48);
@@ -55,6 +56,9 @@ demo.state1.prototype = {
         map1.setCollision(1, true, "platforms");
         map1.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
         
+        door = game.add.sprite(2592, 1088, "door");
+        game.physics.enable(door);
+        
         // Bevonia set up
         bevonia = game.add.sprite(128, 128, "bevonia");
         game.physics.enable(bevonia);
@@ -66,7 +70,6 @@ demo.state1.prototype = {
         bevonia.has_sword = false;
         bevonia.armored = "";
         bevonia.has_key = false;
-        
         
         bevonia.anchor.setTo(.5, .5);
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true);
@@ -122,12 +125,13 @@ demo.state1.prototype = {
             bevonia.body.velocity.x = 300
             bevonia.animations.play(bevonia.armored + 'run', 8, true)
             bevonia.scale.x = 1
-        // Jumping
+        // Jumping and falling
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.W) && grounded){
             bevonia.body.velocity.y = -650
         }
         if(!grounded) bevonia.animations.play(bevonia.armored + 'jump', 1, true)
+        if(bevonia.body.velocity.y > 1200) bevonia.body.velocity.y = 1200;
         // Dying
         if (game.physics.arcade.collide(bevonia, traps1) || bevonia.body.y > 1344) {
             game.state.start(game.state.current);
@@ -143,7 +147,6 @@ demo.state1.prototype = {
         if (game.physics.arcade.overlap(bevonia, armor)) {
             armor.kill();
             bevonia.armored = "ARMORED";
-            
         }
         if (game.physics.arcade.overlap(bevonia, key)) {
             key.kill();
@@ -151,6 +154,9 @@ demo.state1.prototype = {
         }
         if (game.physics.arcade.overlap(bevonia, chest) && bevonia.has_key) {
             chest.animations.play("open", 0, true);
+        }
+        if (game.physics.arcade.overlap(bevonia, door)) {
+            game.state.start("state4");
         }
         
     }
