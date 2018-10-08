@@ -1,4 +1,4 @@
-var demo = {};
+var demo = {}, skel1, skelCollide;
 var centerX = 533, centerY = 250;
 var platforms1, traps1;
 demo.state1 = function(){}
@@ -19,7 +19,8 @@ demo.state1.prototype = {
         
         // Enemies
         game.load.spritesheet("bat", "assets/sprites/bat.png", 32, 32);
-        game.load.spritesheet("spider", "assets/sprites/spider.png", 48, 48); 
+        game.load.spritesheet("spider", "assets/sprites/spider.png", 48, 48);
+        game.load.spritesheet("skeleton", "assets/sprites/skeleton.png", 32, 64);
         
         // Items
         game.load.spritesheet("helmet", "assets/sprites/helmet.png", 32, 32);
@@ -100,13 +101,21 @@ demo.state1.prototype = {
         powerups = [sword, armor, key, chest];
         game.physics.enable(powerups);
         
-        
+        //first skeleton
+        skel1 = game.add.sprite(500,850,'skeleton')
+        skel1.animations.add('walking',[0,1,2,3],0,true)
+        //skel1.animations.play('walking',4,true)
+        game.physics.enable(skel1)
+        skel1.body.gravity.y = 1
+        game.physics.arcade.collide(skel1,platforms1)
+        skeletonBehavior(skel1,50,1000)        
         
         
         
     },
     update: function () {
-        game.physics.arcade.collide(bevonia, platforms1);        
+        game.physics.arcade.collide(bevonia, platforms1);
+        skelCollide = game.physics.arcade.collide(skel1,platforms1)
         
         // Bevonia movement
         bevoFace = game.input.keyboard.isDown(Phaser.Keyboard.D) -game.input.keyboard.isDown(Phaser.Keyboard.A);
@@ -161,3 +170,10 @@ demo.state1.prototype = {
         
     }
 }
+
+function skeletonBehavior(skel,xBoundLeft,xBoundRight){
+    if(skelCollide) skel.body.velocity.x = -skel.body.velocity.x
+    skel.body.velocity.x = -50
+    
+}
+
