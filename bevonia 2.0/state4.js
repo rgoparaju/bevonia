@@ -36,6 +36,8 @@ demo.state4.prototype = {
         aoeSound = game.sound.add('aoe');
         castSound = game.sound.add('cast');
         
+        fireballs = game.add.group();
+        
         // Set up wall objects
         wallGroup1 = game.add.group()
         for(var x = 0; x < (15*32); x += 32)
