@@ -116,11 +116,24 @@ demo.state1.prototype = {
         //first skeleton
         skel1 = game.add.sprite(500,850,'skeleton')
         skel1.animations.add('walking',[0,1,2,3],0,true)
-        //skel1.animations.play('walking',4,true)
-        game.physics.enable(skel1)
-        skel1.body.gravity.y = 1
-        game.physics.arcade.collide(skel1,platforms1)
-        skeletonBehavior(skel1,50,1000)        
+        skel1.anchor.set(0.5,0.5);
+        skel1.animations.play('walking',4,true)
+        game.physics.enable(skel1);
+        skel1.body.collideWorldBounds = true;
+        skel1.body.velocity.x = 100;
+        skel1.body.gravity.y = 100;
+        skeletonCollide = game.physics.arcade.collide(skel1,platforms1)
+//        skeletonBehavior(skel1,50,1000)
+        
+        //first bat
+        bat1 = game.add.sprite(1070,50, 'bat');
+        bat1.animations.add('flying',[0,1,2,3],0,true);
+        bat1.anchor.set(0.5,0.5);
+        bat1.animations.play('flying',4,true);
+        game.physics.enable(bat1);
+        skel1.body.collideWorldBounds = true;
+        skel1.body.velocity.y = 100;
+        batCollide = game.physics.arcade.collide(bat1,platforms1);          
         
         
         
@@ -198,6 +211,21 @@ demo.state1.prototype = {
         else {
             bevoniaStab.animations.play("hide", 1, true);
         }
+        
+        //SKELETON PATROL
+        if (skel1.x > 750){
+            skel1.body.velocity.x = -100;
+        } else if (skel1.x < 75) {
+            skel1.body.velocity.x = 100;
+        }
+        
+        //Bat Patrol
+        if (bat1.y > 1150){
+            bat1.body.velocity.y = -100;
+        } else if (bat1.y < 250){
+            bat1.body.velocity.y = 100;
+        }
+        
     }
 }
 
