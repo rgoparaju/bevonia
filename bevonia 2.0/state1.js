@@ -73,6 +73,7 @@ demo.state1.prototype = {
         bevonia.has_key = false;
         bevonia.looking = 1;
         bevonia.stabbing = false;
+        bevonia.stabTimer = 0;
         
         bevonia.anchor.setTo(.5, .5);
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true);
@@ -195,12 +196,12 @@ demo.state1.prototype = {
             bevonia.animations.play(bevonia.armored + 'idle',0,false)
             bevonia.body.velocity.x = 0;
         }
-        if(game.input.keyboard.isDown(Phaser.Keyboard.A)){
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.A)){
             bevonia.body.velocity.x = -300
             bevonia.animations.play(bevonia.armored + 'run', 8, true)
             bevonia.scale.x = -1
         }
-        if(game.input.keyboard.isDown(Phaser.Keyboard.D)){
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.D)){
             bevonia.body.velocity.x = 300
             bevonia.animations.play(bevonia.armored + 'run', 8, true)
             bevonia.scale.x = 1
@@ -216,12 +217,14 @@ demo.state1.prototype = {
             game.state.start(game.state.current);
         }
         // Melee attack
+        // THE METHOD OF SUBBING OUT SPRITES IS WHAT CAUSED THE SKELETON COLISSION GLITCH
         bevoniaStab.body.x = bevonia.body.x;
         bevoniaStab.body.y = bevonia.body.y;
-        if (bevonia.has_sword && game.input.keyboard.isDown(Phaser.Keyboard.L)) {
+        if (bevonia.has_sword && game.input.keyboard.isDown(Phaser.Keyboard.L) && bevonia.stabTimer < game.time.now) {
+            bevonia.stabTimer = game.time.now + 1000;
             bevoniaStab.scale.x = bevonia.looking;
             bevonia.stabbing = true;
-            bevoniaStab.animations.play(bevonia.armored + "stab", 1, false);
+            bevoniaStab.animations.play(bevonia.armored + "stab", .1, false);
             bevonia.animations.play("hide", 1, false);
         }
         else {
