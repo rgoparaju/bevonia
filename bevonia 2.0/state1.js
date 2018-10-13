@@ -1,6 +1,50 @@
 var demo = {}, skel1, skelCollide;
 var centerX = 533, centerY = 250;
 var platforms1, traps1;
+
+enemyBat = function(index,game,x,y,tweenX,tweenY){
+        
+        this.bat = game.add.sprite(x,y,'bat');
+        this.bat.anchor.setTo(0.5,0.5);
+        this.bat.name = index.toString();
+        game.physics.enable(this.bat,Phaser.Physics.ARCADE);
+        this.bat.body.immovable = true;
+        this.bat.body.collideWorldBounds = true;
+        
+        this.batTween = game.add.tween(this.bat).to({
+            x: this.bat.x + tweenX
+        }, 2000, 'Linear', true, 0,100,true);
+        
+    }
+
+enemySkel = function(index,game,x,y,tweenX,tweenY){
+        
+        this.skel = game.add.sprite(x,y,'skel');
+        this.skel.anchor.setTo(0.5,0.5);
+        this.skel.name = index.toString();
+        game.physics.enable(this.skel,Phaser.Physics.ARCADE);
+        this.skel.body.immovable = true;
+        this.skel.body.collideWorldBounds = true;
+        
+        this.skelTween = game.add.tween(this.skel).to({
+            x: this.skel.x + tweenX
+        }, 2000, 'Linear', true, 0,100,true);
+}
+
+enemySpider = function(index,game,x,y,tweenX,tweenY){
+        
+        this.spider = game.add.sprite(x,y,'spider');
+        this.spider.anchor.setTo(0.5,0.5);
+        this.spider.name = index.toString();
+        game.physics.enable(this.spider,Phaser.Physics.ARCADE);
+        this.spider.body.immovable = true;
+        this.spider.body.collideWorldBounds = true;
+        
+        this.skelTween = game.add.tween(this.spider).to({
+            y: this.spider.y + tweenY
+        }, 2000, 'Linear', true, 0,100,true);
+}
+
 demo.state1 = function(){}
 demo.state1.prototype = {
     preload: function(){
@@ -149,6 +193,9 @@ demo.state1.prototype = {
         
         
         
+        new enemyBat(0, game,1020,370,100,0);
+        new enemySkel(0,game,1020,500,100,0);
+        new enemySpider(0,game,1050,600,0,100);
         
     },
     update: function () {
@@ -267,8 +314,20 @@ demo.state1.prototype = {
         }
         else if (game.physics.arcade.collide(bevonia, enemies) && !bevonia.stabbing) {
             game.state.start(game.state.current);
-        }        
+        }
+        
+        if(checkOverlap(bevonia,enemy1.bat)){
+           bevonia.kill()
+            game.state.start(game.state.current);
+        }
     }
+}
+
+function checkOverlap(spriteA, spriteB){
+    var boundsA = spriteA.getBounds();
+    var boundsB = spriteB.getBounds();
+    
+    return Phaser.Rectangle.intersects(boundsA,boundsB);
 }
 
 function skeletonBehavior(skel,xBoundLeft,xBoundRight){
