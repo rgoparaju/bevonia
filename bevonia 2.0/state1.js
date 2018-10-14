@@ -130,10 +130,10 @@ demo.state1.prototype = {
         
         // Bevonia melee attack sprite
         bevoniaStab = game.add.sprite(128, 128, "stabBevonia");
-        bevoniaStab.anchor.setTo(.5, .5);
+        bevoniaStab.anchor.setTo(bevonia.anchor.x, bevonia.anchor.y);
         bevoniaStab.animations.add("hide",[0], 0, true);
-        bevoniaStab.animations.add("stab",[1], 0, true);
-        bevoniaStab.animations.add("ARMOREDstab",[2], 0, true);
+        bevoniaStab.animations.add("stab",[1, 2, 3], 0, true);
+        bevoniaStab.animations.add("ARMOREDstab",[4, 5, 6], 0, true);
         bevoniaStab.animations.play("hide", 0, true);
         game.physics.enable(bevoniaStab);
         
@@ -267,12 +267,15 @@ demo.state1.prototype = {
         // THE METHOD OF SUBBING OUT SPRITES IS WHAT CAUSED THE SKELETON COLISSION GLITCH
         bevoniaStab.body.x = bevonia.body.x;
         bevoniaStab.body.y = bevonia.body.y;
-        if (bevonia.has_sword && game.input.keyboard.isDown(Phaser.Keyboard.L) && bevonia.stabTimer < game.time.now) {
-            bevonia.stabTimer = game.time.now + 1000;
+        if (bevonia.has_sword && game.input.keyboard.isDown(Phaser.Keyboard.L) && (bevonia.stabTimer < game.time.now)) {
+            bevoniaStab.scale.setTo(1, 1);
+            bevonia.stabTimer = game.time.now + 250;
             bevoniaStab.scale.x = bevonia.looking;
             bevonia.stabbing = true;
-            bevoniaStab.animations.play(bevonia.armored + "stab", .1, false);
+        }
+        else if (bevonia.stabTimer > game.time.now) {
             bevonia.animations.play("hide", 1, false);
+            bevoniaStab.animations.play(bevonia.armored + "stab", 18, false);
         }
         else {
             bevoniaStab.animations.play("hide", 1, true);
@@ -319,10 +322,10 @@ demo.state1.prototype = {
             game.state.start(game.state.current);
         }
         
-        if(checkOverlap(bevonia,enemy1.bat)){
-           bevonia.kill()
-            game.state.start(game.state.current);
-        }
+//        if(checkOverlap(bevonia,enemy1.bat)){
+//           bevonia.kill()
+//            game.state.start(game.state.current);
+//        }
     }
 }
 
