@@ -19,7 +19,7 @@ enemyBat = function(index,game,x,y,tweenX,tweenY){
 
 enemySkel = function(index,game,x,y,tweenX,tweenY){
         
-        this.skel = game.add.sprite(x,y,'skel');
+        this.skel = game.add.sprite(x,y,'skeleton');
         this.skel.anchor.setTo(0.5,0.5);
         this.skel.name = index.toString();
         game.physics.enable(this.skel,Phaser.Physics.ARCADE);
@@ -75,6 +75,7 @@ demo.state1.prototype = {
         // Misc.
         game.load.spritesheet("healthBar", "assets/sprites/healthBar.png", 256, 16);
         game.load.spritesheet("manaBar", "assets/sprites/manaBar.png", 256, 16);
+        game.load.spritesheet("barHolder", "assets/sprites/barHolder.png", 32, 96);
     },
     create: function(){
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -104,6 +105,12 @@ demo.state1.prototype = {
         door = game.add.sprite(2592, 1088, "door");
         game.physics.enable(door);
         
+        // Set up power and mana bars
+        barHolder = game.add.sprite(0, 0, "barHolder");
+        healthBar = game.add.sprite(32, 8, "healthBar");
+        manaBar = game.add.sprite(32, 72, "manaBar");
+        barHolder.fixedToCamera = true; healthBar.fixedToCamera = true; manaBar.fixedToCamera = true;
+        
         // Bevonia set up
         bevonia = game.add.sprite(128, 128, "bevonia");
         game.physics.enable(bevonia);
@@ -112,12 +119,18 @@ demo.state1.prototype = {
         game.camera.follow(bevonia);
         
         // Initialize technical variables
-        bevonia.has_sword = false;
+        bevonia.health = 1;
+        bevonia.mana = 1;
+        
         bevonia.armored = "";
-        bevonia.has_key = false;
         bevonia.looking = 1;
         bevonia.stabbing = false;
+        
+        bevonia.has_sword = false;
+        bevonia.has_key = false;
+        
         bevonia.stabTimer = 0;
+        bevonia.damageFactor = .25;
         
         bevonia.anchor.setTo(.5, .5);
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true);
