@@ -260,16 +260,13 @@ demo.state1.prototype = {
             if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
             armor.kill();
             bevonia.armored = "ARMORED";
-<<<<<<< HEAD
             bevonia.damageFactor = .125;
-=======
             tempArmor = game.add.sprite((378 + numOfItemsInInv*(35)),42,'helmet')
             tempArmor.anchor.setTo(0.5,0.5)
             tempArmor.fixedToCamera = true
 //            tempArmor.scale.setTo(0.5,0.5)
             numOfItemsInInv += 1;
             }
->>>>>>> bb8b51d3c76a391b77acebd9ffa5c8b345896bde
         }
         if (game.physics.arcade.overlap(bevonia, key)) {
             if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
