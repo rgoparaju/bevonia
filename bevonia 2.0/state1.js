@@ -1,4 +1,4 @@
-var demo = {}, skel1, skelCollide;
+var demo = {}, skel1, skelCollide, numOfItemsInInv = 0;
 var centerX = 533, centerY = 250;
 var platforms1, traps1;
 
@@ -76,7 +76,7 @@ demo.state1.prototype = {
         game.load.spritesheet("healthBar", "assets/sprites/healthBar.png", 256, 16);
         game.load.spritesheet("manaBar", "assets/sprites/manaBar.png", 256, 16);
         game.load.spritesheet("barHolder", "assets/sprites/barHolder.png", 32, 96);
-        game.load.image('inventory','assets/sprites/inventory.png',200,55)
+        game.load.image('inventory','assets/sprites/inventory.png',267,55)
     },
     create: function(){
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -118,6 +118,9 @@ demo.state1.prototype = {
         healthBar = game.add.sprite(32, 8, "healthBar");
         manaBar = game.add.sprite(32, 72, "manaBar");
         barHolder.fixedToCamera = true; healthBar.fixedToCamera = true; manaBar.fixedToCamera = true;
+        
+        inventory = game.add.sprite(350,15,'inventory')
+        inventory.fixedToCamera = true
         
         // Bevonia set up
         bevonia = game.add.sprite(128, 128, "bevonia");
@@ -234,16 +237,37 @@ demo.state1.prototype = {
         // Powerup interactions
         // Sword
         if (game.physics.arcade.overlap(bevonia, sword)) {
-            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){sword.kill();
-            bevonia.has_sword = true;}
+            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
+            sword.kill();
+            bevonia.has_sword = true;            
+            tempSword = game.add.sprite((378 + numOfItemsInInv*(35)),42,'sword')
+            tempSword.anchor.setTo(0.5,0.5)
+            tempSword.fixedToCamera = true
+            tempSword.scale.setTo(0.5,0.5)
+            numOfItemsInInv += 1
+            }
         }
         if (game.physics.arcade.overlap(bevonia, armor)) {
-            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){armor.kill();
-            bevonia.armored = "ARMORED";}
+            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
+            armor.kill();
+            bevonia.armored = "ARMORED";
+            tempArmor = game.add.sprite((378 + numOfItemsInInv*(35)),42,'helmet')
+            tempArmor.anchor.setTo(0.5,0.5)
+            tempArmor.fixedToCamera = true
+//            tempArmor.scale.setTo(0.5,0.5)
+            numOfItemsInInv += 1;
+            }
         }
         if (game.physics.arcade.overlap(bevonia, key)) {
-            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){key.kill();
-            bevonia.has_key = true;}
+            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
+            key.kill();
+            bevonia.has_key = true;
+            tempKey = game.add.sprite((378 + numOfItemsInInv*(35)),42,'key')
+            tempKey.anchor.setTo(0.5,0.5)
+            tempKey.fixedToCamera = true
+//            tempKey.scale.setTo(0.5,0.5)
+            numOfItemsInInv += 1
+            }
         }
         if (game.physics.arcade.overlap(bevonia, chest) && bevonia.has_key && chestClosed) {
             chestClosed = false
@@ -254,10 +278,17 @@ demo.state1.prototype = {
         }
         if (game.physics.arcade.overlap(bevonia, door)) {
             game.state.start("state1");
+            numOfItemsInInv = 0
         }
 //      pick up health potion
         if(game.physics.arcade.overlap(bevonia, healthPotion1)){
-            if(game.input.keyboard.isDown(Phaser.Keyboard.E)) healthPotion1.kill()
+            if(game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+                healthPotion1.kill(); 
+                tempPotion = game.add.sprite((378 + numOfItemsInInv*(35)),42,'healthPotion')
+                tempPotion.anchor.setTo(0.5,0.5)
+                tempPotion.scale.setTo(0.6,0.6)
+                tempPotion.fixedToCamera = true
+                numOfItemsInInv += 1}
         }
             
             
@@ -296,6 +327,7 @@ demo.state1.prototype = {
         // Dying
         if (game.physics.arcade.collide(bevonia, traps1) || bevonia.body.y > 1344) {
             game.state.start(game.state.current);
+            numOfItemsInInv = 0
         }
         // Melee attack
         // THE METHOD OF SUBBING OUT SPRITES IS WHAT CAUSED THE SKELETON COLISSION GLITCH
@@ -358,6 +390,13 @@ demo.state1.prototype = {
         }
         else if (game.physics.arcade.collide(bevonia, enemies) && !bevonia.stabbing) {
             game.state.start(game.state.current);
+            numOfItemsInInv = 0
+            console.log('test')
+        }
+        else if(game.physics.arcade.collide(bevoniaStab, enemies) && !bevonia.stabbing){
+            game.state.start(game.state.current);
+            numOfItemsInInv = 0
+            console.log('test')
         }
         
 //        if(checkOverlap(bevonia,enemy1.bat)){
