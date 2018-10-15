@@ -2,52 +2,53 @@ var demo = {}, skel1, skelCollide;
 var centerX = 533, centerY = 250;
 var platforms1, traps1;
 
-enemyBat = function(index,game,x,y,tweenX,tweenY){
-        
-        this.bat = game.add.sprite(x,y,'bat');
-        this.bat.anchor.setTo(0.5,0.5);
-        this.bat.name = index.toString();
-        game.physics.enable(this.bat,Phaser.Physics.ARCADE);
-        this.bat.body.immovable = true;
-        this.bat.body.collideWorldBounds = true;
-        
-        this.batTween = game.add.tween(this.bat).to({
-            x: this.bat.x + tweenX
-        }, 2000, 'Linear', true, 0,100,true);
-        
-    }
 
-enemySkel = function(index,game,x,y,tweenX,tweenY){
+enemyBat = function (index, game, x, y, tweenX, tweenY) {
         
-        this.skel = game.add.sprite(x,y,'skeleton');
-        this.skel.anchor.setTo(0.5,0.5);
-        this.skel.name = index.toString();
-        game.physics.enable(this.skel,Phaser.Physics.ARCADE);
-        this.skel.body.immovable = true;
-        this.skel.body.collideWorldBounds = true;
+    this.bat = game.add.sprite(x, y, 'bat');
+    this.bat.anchor.setTo(0.5, 0.5);
+    this.bat.name = index.toString();
+    game.physics.enable(this.bat, Phaser.Physics.ARCADE);
+    this.bat.body.immovable = true;
+    this.bat.body.collideWorldBounds = true;
+    
+    this.batTween = game.add.tween(this.bat).to({
+        x: this.bat.x + tweenX
+    }, 2000, 'Linear', true, 0, 100, true);
         
-        this.skelTween = game.add.tween(this.skel).to({
-            x: this.skel.x + tweenX
-        }, 2000, 'Linear', true, 0,100,true);
 }
 
-enemySpider = function(index,game,x,y,tweenX,tweenY){
-        
-        this.spider = game.add.sprite(x,y,'spider');
-        this.spider.anchor.setTo(0.5,0.5);
-        this.spider.name = index.toString();
-        game.physics.enable(this.spider,Phaser.Physics.ARCADE);
-        this.spider.body.immovable = true;
-        this.spider.body.collideWorldBounds = true;
-        
-        this.spiderTween = game.add.tween(this.spider).to({
-            y: this.spider.y + tweenY
-        }, 2000, 'Linear', true, 0,100,true);
+enemySkel = function(index, game, x, y, tweenX, tweenY){
+    
+    this.skel = game.add.sprite(x, y, 'skeleton');
+    this.skel.anchor.setTo(0.5, 0.5);
+    this.skel.name = index.toString();
+    game.physics.enable(this.skel, Phaser.Physics.ARCADE);
+    this.skel.body.immovable = true;
+    this.skel.body.collideWorldBounds = true;
+    
+    this.skelTween = game.add.tween(this.skel).to({
+        x: this.skel.x + tweenX
+    }, 2000, 'Linear', true, 0, 100, true);
 }
 
-demo.state1 = function(){}
+enemySpider = function(index, game, x, y, tweenX, tweenY){
+        
+    this.spider = game.add.sprite(x, y, 'spider');
+    this.spider.anchor.setTo(0.5, 0.5);
+    this.spider.name = index.toString();
+    game.physics.enable(this.spider,Phaser.Physics.ARCADE);
+    this.spider.body.immovable = true;
+    this.spider.body.collideWorldBounds = true;
+    
+    this.spiderTween = game.add.tween(this.spider).to({
+        y: this.spider.y + tweenY
+    }, 2000, 'Linear', true, 0, 100, true);
+}
+
+demo.state1 = function () {}
 demo.state1.prototype = {
-    preload: function(){
+    preload: function () {
         // LOAD ASSETS
         // Tile map and other environment assets
         game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
@@ -71,6 +72,12 @@ demo.state1.prototype = {
         game.load.spritesheet("key", "assets/sprites/key.png", 32, 32);
         game.load.spritesheet("sword", "assets/sprites/sword.png", 32, 64);   
         game.load.spritesheet("chest", "assets/sprites/chest.png", 64, 64);
+        
+        // Spells
+        game.load.spritesheet('aoeProjectile', "assets/sprites/AoE Projectile.png", 32, 32);
+        game.load.spritesheet("aoeBlast", "assets/sprites/AoE Blast.png", 96, 96);
+        
+        game.load.spritesheet("precise", "assets/sprites/precise.png", 32, 16)
         
         // Misc.
         game.load.spritesheet("healthBar", "assets/sprites/healthBar.png", 256, 16);
@@ -135,7 +142,12 @@ demo.state1.prototype = {
         bevonia.has_key = false;
         
         bevonia.stabTimer = 0;
+        bevonia.castTimer = 0;
         bevonia.damageFactor = .25;
+        
+        aoeExists = false;
+        preciseExists = false;
+        preciseNextCast = true;
         
         bevonia.anchor.setTo(.5, .5);
         bevonia.animations.add('run', [2, 3, 4, 5], 0, true);
@@ -209,17 +221,14 @@ demo.state1.prototype = {
         
         
         
-        new enemyBat(0, game,1020,370,100,0);
-        new enemySkel(0,game,1020,500,100,0);
-        new enemySpider(0,game,1050,600,0,100);
+//        new enemyBat(0, game,1020,370,100,0);
+//        new enemySkel(0,game,1020,500,100,0);
+//        new enemySpider(0,game,1050,600,0,100);
         
     },
     update: function () {
         game.physics.arcade.collide(bevonia, platforms1);
         skelCollide = game.physics.arcade.collide(skel1,platforms1);
-        
-        
-        
         
         // Powerup interactions
         // Sword
@@ -230,6 +239,7 @@ demo.state1.prototype = {
         if (game.physics.arcade.overlap(bevonia, armor)) {
             armor.kill();
             bevonia.armored = "ARMORED";
+            bevonia.damageFactor = .125;
         }
         if (game.physics.arcade.overlap(bevonia, key)) {
             key.kill();
@@ -279,7 +289,6 @@ demo.state1.prototype = {
             game.state.start(game.state.current);
         }
         // Melee attack
-        // THE METHOD OF SUBBING OUT SPRITES IS WHAT CAUSED THE SKELETON COLISSION GLITCH
         bevoniaStab.body.x = bevonia.body.x;
         bevoniaStab.body.y = bevonia.body.y;
         if (bevonia.has_sword && game.input.keyboard.isDown(Phaser.Keyboard.L) && (bevonia.stabTimer < game.time.now)) {
@@ -300,7 +309,55 @@ demo.state1.prototype = {
             bevoniaStab.animations.play("hide", 1, true);
             bevonia.stabbing = false;
         }
+        // Spell casting
+        // Area of Effect (AoE)
+        if(game.input.keyboard.isDown(Phaser.Keyboard.K) && game.time.now >= aoeNextCast && bevonia.mana != 0) {
+            aoeNextCast = game.time.now + aoeCastRate;
+            bevonia.mana -= .25; manaBar.scale.x = bevonia.mana;
+            aoeExists = true;
+            aoe = game.add.sprite(bevonia.x, bevonia.y, "aoeProjectile");
+            aoe.anchor.setTo(.5, .5);
+            game.physics.enable(aoe);
+            aoe.animations.add("exist", [0, 1]);
+            //castSound.play();
+            aoe.animations.play("exist", 10, true);
+            aoe.body.velocity.x = bevonia.scale.x * 500;
+            aoe.body.velocity.y = -150;
+            aoe.body.gravity.y = 1200;
+        }
+        if(aoeExists) {     
+            if (game.physics.arcade.collide(aoe, enemies) || game.physics.arcade.collide(aoe, platforms1)) {
+                var boom = game.add.sprite(aoe.x, aoe.y, "aoeBlast");
+                game.physics.enable(boom);
+                boom.anchor.setTo(.5, .5);
+                boom.scale.setTo(1.5, 1.5);
+                boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                //aoeSound.play();
+                aoe.kill();
+                boom.animations.play("explode", 9, false);
+                
+            }
+        }
+
+//        // Precise spell
+//        if (game.input.keyboard.isDown(Phaser.Keyboard.J) && preciseNextCast) {
+//            preciseNextCast = false;
+//            var precise = game.add.sprite(bevonia.x, bevonia.y, "precise");
+//            game.physics.enable(precise);
+//            precise.anchor.setTo(.5, .5);
+//            precise.animations.add("exist", [0, 1]);
+//            precise.animations.play("exist", 100, true);
+//            precise.body.velocity.x = bevonia.scale.x * 700;
+//        }
+//        if (!game.input.keyboard.isDown(Phaser.Keyboard.J)){
+//            preciseNextCast = true;
+//        }
+//
+//        if(game.physics.arcade.overlap(precise, enemies) || game.physics.arcade.collide(precise, platforms1)){
+//            precise.kill()
+//        }
         
+            
         //SKELETON PATROL
         if (skel1.x > 750){
             skel1.body.velocity.x = -300;
@@ -328,16 +385,22 @@ demo.state1.prototype = {
         }
             
         // Bevonia enemy interaction
-        if (game.physics.arcade.collide(bevoniaStab, skel1) && bevonia.stabbing) {
+        if ((game.physics.arcade.overlap(bevoniaStab, skel1) && bevonia.stabbing) || (game.physics.arcade.overlap([boom], skel1))) {
             skel1.kill();
         }
-        if (game.physics.arcade.collide(bevoniaStab, bat1) && bevonia.stabbing) {
+        if ((game.physics.arcade.overlap(bevoniaStab, bat1) && bevonia.stabbing) || (game.physics.arcade.overlap(([boom], bat1)))) {
             bat1.kill();
         }
-        if (game.physics.arcade.collide(bevoniaStab, spider1) && bevonia.stabbing) {
+        if ((game.physics.arcade.overlap(bevoniaStab, spider1) && bevonia.stabbing) || (game.physics.arcade.overlap(([boom], spider1)))) {
             spider1.kill();
         }
         else if (game.physics.arcade.collide(bevonia, enemies) && !bevonia.stabbing) {
+            bevonia.health -= bevonia.damageFactor;
+            bevonia.body.velocity.x = -1 * bevonia.scale.x * 20;
+            healthBar.scale.x = bevonia.health;
+        }
+        
+        if (bevonia.health == 0) {
             game.state.start(game.state.current);
         }
         
@@ -361,3 +424,25 @@ function skeletonBehavior(skel,xBoundLeft,xBoundRight){
     
 }
 
+aoeInstance = function(playerX, playerY, direction) {};
+aoeInstance.prototype = {
+    // Constructor
+    castAoe: function () {
+        this.exist = game.sprite.add(playerX, playerY, "aoeProjectile");
+        this.anchor.setTo(.5, .5);
+        game.physics.enable(this);
+        this.animations.add("exist", [0, 1]);
+        this.animations.play("exist", 10, true);
+        this.body.velocity.x = direction * 500;
+        this.body.velocity.y = -150;
+        this.body.gravity.y = 1200;
+    },
+    blastAoe: function () {
+        this.blast = game.add.sprite(this.exist.x, this.exist.y, "aoeBlast");
+        this.blast.anchor.setTo(.5, .5);
+        this.blast.scale.setTo(1.5, 1.5);
+        this.blast.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+        this.exist.kill();
+        this.blast.animations.play("explode", 8, false);
+    }  
+};
