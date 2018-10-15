@@ -1,4 +1,4 @@
-var demo = {}, skel1, skelCollide;
+var demo = {}, skel1, skelCollide, numOfItemsInInv = 0;
 var centerX = 533, centerY = 250;
 var platforms1, traps1;
 
@@ -83,6 +83,7 @@ demo.state1.prototype = {
         game.load.spritesheet("healthBar", "assets/sprites/healthBar.png", 256, 16);
         game.load.spritesheet("manaBar", "assets/sprites/manaBar.png", 256, 16);
         game.load.spritesheet("barHolder", "assets/sprites/barHolder.png", 32, 96);
+        game.load.image('inventory','assets/sprites/inventory.png',267,55)
     },
     create: function(){
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -113,15 +114,20 @@ demo.state1.prototype = {
         game.physics.enable(door);
             
         // Chest
-        chest = game.add.sprite(2560, 176, "chest");
+        chest = game.add.sprite(2025, 992, "chest");
+        chest.anchor.set(0.5,0.5)
         chest.animations.add("closed", [0], 0, true);
-        chest.animations.add("open", [1], 0, true);    
+        chest.animations.add("open", [1], 0, true);
+        chestClosed = true  
         
         // Set up power and mana bars
         barHolder = game.add.sprite(0, 0, "barHolder");
         healthBar = game.add.sprite(32, 8, "healthBar");
         manaBar = game.add.sprite(32, 72, "manaBar");
         barHolder.fixedToCamera = true; healthBar.fixedToCamera = true; manaBar.fixedToCamera = true;
+        
+        inventory = game.add.sprite(350,15,'inventory')
+        inventory.fixedToCamera = true
         
         // Bevonia set up
         bevonia = game.add.sprite(128, 128, "bevonia");
@@ -167,6 +173,12 @@ demo.state1.prototype = {
         bevoniaStab.animations.play("hide", 0, true);
         game.physics.enable(bevoniaStab);
         
+        //health potion placed in chest
+        healthPotion1 = game.add.sprite(0, 0,'healthPotion')
+        healthPotion1.anchor.set(0.5,0.5)
+        healthPotion1.scale.set(0.65,0.65)
+        game.physics.enable(healthPotion1)
+        healthPotion1.kill()
         
         // Set up powerups
         // Sword
@@ -229,29 +241,70 @@ demo.state1.prototype = {
     update: function () {
         game.physics.arcade.collide(bevonia, platforms1);
         skelCollide = game.physics.arcade.collide(skel1,platforms1);
+        game.physics.arcade.collide(healthPotion1,platforms1)
         
         // Powerup interactions
         // Sword
         if (game.physics.arcade.overlap(bevonia, sword)) {
+            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
             sword.kill();
-            bevonia.has_sword = true;
+            bevonia.has_sword = true;            
+            tempSword = game.add.sprite((378 + numOfItemsInInv*(35)),42,'sword')
+            tempSword.anchor.setTo(0.5,0.5)
+            tempSword.fixedToCamera = true
+            tempSword.scale.setTo(0.5,0.5)
+            numOfItemsInInv += 1
+            }
         }
         if (game.physics.arcade.overlap(bevonia, armor)) {
+            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
             armor.kill();
             bevonia.armored = "ARMORED";
+<<<<<<< HEAD
             bevonia.damageFactor = .125;
+=======
+            tempArmor = game.add.sprite((378 + numOfItemsInInv*(35)),42,'helmet')
+            tempArmor.anchor.setTo(0.5,0.5)
+            tempArmor.fixedToCamera = true
+//            tempArmor.scale.setTo(0.5,0.5)
+            numOfItemsInInv += 1;
+            }
+>>>>>>> bb8b51d3c76a391b77acebd9ffa5c8b345896bde
         }
         if (game.physics.arcade.overlap(bevonia, key)) {
+            if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
             key.kill();
             bevonia.has_key = true;
+            tempKey = game.add.sprite((378 + numOfItemsInInv*(35)),42,'key')
+            tempKey.anchor.setTo(0.5,0.5)
+            tempKey.fixedToCamera = true
+//            tempKey.scale.setTo(0.5,0.5)
+            numOfItemsInInv += 1
+            }
         }
-        if (game.physics.arcade.overlap(bevonia, chest) && bevonia.has_key) {
+        if (game.physics.arcade.overlap(bevonia, chest) && bevonia.has_key && chestClosed) {
+            chestClosed = false
             chest.animations.play("open", 0, true);
+            healthPotion1.reset(2025,975)
+            healthPotion1.body.gravity.y = 1000
+            healthPotion1.body.velocity.y = -250
         }
         if (game.physics.arcade.overlap(bevonia, door)) {
             game.state.start("state1");
+            numOfItemsInInv = 0
         }
-        
+//      pick up health potion
+        if(game.physics.arcade.overlap(bevonia, healthPotion1)){
+            if(game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+                healthPotion1.kill(); 
+                tempPotion = game.add.sprite((378 + numOfItemsInInv*(35)),42,'healthPotion')
+                tempPotion.anchor.setTo(0.5,0.5)
+                tempPotion.scale.setTo(0.6,0.6)
+                tempPotion.fixedToCamera = true
+                numOfItemsInInv += 1}
+        }
+            
+            
         // Bevonia movement
         bevoFace = game.input.keyboard.isDown(Phaser.Keyboard.D) - game.input.keyboard.isDown(Phaser.Keyboard.A);
         grounded = bevonia.body.blocked.down;
@@ -287,6 +340,7 @@ demo.state1.prototype = {
         // Dying
         if (game.physics.arcade.collide(bevonia, traps1) || bevonia.body.y > 1344) {
             game.state.start(game.state.current);
+            numOfItemsInInv = 0
         }
         // Melee attack
         bevoniaStab.body.x = bevonia.body.x;
@@ -402,6 +456,13 @@ demo.state1.prototype = {
         
         if (bevonia.health == 0) {
             game.state.start(game.state.current);
+            numOfItemsInInv = 0
+            console.log('test')
+        }
+        else if(game.physics.arcade.collide(bevoniaStab, enemies) && !bevonia.stabbing){
+            game.state.start(game.state.current);
+            numOfItemsInInv = 0
+            console.log('test')
         }
         
 //        if(checkOverlap(bevonia,enemy1.bat)){
