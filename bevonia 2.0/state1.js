@@ -40,7 +40,7 @@ enemySpider = function(index,game,x,y,tweenX,tweenY){
         this.spider.body.immovable = true;
         this.spider.body.collideWorldBounds = true;
         
-        this.skelTween = game.add.tween(this.spider).to({
+        this.spiderTween = game.add.tween(this.spider).to({
             y: this.spider.y + tweenY
         }, 2000, 'Linear', true, 0,100,true);
 }
@@ -104,6 +104,11 @@ demo.state1.prototype = {
         
         door = game.add.sprite(2592, 1088, "door");
         game.physics.enable(door);
+            
+        // Chest
+        chest = game.add.sprite(2560, 176, "chest");
+        chest.animations.add("closed", [0], 0, true);
+        chest.animations.add("open", [1], 0, true);    
         
         // Set up power and mana bars
         barHolder = game.add.sprite(0, 0, "barHolder");
@@ -164,10 +169,7 @@ demo.state1.prototype = {
         key = game.add.sprite(1977, 1260, "key");
         key.animations.add("spin", [0,1, 2, 3, 4, 5, 6, 7]);
         key.animations.play("spin", 4, true);        
-        // Chest
-        chest = game.add.sprite(2560, 176, "chest");
-        chest.animations.add("closed", [0], 0, true);
-        chest.animations.add("open", [1], 0, true);
+        
         
         powerups = [sword, armor, key, chest];
         game.physics.enable(powerups);
