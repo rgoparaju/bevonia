@@ -284,13 +284,17 @@ demo.state1.prototype = {
         bevoniaStab.body.y = bevonia.body.y;
         if (bevonia.has_sword && game.input.keyboard.isDown(Phaser.Keyboard.L) && (bevonia.stabTimer < game.time.now)) {
             bevoniaStab.scale.setTo(1, 1);
-            bevonia.stabTimer = game.time.now + 250;
+            bevonia.stabTimer = game.time.now + 300;
             bevoniaStab.scale.x = bevonia.looking;
             bevonia.stabbing = true;
         }
         else if (bevonia.stabTimer > game.time.now) {
             bevonia.animations.play("hide", 1, false);
             bevoniaStab.animations.play(bevonia.armored + "stab", 18, false);
+            if (grounded) {
+                console.log("grounded");
+                bevonia.body.velocity.x = 0;
+            }
         }
         else {
             bevoniaStab.animations.play("hide", 1, true);
