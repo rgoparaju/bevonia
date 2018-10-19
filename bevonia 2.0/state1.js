@@ -57,6 +57,12 @@ demo.state1.prototype = {
         game.load.image('bg1', 'assets/sprites/test background v5.png', 2624, 1344);
         game.load.image("door", "assets/sprites/door.png", 32, 96);
         
+        // Hints
+        game.load.image("hint", "assets/sprites/hint.png");
+        game.load.image("K", "assets/sprites/K.png");
+        game.load.image("E", "assets/sprites/E.png");
+        game.load.image("L", "assets/sprites/L.png");
+        
         // Bevonia
         game.load.spritesheet("bevonia", "assets/sprites/Bevonia.png", 32, 48);
         game.load.spritesheet("armoredBevonia", "assets/sprites/bevoniaArmor.png", 32, 48);
@@ -72,6 +78,7 @@ demo.state1.prototype = {
         game.load.spritesheet("key", "assets/sprites/key.png", 32, 32);
         game.load.spritesheet("sword", "assets/sprites/sword.png", 32, 64);   
         game.load.spritesheet("chest", "assets/sprites/chest.png", 64, 64);
+        game.load.image("healthPotion", "assets/sprites/health potion.png");
         
         // Spells
         game.load.spritesheet('aoeProjectile', "assets/sprites/AoE Projectile.png", 32, 32);
@@ -128,6 +135,12 @@ demo.state1.prototype = {
         
         inventory = game.add.sprite(350,15,'inventory')
         inventory.fixedToCamera = true
+        
+        // Hints
+        game.add.sprite(352, 150, "hint");
+        game.add.sprite(421, 510, "E");
+        game.add.sprite(241, 510, "L");
+        game.add.sprite(128, 752, "K");
         
         // Bevonia set up
         bevonia = game.add.sprite(128, 128, "bevonia");
@@ -212,7 +225,7 @@ demo.state1.prototype = {
         
         //first bat
         bat1 = game.add.sprite(1070, 377, 'bat');
-        bat1.animations.add('flying',[1,2,3],0,true);
+        bat1.animations.add('flying',[1,2,3,4],0,true);
         bat1.anchor.set(0.5,0.5);
         bat1.animations.play('flying',4,true);
         game.physics.enable(bat1);
@@ -260,16 +273,16 @@ demo.state1.prototype = {
             if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
             armor.kill();
             bevonia.armored = "ARMORED";
-<<<<<<< HEAD
+
             bevonia.damageFactor = .125;
-=======
+
             tempArmor = game.add.sprite((378 + numOfItemsInInv*(35)),42,'helmet')
             tempArmor.anchor.setTo(0.5,0.5)
             tempArmor.fixedToCamera = true
 //            tempArmor.scale.setTo(0.5,0.5)
             numOfItemsInInv += 1;
             }
->>>>>>> bb8b51d3c76a391b77acebd9ffa5c8b345896bde
+
         }
         if (game.physics.arcade.overlap(bevonia, key)) {
             if(game.input.keyboard.isDown(Phaser.Keyboard.E)){
@@ -382,6 +395,7 @@ demo.state1.prototype = {
         if(aoeExists) {     
             if (game.physics.arcade.collide(aoe, enemies) || game.physics.arcade.collide(aoe, platforms1)) {
                 var boom = game.add.sprite(aoe.x, aoe.y, "aoeBlast");
+                game.camera.shake(.02, 300);
                 game.physics.enable(boom);
                 boom.anchor.setTo(.5, .5);
                 boom.scale.setTo(1.5, 1.5);
