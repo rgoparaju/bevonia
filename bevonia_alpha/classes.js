@@ -90,6 +90,12 @@ demo.classes.prototype = {
             this.self.scale.x = scaleX;
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
+            if (this.direction == "x") {
+                this.self.body.velocity.x = -velocity;
+            }
+            else {
+                this.self.body.velocity.y = -velocity;
+            }
             
             // Animate
             this.self.animations.add("crawl", [0, 1, 2]);
@@ -100,21 +106,23 @@ demo.classes.prototype = {
             this.patrol = function () {
                 if (this.direction == "x") {
                     if (this.self.body.x > this.upBound) {
+                        console.log("greater");
                         this.self.scale.x = 1;
                         this.self.body.velocity.x = -velocity;
                     }
                     else if (this.self.body.x < this.lowBound) {
+                        console.log("lesser");
                         this.self.scale.x = -1;
                         this.self.body.velocity.x = velocity;
                     }
                 }
                 else {
                     if (this.self.body.y > this.upBound) {
-                        this.self.scale.y = -1;
+                        this.self.scale.y = 1;
                         this.self.body.velocity.y = -velocity;
                     }
-                    else if (this.self.bodyyx < this.lowBound) {
-                        this.self.scale.y = 1;
+                    else if (this.self.body.y < this.lowBound) {
+                        this.self.scale.y = -1;
                         this.self.body.velocity.y = velocity;
                     }
                 }
@@ -244,13 +252,14 @@ demo.classes.prototype = {
                 dy *= dy;
                 var dx = this.self.body.x - this.player.self.body.x;
                 dx *= dx;
-                
+                this.text = "";
                 if (dx + dy < 16384) {
                     this.self.animations.play("appear", 9, true);
-                    // display text
+                    this.text = game.add.text(290, 4, this.message);
                 }
                 else {
                     this.self.animations.play("hide", 1, true);
+                    
                 }
             }
         }
@@ -305,8 +314,14 @@ demo.classes.prototype = {
             this.mana = 1;
             
             // Action booleans
+            this.vulnerable = true;
+            
             // Possession booleans
-            // Timers WE CAN DO BETTER
+            // Timers
+            this.stabTimer = 0;
+            this.stabPeriod = 1000;
+            this.invincibilityTimer = 0;
+            this.invincibilityPeriod = 2000;
             //
             //
             //
@@ -335,7 +350,7 @@ demo.classes.prototype = {
             // BEVONIA STAB SPRITE STUFF
             //
             
-            // MOVEMENT
+        // MOVEMENT
             // Running
             this.run = function () {
                 if (game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.A) || !game.input.keyboard.isDown(Phaser.Keyboard.D) && !game.input.keyboard.isDown(Phaser.Keyboard.A)){
@@ -364,11 +379,10 @@ demo.classes.prototype = {
                 }
                 else {
                     this.self.animations.play(this.armored + "jump", 1, true);
-                    if (this.self.body.velocity.y > 1200) {
-                        this.self.body.velocity.y = 1200;
+                    if (this.self.body.velocity.y > 1000) {
+                        this.self.body.velocity.y = 1000;
                     }
                 }
-                
             }
             
             // Sword swinging
@@ -380,18 +394,19 @@ demo.classes.prototype = {
             
             // Dying
             
-            // INTERACTIONS
-            // NOT WORKING PLEASE REVIEW
-            this.interactWith = function (item) {
-                item.interactWith(this.self);
+        // INTERACTIONS
+            // Enemy interaction
+            this.manageVulnerability = function () {
+                if (!this.vulnerable && game.time.now > this.invincibilityTimer) {
+                    this.vulnerable = true;
+                }
             }
-            
-            
-            // Enemies
-            
-            
-            
-            
+            this.die = function () {
+                if (this.health <= 0 || this.self.body.y > 1320) {
+                    game.state.start(game.state.current);
+                }
+            }
+
             console.log("princess successfully created");
         }
             

@@ -27,14 +27,12 @@ demo.state1.prototype = {
         inventory = new Inventory(866, 0);
         
         // Tutorial ghost test
-        ghost1 = new tutorialGhost (360, 128, bevonia, "hello world")
+        //ghost1 = new tutorialGhost (360, 128, bevonia, "Press A to go left, D to go right, and W to \n jump");
         
         
         
         // Place enemies
-        //test = new Skeleton(96, 96, 96, 200);
-        //test2 = new Bat(128, 128, bevonia);
-        test3 = new Spider(300, 128, 105, 135, "y", 1);
+        test3 = new Spider(300, 128, 32, 310, "y", 1);
         
         
         
@@ -57,22 +55,29 @@ demo.state1.prototype = {
         
         bevonia.run();
         bevonia.jump();
+        bevonia.die();
+        bevonia.manageVulnerability();
         
-        ghost1.manifest();
-        
-//        if(test2.watch()) {
-//            test2.attack();
-//        }
+        //ghost1.manifest();
         
         test3.patrol();
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
             var i; for (i = 0; i < items1.length; i++) {
-                if (game.physics.arcade.overlap(bevonia.this, items1[i])) {
+                if (game.physics.arcade.overlap(bevonia.this, items1[i].self)) {
                     bevonia.interactWith(items1[i]);
                 }
             
             }
+        }
+        
+        if (game.physics.arcade.overlap(bevonia.self, test3.self) && bevonia.vulnerable) {
+            bevonia.health -= .25;
+            bevonia.vulnerable = false;
+            bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
+        }
+        if (game.physics.arcade.collide(bevonia.self, traps1)) {
+            bevonia.health -= 1;
         }
         
         
