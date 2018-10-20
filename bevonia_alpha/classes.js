@@ -27,7 +27,6 @@ demo.classes.prototype = {
         // Continues attacking until dead
         Bat = function (x, y, player) {
             // Technical variables
-            var radiusSquared = 655;
             var velocity = 212;
             this.player = player;
             
@@ -43,32 +42,83 @@ demo.classes.prototype = {
             this.self.animations.play("sleep", 0, true);
             
             // Behavior
-            // CURRENTLY THIS IS NOT EFFECTIVE, I'M MOVING ON FOR NOW BUT IT NEEDS TO BE ADDRESSED ONCE BEVONIA EXISTS
+            // BEHAVIOR STILL A LITTLE BUGGY PLEASE HELP
+            // Checks for player within 4 tile (128px) radius, returns true if satisfied
             this.watch = function () {
-                if ((this.player.self.body.x * this.player.self.body.x) + (this.player.self.body.y * this.player.self.body.y) < radiusSquared) {
+                var dy = this.self.body.y - this.player.self.body.y;
+                dy *= dy;
+                var dx = this.self.body.x - this.player.self.body.x;
+                dx *= dx;
+                
+                var condition = dx + dy < 16384
+                if (condition) {
                     this.self.animations.play("fly", 12, true);
-                    this.attack();
                 }
+                return condition;
             }
-            // Finds vector pointing from bat to player
+
+            // Finds unit vector from bat to player, scaled vector by bat velocity
+            // Bat doesn't rest until it is dead
             this.attack = function () {
-                this.self.body.velocity.x = velocity * ((this.player.self.body.x - this.self.body.x) / (this.player.self.body.x - this.self.body.x));
-                this.self.body.velocity.y = velocity * ((this.player.self.body.y - this.self.body.y) / (this.player.self.body.y - this.self.body.y));
+                var xComp = this.player.self.body.x - this.self.body.x;
+                var yComp = this.player.self.body.y - this.self.body.y;
+                
+                var norm = Math.sqrt(xComp * xComp + yComp * yComp);
+                
+                xComp /= norm;
+                yComp /= norm;
+                
+                console.log([xComp, yComp]);
+                
+                this.self.body.velocity.x = velocity * xComp;
+                this.self.body.velocity.y = velocity * yComp;
             }     
         };
         
         // Patrols vertical or horizonal interval
-        Spider = function (x, y, lowBound, upBound, direction) {
+        // directionStr is allowed to be "x" or "y"
+        Spider = function (x, y, lowBound, upBound, directionStr, scaleX) {
             // Technical variables
-            this.direction = direction;
+            this.lowBound = lowBound;
+            this.upBound = upBound;
+            this.direction = directionStr;
+            var velocity = 200;
             
             // Setup
-            this.self = game.add.sprite(x, y, "spider");
+            this.self = game.add.sprite(x, y, "spider_" + this.direction);
             this.self.anchor.setTo(0.5, 0.5);
+            this.self.scale.x = scaleX;
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
             
             // Animate
+            this.self.animations.add("crawl", [0, 1, 2]);
+            this.self.animations.play("crawl", 7, true);
+            
+            // Behavior
+            // BUGGY
+            this.patrol = function () {
+                if (this.direction == "x") {
+                    if (this.self.body.x > this.upBound) {
+                        this.self.scale.x = 1;
+                        this.self.body.velocity.x = -velocity;
+                    }
+                    else if (this.self.body.x < this.lowBound) {
+                        this.self.scale.x = -1;
+                        this.self.body.velocity.x = velocity;
+                    }
+                }
+                else {
+                    if (this.self.body.y > this.upBound) {
+                        this.self.scale.y = -1;
+                        this.self.body.velocity.y = -velocity;
+                    }
+                    else if (this.self.bodyyx < this.lowBound) {
+                        this.self.scale.y = 1;
+                        this.self.body.velocity.y = velocity;
+                    }
+                }
+            }
         };
         
         // Patrols horizontal interval
@@ -149,7 +199,7 @@ demo.classes.prototype = {
             this.self.animations.play("spin", 5, true);
         }
         
-        Chest = function (x, y, player) {
+        Chest = function (x, y, contentsArray, player) {
             // Setup
             this.self = game.add.sprite(x, y, "chest");
             this.self.anchor.setTo(0.5, 0.5);
@@ -171,18 +221,89 @@ demo.classes.prototype = {
         console.log("items defined");
         
         
+        ////////////
+        //TUTORIAL//
+        ////////////
+        tutorialGhost = function (x, y, player, messageStr) {
+            // Technical variables
+            this.player = player;
+            this.message = messageStr;
+            
+            // Setup
+            this.self = game.add.sprite(x, y, "ghost");
+            game.physics.enable(this.self);
+            
+            // Animate
+            this.self.animations.add("hide", [1]);
+            this.self.animations.add("appear", [0, 1, 2, 3]);
+            this.self.animations.play("hide", 1, true);
+            
+            // Check for player within 4 tile (128px) radius and responds accordingly
+            this.manifest = function () {
+                var dy = this.self.body.y - this.player.self.body.y;
+                dy *= dy;
+                var dx = this.self.body.x - this.player.self.body.x;
+                dx *= dx;
+                
+                if (dx + dy < 16384) {
+                    this.self.animations.play("appear", 9, true);
+                    // display text
+                }
+                else {
+                    this.self.animations.play("hide", 1, true);
+                }
+            }
+        }
+        console.log("haunting commenced");
+        
         
         ///////////
         //BEVONIA//
         ///////////
+        Bars = function (player) {
+            // Technical variables
+            this.player = player;
+            
+            // Setup
+            this.holder = game.add.sprite(0, 0 , "barHolder");
+            this.healthBar = game.add.sprite(32, 8, "healthBar");
+            this.manaBar = game.add.sprite(32, 72, "manaBar");
+            
+            this.holder.fixedToCamera = true;
+            this.healthBar.fixedToCamera = true;
+            this.manaBar.fixedToCamera = true;
+            
+            // Keeps track of, display's players health and mana
+            this.displayStats = function () {
+                this.healthBar.scale.x = this.player.health;
+                this.manaBar.scale.x = this.player.mana;
+            }
+        }
+        
+        Inventory = function (player) {
+            // Technical variables
+            this.player = player;
+            
+            // Setup
+            this.self = game.add.sprite(866, 0, "inventory");
+            this.self.fixedToCamera = true;
+        }
+        
+        
+        
         Bevonia = function (x, y) {
-            // TECHNICAL VARIABLES
+        // TECHNICAL VARIABLES
+            // Physics
             var speed = 300;
             var weight = 1200;
             
+            // Strings
             this.armored = "";
             
             // Status bars
+            this.health = 1;
+            this.mana = 1;
+            
             // Action booleans
             // Possession booleans
             // Timers WE CAN DO BETTER
@@ -191,7 +312,7 @@ demo.classes.prototype = {
             //
             
             
-            // SETUP
+        // SETUP
             // Spawn
             this.self = game.add.sprite(x, y, "bevonia");
             this.self.anchor.setTo(0.5, 0.5);
@@ -267,6 +388,8 @@ demo.classes.prototype = {
             
             
             // Enemies
+            
+            
             
             
             console.log("princess successfully created");

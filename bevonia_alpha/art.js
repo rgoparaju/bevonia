@@ -40,10 +40,14 @@ demo.art.prototype = {
         game.load.spritesheet("bevonia", "assets/sprites/Bevonia.png", 32, 48);
         game.load.spritesheet("stabBevonia", "assets/sprites/bevoThrust.png", 48, 48); 
         
+    // GHOST
+        game.load.spritesheet("ghost", "assets/sprites/ghost2.png", 32, 64);
+        
         
     // ENEMIES
         game.load.spritesheet("bat", "assets/sprites/bat.png", 32, 32);
-        game.load.spritesheet("spider", "assets/sprites/spider.png", 48, 48);
+        game.load.spritesheet("spider_x", "assets/sprites/spiderX.png", 48, 48);
+        game.load.spritesheet("spider_y", "assets/sprites/spiderY.png", 48, 48);
         game.load.spritesheet("skeleton", "assets/sprites/skeleton.png", 32, 64);
         
         

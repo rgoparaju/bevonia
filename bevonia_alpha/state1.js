@@ -21,14 +21,20 @@ demo.state1.prototype = {
         map1.setCollision(1, true, "platforms");
         map1.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
         
-        // Create new Bevonia
+        // Create new Bevonia and HUD
         bevonia = new Bevonia(128, 128);
+        bars = new Bars(bevonia);
+        inventory = new Inventory(866, 0);
+        
+        // Tutorial ghost test
+        ghost1 = new tutorialGhost (360, 128, bevonia, "hello world")
         
         
         
         // Place enemies
         //test = new Skeleton(96, 96, 96, 200);
-        test2 = new Bat(300, 300, test);
+        //test2 = new Bat(128, 128, bevonia);
+        test3 = new Spider(300, 128, 105, 135, "y", 1);
         
         
         
@@ -45,9 +51,20 @@ demo.state1.prototype = {
     },
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms1);
+        //game.physics.arcade.collide(test2.self, platforms1);
+        
+        bars.displayStats();
         
         bevonia.run();
         bevonia.jump();
+        
+        ghost1.manifest();
+        
+//        if(test2.watch()) {
+//            test2.attack();
+//        }
+        
+        test3.patrol();
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
             var i; for (i = 0; i < items1.length; i++) {
