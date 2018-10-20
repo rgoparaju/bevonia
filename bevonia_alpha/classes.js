@@ -141,10 +141,10 @@ demo.classes.prototype = {
             // MOVEMENT
             // Running
             this.move = function () {
-                if (game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.D) || !(game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.D)){
+                if (game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.A) || !(game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.D))){
                     this.self.body.velocity.x = 0;
                     this.self.animations.play(this.armored + "idle", 0, true);
-                
+                }
                 else if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
                     this.self.body.velocity.x = -speed;
                     this.self.animations.play(this.armored + 'run', 8, true);
