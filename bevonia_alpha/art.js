@@ -76,7 +76,7 @@ demo.art.prototype = {
         // Inventory
         game.load.image('inventory', 'assets/sprites/inventory.png', 267, 55);    
         
-        console.log("all assets preloaded");
+        console.log("visual assets preloaded");
         
     
     // AUDIO
@@ -88,7 +88,7 @@ demo.art.prototype = {
         // Music
         
         
-        
+        console.log("audio assets preloaded");
         
     },
     create: function() {
