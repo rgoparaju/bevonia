@@ -12,15 +12,19 @@
 //1. Enemies and Bevonia have an attribute self which is its body attribute's parent; be careful of this when directing enemies to respond to Bevonia's position
 
 
-var Bevonia;
 var Bat, Skeleton, Spider;
+var A;
+var Bevonia;
 // object variables
 
 demo.classes = function () {};
 demo.classes.prototype = {
     create: function () {
-        // Attacks when player proximity deceeds some constant
-        // DOESN'T STOP ATTACKING UNTIL DEAD
+    ///////////
+    //ENEMIES//
+    ///////////
+        // Attacks when player within certain radius
+        // Continues attacking until dead
         Bat = function (x, y, player) {
             // Technical variables
             var radiusSquared = 655;
@@ -50,15 +54,24 @@ demo.classes.prototype = {
             this.attack = function () {
                 this.self.body.velocity.x = velocity * ((this.player.self.body.x - this.self.body.x) / (this.player.self.body.x - this.self.body.x));
                 this.self.body.velocity.y = velocity * ((this.player.self.body.y - this.self.body.y) / (this.player.self.body.y - this.self.body.y));
-            }
+            }     
+        };
+        
+        // Patrols vertical or horizonal interval
+        Spider = function (x, y, lowBound, upBound, direction) {
+            // Technical variables
+            this.direction = direction;
             
+            // Setup
+            this.self = game.add.sprite(x, y, "spider");
+            this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.self.body.collideWorldBounds = true;
+            
+            // Animate
         };
-        // Can patrol any interval over any flat surface
-        Spider = function () {
-          
-        };
+        
         // Patrols horizontal interval
-        // WILL HAVE ATTRIBUTE AGGRO
         Skeleton = function (x, y, lowBound, upBound) {
             // Technical variables
             var velocity = 300;
@@ -89,16 +102,79 @@ demo.classes.prototype = {
             }
         };
         console.log("enemies defined");
+
         
+        /////////
+        //ITEMS//
+        /////////
+        // Item get argument player so interaction functions can get put in item
+        // classes insead of Bevonia class; reduces clutter
+        Sword = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "sword");
+            this.self.anchor.setTo(0.5, 0.5);
+            
+            // Animate
+            this.self.animations.add("spin", [0, 1]);
+            this.self.animations.play("spin", 5, true);
+            
+            // Interaction with player
+            this.interactWith = function (player) {
+                player.hasSword = true;
+                game.kill(this.self);
+            }
+        }
         
+        Armor = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "helmet");
+            this.self.anchor.setTo(0.5, 0.5);
+            
+            this.self.animations.add("spin", [0, 1, 2, 3]);
+            this.self.animations.play("spin", 5, true);
+        }
         
-        //
-        //
-        // ALL THE ITEM CLASSES
-        //
-        //
+        Potion = function (x, y, typeStr, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, typeStr + "Potion");
+            this.self.anchor.setTo(0.5, 0.5);
+        }
+        
+        Key = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "key");
+            this.self.anchor.setTo(0.5, 0.5);
+            
+            this.self.animations.add("spin", [0, 1, 2, 3, 4, 5, 6, 7]);
+            this.self.animations.play("spin", 5, true);
+        }
+        
+        Chest = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "chest");
+            this.self.anchor.setTo(0.5, 0.5);
+            
+            this.self.animations.add("open", [1]);
+            }
+        
+        Scroll = function (x, y, typeStr, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, typeStr + "scroll");
+            this.self.anchor.setTo(0.5, 0.5);
+        }
+        
+        Door = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "door");
+            this.self.anchor.setTo(0.5, 0.5);
+        }
         console.log("items defined");
         
+        
+        
+        ///////////
+        //BEVONIA//
+        ///////////
         Bevonia = function (x, y) {
             // TECHNICAL VARIABLES
             var speed = 300;
@@ -120,7 +196,7 @@ demo.classes.prototype = {
             this.self = game.add.sprite(x, y, "bevonia");
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
-            //this.self.body.gravity.y = weight;
+            this.self.body.gravity.y = weight;
             
             // Camera
             game.camera.follow(this.self);
@@ -135,13 +211,13 @@ demo.classes.prototype = {
             this.self.animations.add("hide", [0], 0, true);
             
             //
-            // BEVONIA STAB STUFF
+            // BEVONIA STAB SPRITE STUFF
             //
             
             // MOVEMENT
             // Running
-            this.move = function () {
-                if (game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.A) || !(game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.D))){
+            this.run = function () {
+                if (game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.A) || !game.input.keyboard.isDown(Phaser.Keyboard.D) && !game.input.keyboard.isDown(Phaser.Keyboard.A)){
                     this.self.body.velocity.x = 0;
                     this.self.animations.play(this.armored + "idle", 0, true);
                 }
@@ -157,13 +233,25 @@ demo.classes.prototype = {
                 }
             }
             
-            
-            
             // Jumping
-            
+            this.jump = function () {
+                this.grounded = this.self.body.blocked.down;
+                if (this.grounded) { 
+                    if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+                        this.self.body.velocity.y -= 650;
+                    }
+                }
+                else {
+                    this.self.animations.play(this.armored + "jump", 1, true);
+                    if (this.self.body.velocity.y > 1200) {
+                        this.self.body.velocity.y = 1200;
+                    }
+                }
+                
+            }
             
             // Sword swinging
-            // NEED BEVONIA STAB STUFF FIRST
+            // NEED BEVONIA STAB SPRITE STUFF FIRST
             
             
             // Spell casting
@@ -172,7 +260,10 @@ demo.classes.prototype = {
             // Dying
             
             // INTERACTIONS
-            // Items
+            // NOT WORKING PLEASE REVIEW
+            this.interactWith = function (item) {
+                item.interactWith(this.self);
+            }
             
             
             // Enemies
