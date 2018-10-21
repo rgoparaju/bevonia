@@ -2,11 +2,13 @@ demo.title = function (game) {};
 demo.title.prototype = {
     create:function(game){
         
-        this.createButton(game,"Play",game.world.centerX,game.world.centerY+32,300,100,function(){
+        titlescreenBackground = game.add.sprite(100,0,'titleBackground');
+        
+        this.createButton(game,"Play",game.world.centerX,game.world.centerY+32,200,50,function(){
             this.state.start('state1');
         });
         
-        this.createButton(game,"Tutorial",game.world.centerX,game.world.centerY+152,300,100,function(){
+        this.createButton(game,"Tutorial",game.world.centerX,game.world.centerY+152,200,50,function(){
             console.log("Tutorial");
         });
         

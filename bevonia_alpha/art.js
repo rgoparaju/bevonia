@@ -11,7 +11,8 @@ demo.art.prototype = {
         
         //Title Screen
         game.load.image("titlescreen", "assets/sprites/titlescreen.png");
-        game.load.image("button", "assets/sprites/button.png")
+        game.load.image("button", "assets/sprites/button.png");
+        game.load.image('titleBackground', 'assets/tilesets_backgrounds/titleBackground.png');
         // Tutorial 
         //tutorial tilemap
         //tutorial tilesets
