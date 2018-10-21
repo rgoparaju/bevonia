@@ -12,10 +12,9 @@
 //1. Enemies and Bevonia have an attribute self which is its body attribute's parent; be careful of this when directing enemies to respond to Bevonia's position
 
 
+// Object variables
 var Bat, Skeleton, Spider;
-var A;
 var Bevonia;
-// object variables
 
 demo.classes = function () {};
 demo.classes.prototype = {
@@ -165,7 +164,7 @@ demo.classes.prototype = {
         /////////
         //ITEMS//
         /////////
-        // Item get argument player so interaction functions can get put in item
+        // Items get argument player so interaction functions can get put in item
         // classes insead of Bevonia class; reduces clutter
         Sword = function (x, y, player) {
             // Setup
