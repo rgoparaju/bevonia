@@ -8,6 +8,10 @@ demo.art = function () {};
 demo.art.prototype = {
     preload: function () {
     // ENVIRONMENT (TILEMAPS, TILESETS, BACKGROUNDS)
+        
+        //Title Screen
+        game.load.image("titlescreen", "assets/sprites/titlescreen.png");
+        game.load.image("button", "assets/sprites/button.png")
         // Tutorial 
         //tutorial tilemap
         //tutorial tilesets
