@@ -92,7 +92,7 @@ demo.art.prototype = {
     
     // AUDIO
         // Sound effects
-         game.load.audio('jump', 'assets/sounds/jump.mp3');
+        game.load.audio('jump', 'assets/sounds/jump.mp3');
         game.load.audio('aoe', 'assets/sounds/aoe.mp3');
         game.load.audio('cast', 'assets/sounds/cast.mp3');
                 

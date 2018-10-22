@@ -416,6 +416,11 @@ demo.classes.prototype = {
             this.aoeTimer = 0;
             this.invincibilityTimer = 0;
             this.invincibilityPeriod = 2000;
+        
+        // AUDIO
+            this.jumpSound = game.sound.add("jump");
+            this.aoeSound = game.sound.add('aoe');
+            this.castSound = game.sound.add('cast');
             
             
         // SETUP
@@ -475,22 +480,16 @@ demo.classes.prototype = {
                     this.aoeTimer = game.time.now + 1000;
                     this.aoeExists = true;
                     this.playerAOE = new aoeProjectile(this);
+                    this.castSound.play();
                     
                     // Physics settings here cause it's not working in the class function
                     this.playerAOE.self.body.velocity.x = this.self.scale.x * 400;
                     this.playerAOE.self.body.velocity.y = -150;
                     this.playerAOE.self.body.gravity.y = 1200;
                     
-                    this.mana -= .2;
-                    
-                    
-                    
+                    this.mana -= .2;   
                 }
-            }
-            
-            
-            
-            
+            } 
             
         // MOVEMENT
             // Running
@@ -524,6 +523,7 @@ demo.classes.prototype = {
                 if (this.grounded) { 
                     if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
                         this.self.body.velocity.y -= 650;
+                        this.jumpSound.play();
                     }
                 }
                 else {

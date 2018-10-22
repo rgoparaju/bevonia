@@ -25,7 +25,7 @@ demo.state1.prototype = {
         //bevonia = new Bevonia(128, 128);
         bevonia = new Bevonia(128, 128);
         bars = new Bars(bevonia);
-        inventory = new Inventory(866, 0);
+        //inventory = new Inventory(866, 0);
         
         // Tutorial ghost test
         //ghost1 = new tutorialGhost (360, 128, bevonia, "Press A to go left, D to go right, and W to \n jump");
@@ -109,6 +109,7 @@ demo.state1.prototype = {
             // Detect a collision with either the environment or enemies
             var k; for(k = 0; k < enemies1.length; k++) {
                 if (game.physics.arcade.overlap(bevonia.playerAOE.self, enemies1[k].self)) {
+                    bevonia.aoeSound.play();
                     xBoom = bevonia.playerAOE.self.body.x;
                     yBoom = bevonia.playerAOE.self.body.y;
                     var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
@@ -124,6 +125,7 @@ demo.state1.prototype = {
                 }
             }
             if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms1, traps1])) {
+                bevonia.aoeSound.play();
                 xBoom = bevonia.playerAOE.self.body.x;
                 yBoom = bevonia.playerAOE.self.body.y;
                 var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");

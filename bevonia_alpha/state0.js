@@ -49,7 +49,7 @@ demo.state0.prototype = {
     // CREATE BEVONIA
         bevonia = new Bevonia(95, 1003);
         bars = new Bars(bevonia);
-        inventory = new Inventory(866, 0);
+        //inventory = new Inventory(866, 0);
         
     // PLACE ITEMS
         //key0 = new Key(493, 917, bevonia);
@@ -119,6 +119,7 @@ demo.state0.prototype = {
             // Detect a collision with either the environment or enemies
             var k; for(k = 0; k < enemies0.length; k++) {
                 if (game.physics.arcade.overlap(bevonia.playerAOE.self, enemies0[k].self)) {
+                    bevonia.aoeSound.play();
                     xBoom = bevonia.playerAOE.self.body.x;
                     yBoom = bevonia.playerAOE.self.body.y;
                     var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
@@ -134,6 +135,7 @@ demo.state0.prototype = {
                 }
             }
             if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms0, traps0])) {
+                bevonia.aoeSound.play();
                 xBoom = bevonia.playerAOE.self.body.x;
                 yBoom = bevonia.playerAOE.self.body.y;
                 var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
