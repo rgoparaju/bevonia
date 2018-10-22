@@ -45,7 +45,6 @@ demo.state0.prototype = {
         
 
     // Chest placed here so Bevonia gets drawn in front of it
-        chest0 = new Chest(597, 416, bevonia);
         
     // CREATE BEVONIA
         bevonia = new Bevonia(32, 463);
@@ -54,7 +53,18 @@ demo.state0.prototype = {
         
     // PLACE ITEMS
         key0 = new Key(493, 917, bevonia);
+        items0 = [key0]
+        door0 = new Door(2560, 64, "state1", bevonia);
+        sword0 = new Key(643, 350, bevonia);
+        
+        chest0Contents = [sword0];
+        
+        chest0 = new Chest(597, 416, chest0Contents, bevonia, items0);
+        items0.push(chest0);
+        
         skeleton0 = new Skeleton(1060, 800, 832, 1248);
+        
+        items0 = [key0, chest0, door0];
         
         
         
@@ -69,14 +79,36 @@ demo.state0.prototype = {
         bevonia.jump();
         bevonia.die();
         bevonia.manageVulnerability();
+        bevonia.stab();
         
         skeleton0.patrol();
         
-        if (bevonia.vulnerable && game.physics.arcade.overlap(bevonia.self, skeleton0.self)) {
-            bevonia.health -= bevonia.damageFactor;
-            bevonia.vulnerable = false;
-            bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;      
+        if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+            if (game.physics.arcade.overlap(bevonia.self, key0.self)) {
+                key0.interactWith();
+            }
         }
+        
+        if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+            var j; for(j = 0; j < items0.length; j++) {
+                if (game.physics.arcade.overlap(bevonia.self, items0[j].self)) {
+                    items0[j].interactWith();
+                    items0.splice(j, 1);
+                }
+            }
+        }
+        
+        if (game.physics.arcade.overlap(bevonia.self, skeleton0.self)) {
+            if (bevonia.stabbing) {
+                skeleton0.self.kill();
+            }
+            else if (bevonia.vulnerable) {
+                bevonia.health -= bevonia.damageFactor;
+                bevonia.vulnerable = false;
+                bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
+            }
+        }
+
         if (game.physics.arcade.collide(bevonia.self, traps0)) {
             bevonia.health -= 1;
         }

@@ -166,64 +166,112 @@ demo.classes.prototype = {
         /////////
         // Items get argument player so interaction functions can get put in item
         // classes insead of Bevonia class; reduces clutter
+        // Extremely buggy
         Sword = function (x, y, player) {
             // Setup
             this.self = game.add.sprite(x, y, "sword");
             this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.player = player;
             
             // Animate
             this.self.animations.add("spin", [0, 1]);
             this.self.animations.play("spin", 5, true);
             
             // Interaction with player
-            this.interactWith = function (player) {
-                player.hasSword = true;
-                game.kill(this.self);
+            this.interactWith = function () {
+                this.player.hasSword = true;
+                this.self.kill();
             }
         }
         
+        // Not yet tested
         Armor = function (x, y, player) {
             // Setup
             this.self = game.add.sprite(x, y, "helmet");
             this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.player = player
             
             this.self.animations.add("spin", [0, 1, 2, 3]);
             this.self.animations.play("spin", 5, true);
+            
+            this.interactWith = function () {
+                this.player.armored = "ARMORED";
+                this.player.damageFactor = .125;
+                this.self.kill();
+            }
         }
         
+        // Haven't tested
         Potion = function (x, y, typeStr, player) {
             // Setup
             this.self = game.add.sprite(x, y, typeStr + "Potion");
             this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
         }
         
+        // Works
         Key = function (x, y, player) {
             // Setup
             this.self = game.add.sprite(x, y, "key");
             this.self.anchor.setTo(0.5, 0.5);
+            this.player = player;
+            game.physics.enable(this.self);
             
             this.self.animations.add("spin", [0, 1, 2, 3, 4, 5, 6, 7]);
             this.self.animations.play("spin", 5, true);
+            
+            this.interactWith = function () {
+                this.player.hasKey = true;
+                this.self.kill();
+            }
         }
         
-        Chest = function (x, y, contentsArray, player) {
+        // Pretty buggy
+        Chest = function (x, y, contentsArray, player, itemsArray) {
             // Setup
             this.self = game.add.sprite(x, y, "chest");
             this.self.anchor.setTo(0.5, 0.5);
+            this.contents = contentsArray;
+            this.player = player;
+            this.closed = true;
+            
+            game.physics.enable(this.self);
             
             this.self.animations.add("open", [1]);
+            
+            this.interactWith = function () {
+                if (this.player.hasKey && this.closed) {
+                    this.self.animations.play("open", 1, false);
+                    this.player.hasKey = false;
+                    var i; for (i = 0; i < this.contents.length; i++) {
+                        this.contents[i].self.body.x = this.self.body.x + i * 48;
+                        this.contents[i].self.body.y = this.self.body.y;
+                    }
+                    this.closed = false;
+                }
             }
+        }
         
+        // Doesn't exist yet
         Scroll = function (x, y, typeStr, player) {
             // Setup
             this.self = game.add.sprite(x, y, typeStr + "scroll");
             this.self.anchor.setTo(0.5, 0.5);
         }
         
-        Door = function (x, y, player) {
+        Door = function (x, y, targetStateStr, player) {
             // Setup
             this.self = game.add.sprite(x, y, "door");
-            this.self.anchor.setTo(0.5, 0.5);
+            this.player = player;
+            this.targetState = targetStateStr;
+            game.physics.enable(this.self);
+            
+            this.interactWith = function () {
+                game.state.start(this.targetState);
+            }
+            
         }
         console.log("items defined");
         
@@ -314,6 +362,7 @@ demo.classes.prototype = {
             
             // Action booleans
             this.vulnerable = true;
+            this.stabbing = false;
             
             // Possession variables
             this.hasSword = false;
@@ -344,15 +393,49 @@ demo.classes.prototype = {
             this.self.animations.add("ARMOREDrun", [9, 10, 11, 12], 0, true);
             this.self.animations.add("ARMOREDjump", [8], 0, true);
             this.self.animations.add("ARMOREDidle", [7], 0, true);
-            this.self.animations.add("hide", [0], 0, true);
+            this.self.animations.add("hide", [6], 0, true);
             
-            //
-            // BEVONIA STAB SPRITE STUFF
-            //
+        // BEVONIA STAB SPRITE STUFF 
+            // Setup
+            this.stabSprite = game.add.sprite(x, y, "stabBevonia");
+            this.stabSprite.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.stabSprite);
+            
+            // Animate
+            this.stabSprite.animations.add("hide",[0], 0, true);
+            this.stabSprite.animations.add("stab",[1, 2, 3], 0, true);
+            this.stabSprite.animations.add("ARMOREDstab",[4, 5, 6], 0, true);
+            this.stabSprite.animations.play("hide", 1, true);
+        
+            // Melee attack
+            this.stab = function () {
+                if (this.hasSword && game.input.keyboard.isDown(Phaser.Keyboard.L) && this.stabTimer < game.time.now) {
+                    this.stabTimer = game.time.now + 310;
+                    this.stabbing = true;
+                }
+                else if (this.stabTimer > game.time.now) {
+                    this.self.animations.play("hide", 1, false);
+                    this.stabSprite.animations.play(this.armored + "stab", 18, false);
+                    if (this.grounded) {
+                        this.self.body.velocity.x = 0;
+                    }
+                }
+                else {
+                    this.stabSprite.animations.play("hide", 1, true);
+                    this.stabbing = false;
+                }
+            }
+            
             
         // MOVEMENT
             // Running
             this.run = function () {
+                // Keep stab sprite with actual sprite
+                this.stabSprite.body.x = this.self.body.x;
+                this.stabSprite.body.y = this.self.body.y;
+                this.stabSprite.scale.x = this.self.scale.x
+                
+                // Actual movement conditions
                 if (game.input.keyboard.isDown(Phaser.Keyboard.D) && game.input.keyboard.isDown(Phaser.Keyboard.A) || !game.input.keyboard.isDown(Phaser.Keyboard.D) && !game.input.keyboard.isDown(Phaser.Keyboard.A)){
                     this.self.body.velocity.x = 0;
                     this.self.animations.play(this.armored + "idle", 0, true);
@@ -363,6 +446,7 @@ demo.classes.prototype = {
                     this.self.scale.x = -1;
                 }
                 else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+                    
                     this.self.body.velocity.x = speed;
                     this.self.animations.play(this.armored + 'run', 8, true);
                     this.self.scale.x = 1;
@@ -386,13 +470,9 @@ demo.classes.prototype = {
             }
             
             // Sword swinging
-            // NEED BEVONIA STAB SPRITE STUFF FIRST
             
             
             // Spell casting
-            
-            
-            // Dying
             
         // INTERACTIONS
             // Enemy interaction

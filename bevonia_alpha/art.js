@@ -63,12 +63,14 @@ demo.art.prototype = {
         game.load.spritesheet("chest", "assets/sprites/chest.png", 64, 64);
         game.load.image("healthPotion", "assets/sprites/health potion.png");
         game.load.image("manaPotion", "assets/sprites/health potion.png");
+        game.load.image("door", "assets/sprites/door.png")
         //aoe spell scroll
         //precise spell scroll
         
         
     // SPELL SPRITES
         // Area of Effect (AoE)
+        game.load.spritesheet("aoeObject", "assets/sprites/aoeObject.png", 16, 16);
         game.load.spritesheet('aoeProjectile', "assets/sprites/AoE Projectile.png", 32, 32);
         game.load.spritesheet("aoeBlast", "assets/sprites/AoE Blast.png", 96, 96);
         

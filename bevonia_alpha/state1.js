@@ -22,7 +22,8 @@ demo.state1.prototype = {
         map1.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
         
         // Create new Bevonia and HUD
-        bevonia = new Bevonia(128, 128);
+        //bevonia = new Bevonia(128, 128);
+        bevonia = new Bevonia(2468, 900);
         bars = new Bars(bevonia);
         inventory = new Inventory(866, 0);
         
@@ -32,29 +33,30 @@ demo.state1.prototype = {
         
         
         // Place enemies
-        skeleton1_1 = new Skeleton(48, 736, 32, 880);
-        bat1_1 = new Bat(1216, 368, bevonia);
-        spider1_1 = new Spider(1120, 76, 64, 240, "y", 1);
-        skeleton1_2 = new Skeleton(1425, 304, 1420, 1430);
+        skeleton1_1 = new Skeleton(48, 896, 48, 736);
+        bat1_1 = new Bat(896, 368, bevonia);
+        spider1_1 = new Spider(1144, 76, 64, 240, "y", 1);
+        skeleton1_2 = new Skeleton(1425, 320, 1312, 1606);
         
         enemies1 = [skeleton1_1, bat1_1, spider1_1, skeleton1_2]
         
         
         
         // Place, store items
+        fixBrick = game.add.sprite(2592, 1989, "platforms");
         sword = new Sword(160, 128, bevonia);
         armor = new Armor(180, 128, bevonia);
         key = new Key (200, 128, bevonia);
+        door1 = new Door (2592, 1089, "title", bevonia);
         
         
-        items1 = [sword];
+        items1 = [sword, armor, key, door1];
         
         
         
     },
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms1);
-        //game.physics.arcade.collide(test2.self, platforms1);
         
         bars.displayStats();
         
@@ -62,6 +64,7 @@ demo.state1.prototype = {
         bevonia.jump();
         bevonia.die();
         bevonia.manageVulnerability();
+        bevonia.stab();
         
         //ghost1.manifest();
         
@@ -71,13 +74,28 @@ demo.state1.prototype = {
         skeleton1_2.patrol();
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+            console.log("E is down okay");
             var i; for (i = 0; i < items1.length; i++) {
-                if (game.physics.arcade.overlap(bevonia.this, items1[i].self)) {
-                    bevonia.interactWith(items1[i]);
+                if (game.physics.arcade.overlap(bevonia.self, items1[i].self)) {
+                    console.log("I detect an overlap!!");
+                    items1[i].interactWith();
                 }
             
             }
         }
+        var j; for (j = 0; j < enemies1.length; j++) {
+            if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self)) {
+                if (bevonia.stabbing) {
+                    enemies1[j].self.kill();
+                }
+                else if (bevonia.vulnerable) {
+                    bevonia.health -= bevonia.damageFactor;
+                    bevonia.vulnerable = false;
+                    bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
+                }
+            }
+        }
+        
         if (bevonia.vulnerable) {
             var j; for (j = 0; j < enemies1.length; j++) {
                 if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self)) {
