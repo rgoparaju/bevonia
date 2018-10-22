@@ -1,4 +1,4 @@
-var demo = {}, skel1, skelCollide, numOfItemsInInv = 0;
+var demo = {}, skel1, skelCollide, numOfItemsInInv = 0, invincibilityTimer = 0, invincibilityPeriod = 2000;
 var centerX = 533, centerY = 250;
 var platforms1, traps1;
 
@@ -510,10 +510,11 @@ demo.state1.prototype = {
         if ((game.physics.arcade.overlap(bevoniaStab, spider1) && bevonia.stabbing) || (game.physics.arcade.overlap(([boom], spider1)))) {
             spider1.kill();
         }
-        else if (game.physics.arcade.collide(bevonia, enemies) && !bevonia.stabbing) {
+        else if (game.physics.arcade.overlap(bevonia, enemies) && !bevonia.stabbing && game.time.now >= invincibilityTimer) {
             bevonia.health -= bevonia.damageFactor;
             bevonia.body.velocity.x = -1 * bevonia.scale.x * 20;
             healthBar.scale.x = bevonia.health;
+            invincibilityTimer = game.time.now + invincibilityPeriod
         }
         
         if (bevonia.health == 0) {
@@ -521,11 +522,11 @@ demo.state1.prototype = {
             numOfItemsInInv = 0
             console.log('test')
         }
-        else if(game.physics.arcade.collide(bevoniaStab, enemies) && !bevonia.stabbing){
-            game.state.start(game.state.current);
-            numOfItemsInInv = 0
-            console.log('test')
-        }
+//        else if(game.physics.arcade.collide(bevoniaStab, enemies) && !bevonia.stabbing){
+//            game.state.start(game.state.current);
+//            numOfItemsInInv = 0
+//            console.log('test')
+//        }
         
 //        if(checkOverlap(bevonia,enemy1.bat)){
 //           bevonia.kill()
