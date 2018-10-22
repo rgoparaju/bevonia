@@ -255,6 +255,7 @@ demo.state1.prototype = {
         //game.physics.arcade.collide(bevonia, platforms1);
         skelCollide = game.physics.arcade.collide(skel1,platforms1);
         game.physics.arcade.collide(healthPotion1,platforms1)
+        game.physics.arcade.collide(bevonia, platforms1)
         
         // Powerup interactions
         // Sword

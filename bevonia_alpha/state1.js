@@ -32,12 +32,12 @@ demo.state1.prototype = {
         
         
         // Place enemies
-        skeleton1 = new Skeleton(48, 736, 32, 880);
-        bat1 = new Bat(1216, 368, bevonia);
-        spider1 = new Spider(1120, 76, 64, 240, "y", 1);
-        skeleton2 = new Skeleton(1425, 304, 1420, 1430);
+        skeleton1_1 = new Skeleton(48, 736, 32, 880);
+        bat1_1 = new Bat(1216, 368, bevonia);
+        spider1_1 = new Spider(1120, 76, 64, 240, "y", 1);
+        skeleton1_2 = new Skeleton(1425, 304, 1420, 1430);
         
-        enemies1 = [skeleton1, bat1, spider1, skeleton2]
+        enemies1 = [skeleton1_1, bat1_1, spider1_1, skeleton1_2]
         
         
         
@@ -70,10 +70,10 @@ demo.state1.prototype = {
         
         //ghost1.manifest();
         
-        skeleton1.patrol();
-        bat1.watch();
-        spider1.patrol();
-        skeleton2.patrol();
+        skeleton1_1.patrol();
+        bat1_1.watch();
+        spider1_1.patrol();
+        skeleton1_2.patrol();
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
             var i; for (i = 0; i < items1.length; i++) {

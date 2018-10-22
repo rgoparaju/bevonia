@@ -14,9 +14,9 @@ demo.art.prototype = {
         game.load.image("button", "assets/sprites/button.png");
         game.load.image('titleBackground', 'assets/tilesets_backgrounds/titleBackground.png');
         // Tutorial 
-        //tutorial tilemap
-        //tutorial tilesets
-        //tutorial backgrounds
+        game.load.tilemap("tutorialLevel", "assets/tilemaps/tutorialLevel.json", null, Phaser.Tilemap.TILED_JSON);
+        game.load.image("floorV4", "assets/tilesets_backgrounds/floorV4.png", 32, 32);
+        game.load.image("deathSpikes", "assets/tilesets_backgrounds/deathSpikes.png")
         
         // Level One
         game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
