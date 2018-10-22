@@ -46,6 +46,11 @@ demo.state1.prototype = {
         armor = new Armor(180, 128, bevonia);
         key = new Key (200, 128, bevonia);
         
+        //SFX
+        jumpSound = game.sound.add("jump");
+        aoeSound = game.sound.add('aoe');
+        castSound = game.sound.add('cast');
+        
         
         items1 = [sword];
         

@@ -90,11 +90,15 @@ demo.art.prototype = {
     
     // AUDIO
         // Sound effects
-        
+         game.load.audio('jump', 'assets/sounds/jump.mp3');
+        game.load.audio('aoe', 'assets/sounds/aoe.mp3');
+        game.load.audio('cast', 'assets/sounds/cast.mp3');
                 
         
         
         // Music
+        game.load.audio('titleMusic', 'assets/sounds/menu.mp3');
+        
         
         
         console.log("audio assets preloaded");
