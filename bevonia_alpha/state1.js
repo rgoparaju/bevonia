@@ -81,7 +81,7 @@ demo.state1.prototype = {
         if (bevonia.vulnerable) {
             var j; for (j = 0; j < enemies1.length; j++) {
                 if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self)) {
-                    bevonia.health -= .25;
+                    bevonia.health -= bevonia.damageFactor;
                     bevonia.vulnerable = false;
                     bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
                 }

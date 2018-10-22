@@ -315,15 +315,16 @@ demo.classes.prototype = {
             // Action booleans
             this.vulnerable = true;
             
-            // Possession booleans
+            // Possession variables
+            this.hasSword = false;
+            this.hasKey = false;
+            this.damageFactor = .25;
+            
             // Timers
             this.stabTimer = 0;
             this.stabPeriod = 1000;
             this.invincibilityTimer = 0;
             this.invincibilityPeriod = 2000;
-            //
-            //
-            //
             
             
         // SETUP
