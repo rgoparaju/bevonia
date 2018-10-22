@@ -1,4 +1,4 @@
-var demo = {}, skel1, skelCollide, numOfItemsInInv = 0, invincibilityTimer = 0, invincibilityPeriod = 2000;
+var demo = {}, skel1, skelCollide, numOfItemsInInv = 0, invincibilityTimer = 0, invincibilityPeriod = 1500;
 var centerX = 533, centerY = 250;
 var platforms1, traps1;
 
