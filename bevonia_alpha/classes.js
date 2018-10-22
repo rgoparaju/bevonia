@@ -414,7 +414,7 @@ demo.classes.prototype = {
         console.log("princess captured");
         
         
-        game.state.start("state1");
+        game.state.start("title");
     
     }
 }
