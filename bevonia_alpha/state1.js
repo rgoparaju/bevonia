@@ -23,7 +23,7 @@ demo.state1.prototype = {
         
         // Create new Bevonia and HUD
         //bevonia = new Bevonia(128, 128);
-        bevonia = new Bevonia(2468, 900);
+        bevonia = new Bevonia(128, 128);
         bars = new Bars(bevonia);
         inventory = new Inventory(866, 0);
         
@@ -44,9 +44,10 @@ demo.state1.prototype = {
         
         // Place, store items
         fixBrick = game.add.sprite(2592, 1989, "platforms");
-        sword = new Sword(160, 128, bevonia);
-        armor = new Armor(180, 128, bevonia);
-        key = new Key (200, 128, bevonia);
+        sword = new Sword(376, 528, bevonia);
+        armor = new Armor(947, 688, bevonia);
+        //key = new Key (200, 128, bevonia);
+        spell = new aoeItem(848, 528, bevonia);
         door1 = new Door (2592, 1089, "title", bevonia);
         
         //SFX
@@ -55,7 +56,7 @@ demo.state1.prototype = {
         castSound = game.sound.add('cast');
         
         
-        items1 = [sword, armor, key, door1];
+        items1 = [sword, armor, spell, door1];
         
         
         
@@ -70,6 +71,7 @@ demo.state1.prototype = {
         bevonia.die();
         bevonia.manageVulnerability();
         bevonia.stab();
+        bevonia.castAOE();
         
         //ghost1.manifest();
         
@@ -101,13 +103,39 @@ demo.state1.prototype = {
             }
         }
         
-        if (bevonia.vulnerable) {
-            var j; for (j = 0; j < enemies1.length; j++) {
-                if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self)) {
-                    bevonia.health -= bevonia.damageFactor;
-                    bevonia.vulnerable = false;
-                    bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
+        // Spell enemy interaction
+        if (bevonia.aoeExists) {
+            console.log(game.physics.arcade.overlap(bevonia.playerAOE.self, enemies1));
+            // Detect a collision with either the environment or enemies
+            var k; for(k = 0; k < enemies1.length; k++) {
+                if (game.physics.arcade.overlap(bevonia.playerAOE.self, enemies1[k].self)) {
+                    xBoom = bevonia.playerAOE.self.body.x;
+                    yBoom = bevonia.playerAOE.self.body.y;
+                    var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
+                    game.camera.shake(.02, 300);
+                    game.physics.enable(boom);
+                    enemies1[k].self.kill();
+                    boom.anchor.setTo(.5, .5);
+                    boom.scale.setTo(1.5, 1.5);
+                    boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                    bevonia.playerAOE.self.kill();
+                    boom.animations.play("explode", 9, false);
+                    bevonia.aoeExists = false;
                 }
+            }
+            if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms1, traps1])) {
+                xBoom = bevonia.playerAOE.self.body.x;
+                yBoom = bevonia.playerAOE.self.body.y;
+                var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
+                game.camera.shake(.02, 300);
+                game.physics.enable(boom);
+                boom.anchor.setTo(.5, .5);
+                boom.scale.setTo(1.5, 1.5);
+                boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                bevonia.playerAOE.self.kill();
+                boom.animations.play("explode", 9, false);
+                bevonia.aoeExists = false;
+                
             }
         }
         

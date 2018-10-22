@@ -10,7 +10,7 @@ demo.title.prototype = {
         });
         
         this.createButton(game,"Tutorial",game.world.centerX,game.world.centerY+152,200,50,function(){
-            console.log("Tutorial");
+            this.state.start("state0")
             backgroundMusic.stop();
         });
         

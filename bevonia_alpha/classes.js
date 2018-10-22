@@ -166,7 +166,7 @@ demo.classes.prototype = {
         /////////
         // Items get argument player so interaction functions can get put in item
         // classes insead of Bevonia class; reduces clutter
-        // Extremely buggy
+        
         Sword = function (x, y, player) {
             // Setup
             this.self = game.add.sprite(x, y, "sword");
@@ -185,7 +185,6 @@ demo.classes.prototype = {
             }
         }
         
-        // Not yet tested
         Armor = function (x, y, player) {
             // Setup
             this.self = game.add.sprite(x, y, "helmet");
@@ -276,6 +275,47 @@ demo.classes.prototype = {
         console.log("items defined");
         
         
+        /////////////////
+        //SPELL OBJECTS//
+        /////////////////
+        aoeItem = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "aoeObject");
+            this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.player = player;
+            
+            // Animate
+            this.self.animations.add("tempt", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+            this.self.animations.play("tempt", 6, true);
+            
+            // Interaction
+            this.interactWith = function () {
+                this.player.hasAOE = true;
+                this.self.kill();
+            }     
+        }
+        
+        aoeProjectile = function (player) {
+            this.player = player;
+            x0 = this.player.self.body.x;
+            y0 = this.player.self.body.y;
+            this.self = game.add.sprite(x0, y0, "aoeProjectile");
+            
+            console.log(this.self)
+            
+            this.self.anchor.set(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.self.animations.add("exist", [1, 2]);
+            this.self.animations.play("exist", 10, true);
+            
+            
+            
+        }
+        
+        
+        
+        
         ////////////
         //TUTORIAL//
         ////////////
@@ -363,15 +403,17 @@ demo.classes.prototype = {
             // Action booleans
             this.vulnerable = true;
             this.stabbing = false;
+            this.aoeExists = false;
             
             // Possession variables
             this.hasSword = false;
             this.hasKey = false;
             this.damageFactor = .25;
+            this.hasAOE = false;
             
             // Timers
             this.stabTimer = 0;
-            this.stabPeriod = 1000;
+            this.aoeTimer = 0;
             this.invincibilityTimer = 0;
             this.invincibilityPeriod = 2000;
             
@@ -426,6 +468,29 @@ demo.classes.prototype = {
                 }
             }
             
+            // Spell casting
+            this.castAOE = function () {
+                if (this.hasAOE && game.input.keyboard.isDown(Phaser.Keyboard.K) && this.aoeTimer < game.time.now && this.mana > 0) {
+                    console.log("IM WORKING HAHA");
+                    this.aoeTimer = game.time.now + 1000;
+                    this.aoeExists = true;
+                    this.playerAOE = new aoeProjectile(this);
+                    
+                    // Physics settings here cause it's not working in the class function
+                    this.playerAOE.self.body.velocity.x = this.self.scale.x * 400;
+                    this.playerAOE.self.body.velocity.y = -150;
+                    this.playerAOE.self.body.gravity.y = 1200;
+                    
+                    this.mana -= .2;
+                    
+                    
+                    
+                }
+            }
+            
+            
+            
+            
             
         // MOVEMENT
             // Running
@@ -467,12 +532,7 @@ demo.classes.prototype = {
                         this.self.body.velocity.y = 1000;
                     }
                 }
-            }
-            
-            // Sword swinging
-            
-            
-            // Spell casting
+            }           
             
         // INTERACTIONS
             // Enemy interaction
