@@ -44,8 +44,9 @@ demo.state0.prototype = {
         K.animations.play("flash", 4, true);
         
 
-        
+    // Chest placed here so Bevonia gets drawn in front of it
         chest0 = new Chest(597, 416, bevonia);
+        
     // CREATE BEVONIA
         bevonia = new Bevonia(32, 463);
         bars = new Bars(bevonia);
@@ -53,6 +54,7 @@ demo.state0.prototype = {
         
     // PLACE ITEMS
         key0 = new Key(493, 917, bevonia);
+        skeleton0 = new Skeleton(1060, 800, 832, 1248);
         
         
         
@@ -68,5 +70,15 @@ demo.state0.prototype = {
         bevonia.die();
         bevonia.manageVulnerability();
         
+        skeleton0.patrol();
+        
+        if (bevonia.vulnerable && game.physics.arcade.overlap(bevonia.self, skeleton0.self)) {
+            bevonia.health -= bevonia.damageFactor;
+            bevonia.vulnerable = false;
+            bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;      
+        }
+        if (game.physics.arcade.collide(bevonia.self, traps0)) {
+            bevonia.health -= 1;
+        }
     }
 }
