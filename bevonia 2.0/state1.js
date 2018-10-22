@@ -1,4 +1,4 @@
-var demo = {}, skel1, skelCollide, numOfItemsInInv = 0;
+var demo = {}, skel1, skelCollide, numOfItemsInInv = 0, invincibilityTimer = 0, invincibilityPeriod = 1500;
 var centerX = 533, centerY = 250;
 var platforms1, traps1;
 
@@ -90,12 +90,29 @@ demo.state1.prototype = {
         game.load.spritesheet("healthBar", "assets/sprites/healthBar.png", 256, 16);
         game.load.spritesheet("manaBar", "assets/sprites/manaBar.png", 256, 16);
         game.load.spritesheet("barHolder", "assets/sprites/barHolder.png", 32, 96);
-        game.load.image('inventory','assets/sprites/inventory.png',267,55)
+        game.load.image('inventory','assets/sprites/inventory.png',267,55);
+        
+        //SOUNDS
+        game.load.audio('jump', 'assets/sounds/jump.mp3');
+        game.load.audio('aoe', 'assets/sounds/aoe.mp3');
+        game.load.audio('cast', 'assets/sounds/cast.mp3');
+        game.load.audio('skel', 'assets/sounds/skeleton.mp3');
+        game.load.audio('spider', 'assets/sounds/spider.mp3');
+        game.load.audio('bat', 'assets/sounds/bat.mp3');
     },
     create: function(){
         game.physics.startSystem(Phaser.Physics.ARCADE);
         
         console.log("state1");
+        
+        //SFX
+        jumpSound = game.sound.add("jump");
+        aoeSound = game.sound.add('aoe');
+        castSound = game.sound.add('cast');
+        skelSound = game.sound.add('skel');
+        spiderSound = game.sound.add('spider');
+        batSound = game.sound.add('bat');
+        
         
         // Display settings
         game.world.setBounds(0, 0, 2624, 1344);
@@ -221,6 +238,8 @@ demo.state1.prototype = {
         skel1.body.velocity.x = 200;
         skel1.body.gravity.y = 100;
         skeletonCollide = game.physics.arcade.collide(skel1,platforms1)
+        
+        
 //        skeletonBehavior(skel1,50,1000)
         
         //first bat
@@ -242,6 +261,8 @@ demo.state1.prototype = {
         spider1.body.velocity.x = 100;
         game.physics.arcade.collide(spider1, platforms1);
         
+        
+        
         enemies = [skel1, bat1, spider1];
         
         
@@ -252,6 +273,26 @@ demo.state1.prototype = {
         
     },
     update: function () {
+        
+        if (spider1.x - bevonia.x < 50){
+            spiderSound.play();
+        }
+        else{
+            spiderSound.stop();
+        }
+        if (skel1.x - bevonia.x < 50){
+            
+            skelSound.play();
+        }
+        else{
+            skelSound.stop();
+        }
+        if (bat1.x - bevonia.x < 50){
+            batSound.play();
+        }
+        else{
+            batSound.stop();
+        }
         //game.physics.arcade.collide(bevonia, platforms1);
         skelCollide = game.physics.arcade.collide(skel1,platforms1);
         game.physics.arcade.collide(healthPotion1,platforms1)
@@ -351,6 +392,7 @@ demo.state1.prototype = {
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.W) && grounded){
             bevonia.body.velocity.y = -650
+            jumpSound.play()
         }
         if(!grounded) bevonia.animations.play(bevonia.armored + 'jump', 1, true)
         if(bevonia.body.velocity.y > 1200) bevonia.body.velocity.y = 1200;
@@ -383,6 +425,7 @@ demo.state1.prototype = {
         // Spell casting
         // Area of Effect (AoE)
         if(game.input.keyboard.isDown(Phaser.Keyboard.K) && game.time.now >= aoeNextCast && bevonia.mana != 0) {
+            castSound.play();
             aoeNextCast = game.time.now + aoeCastRate;
             bevonia.mana -= .25; manaBar.scale.x = bevonia.mana;
             aoeExists = true;
@@ -398,6 +441,7 @@ demo.state1.prototype = {
         }
         if(aoeExists) {     
             if (game.physics.arcade.collide(aoe, enemies) || game.physics.arcade.collide(aoe, platforms1)) {
+                aoeSound.play();
                 var boom = game.add.sprite(aoe.x, aoe.y, "aoeBlast");
                 game.camera.shake(.02, 300);
                 game.physics.enable(boom);
@@ -466,10 +510,11 @@ demo.state1.prototype = {
         if ((game.physics.arcade.overlap(bevoniaStab, spider1) && bevonia.stabbing) || (game.physics.arcade.overlap(([boom], spider1)))) {
             spider1.kill();
         }
-        else if (game.physics.arcade.collide(bevonia, enemies) && !bevonia.stabbing) {
+        else if (game.physics.arcade.overlap(bevonia, enemies) && !bevonia.stabbing && game.time.now >= invincibilityTimer) {
             bevonia.health -= bevonia.damageFactor;
             bevonia.body.velocity.x = -1 * bevonia.scale.x * 20;
             healthBar.scale.x = bevonia.health;
+            invincibilityTimer = game.time.now + invincibilityPeriod
         }
         
         if (bevonia.health == 0) {
@@ -477,11 +522,11 @@ demo.state1.prototype = {
             numOfItemsInInv = 0
             console.log('test')
         }
-        else if(game.physics.arcade.collide(bevoniaStab, enemies) && !bevonia.stabbing){
-            game.state.start(game.state.current);
-            numOfItemsInInv = 0
-            console.log('test')
-        }
+//        else if(game.physics.arcade.collide(bevoniaStab, enemies) && !bevonia.stabbing){
+//            game.state.start(game.state.current);
+//            numOfItemsInInv = 0
+//            console.log('test')
+//        }
         
 //        if(checkOverlap(bevonia,enemy1.bat)){
 //           bevonia.kill()
