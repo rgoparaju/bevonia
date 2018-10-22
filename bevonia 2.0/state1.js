@@ -90,12 +90,22 @@ demo.state1.prototype = {
         game.load.spritesheet("healthBar", "assets/sprites/healthBar.png", 256, 16);
         game.load.spritesheet("manaBar", "assets/sprites/manaBar.png", 256, 16);
         game.load.spritesheet("barHolder", "assets/sprites/barHolder.png", 32, 96);
-        game.load.image('inventory','assets/sprites/inventory.png',267,55)
+        game.load.image('inventory','assets/sprites/inventory.png',267,55);
+        
+        //SOUNDS
+        game.load.audio('jump', 'assets/sounds/jump.mp3');
+        game.load.audio('aoe', 'assets/sounds/aoe.mp3');
+        game.load.audio('cast', 'assets/sounds/cast.mp3');
     },
     create: function(){
         game.physics.startSystem(Phaser.Physics.ARCADE);
         
         console.log("state1");
+        
+        //SFX
+        jumpSound = game.sound.add("jump");
+        aoeSound = game.sound.add('aoe');
+        castSound = game.sound.add('cast');
         
         // Display settings
         game.world.setBounds(0, 0, 2624, 1344);
