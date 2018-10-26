@@ -227,7 +227,7 @@ demo.classes.prototype = {
             }
         }
         
-        // Pretty buggy
+        // Works
         Chest = function (x, y, contentsArray, player, itemsArray) {
             // Setup
             this.self = game.add.sprite(x, y, "chest");
@@ -241,12 +241,17 @@ demo.classes.prototype = {
             this.self.animations.add("open", [1]);
             
             this.interactWith = function () {
-                if (this.player.hasKey && this.closed) {
+                if (this.closed) {
+                    console.log("Chest Opened");
                     this.self.animations.play("open", 1, false);
                     this.player.hasKey = false;
                     var i; for (i = 0; i < this.contents.length; i++) {
-                        this.contents[i].self.body.x = this.self.body.x + i * 48;
-                        this.contents[i].self.body.y = this.self.body.y;
+                        game.physics.enable(this.contents[i].self);
+                        this.contents[i].self.body.x = this.self.body.x + 90;
+                        this.contents[i].self.body.y = this.self.body.y - 5;
+                        this.contents[i].self.anchor.setTo(0.5,0.5);
+                        this.contents[i].self.body.collideWorldBounds = true;
+                        
                     }
                     this.closed = false;
                 }

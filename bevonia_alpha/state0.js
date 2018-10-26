@@ -58,16 +58,17 @@ demo.state0.prototype = {
         armor0 = new Armor(493, 912, bevonia);
         aoe0 = new aoeItem(595, 432, bevonia);
         
-        //chest0Contents = [sword0];
+        chest0Contents = [door0];
+        items0 = [armor0, sword0, door0, aoe0];
         
-        //chest0 = new Chest(597, 416, chest0Contents, bevonia, items0);
-        //items0.push(chest0);
+        chest0 = new Chest(597, 416, chest0Contents, bevonia, items0);
+        items0.push(chest0);
         
         skeleton0 = new Skeleton(1060, 800, 832, 1248);
         spider0 = new Spider(56, 300, 2, 460, "y", 1);
         
         
-        items0 = [armor0, sword0, door0, aoe0];
+        
         enemies0 = [skeleton0, spider0];
         
         
