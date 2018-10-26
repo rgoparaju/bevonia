@@ -23,7 +23,7 @@ demo.state1.prototype = {
         
         // Create new Bevonia and HUD
         //bevonia = new Bevonia(128, 128);
-        bevonia = new Bevonia(128, 128);
+        bevonia = new Bevonia(128, 128, 1344);
         bars = new Bars(bevonia);
         //inventory = new Inventory(866, 0);
         

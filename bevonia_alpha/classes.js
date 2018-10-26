@@ -387,11 +387,12 @@ demo.classes.prototype = {
         
         
         
-        Bevonia = function (x, y) {
+        Bevonia = function (x, y, deathY) {
         // TECHNICAL VARIABLES
             // Physics
             var speed = 300;
             var weight = 1200;
+            this.deathY = deathY;
             
             // Strings
             this.armored = "";
@@ -542,7 +543,7 @@ demo.classes.prototype = {
                 }
             }
             this.die = function () {
-                if (this.health <= 0 || this.self.body.y > 1320) {
+                if (this.health <= 0 || this.self.body.y > this.deathY) {
                     game.state.start(game.state.current);
                 }
             }

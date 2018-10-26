@@ -47,7 +47,7 @@ demo.state0.prototype = {
         K.animations.play("flash", 4, true);
         
     // CREATE BEVONIA
-        bevonia = new Bevonia(95, 1003);
+        bevonia = new Bevonia(95, 1003, 1344);
         bars = new Bars(bevonia);
         //inventory = new Inventory(866, 0);
         
