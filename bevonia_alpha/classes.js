@@ -202,12 +202,41 @@ demo.classes.prototype = {
             }
         }
         
-        // Haven't tested
-        Potion = function (x, y, typeStr, player) {
-            // Setup
-            this.self = game.add.sprite(x, y, typeStr + "Potion");
-            this.self.anchor.setTo(0.5, 0.5);
-            game.physics.enable(this.self);
+        HealthPotion = function(x,y,player){
+            this.self = game.add.sprite(x,y,'healthPotion')
+            this.self.anchor.setTo(0.5,0.5)
+            this.self.scale.setTo(0.6,0.6)
+            game.physics.enable(this.self)
+            this.self.body.gravity.y = 1200
+            this.player = player
+            
+            this.interactWith = function(){
+                if(this.player.health < 1){
+                    console.log('health potion picked up')
+                    this.self.kill()
+                    this.player.health += 0.25
+                    if(this.player.health >= 1) this.player.health = 1
+                }
+                else console.log('health full')
+            }
+        }
+        ManaPotion = function(x,y,player){
+            this.self = game.add.sprite(x,y,'manaPotion')
+            this.self.anchor.setTo(0.5,0.5)
+            this.self.scale.setTo(0.6,0.6)
+            game.physics.enable(this.self)
+            this.self.body.gravity.y = 1200
+            this.player = player
+            
+            this.interactWith = function(){
+                if(this.player.mana < 1){
+                    console.log('mana potion picked up')
+                    this.self.kill()
+                    this.player.mana += 0.25
+                    if(this.player.mana >= 1) this.player.mana = 1
+                }
+                else console.log('mana full')
+            }
         }
         
         // Works
@@ -227,7 +256,7 @@ demo.classes.prototype = {
             }
         }
         
-        // Pretty buggy
+        // Works
         Chest = function (x, y, contentsArray, player, itemsArray) {
             // Setup
             this.self = game.add.sprite(x, y, "chest");
@@ -241,12 +270,17 @@ demo.classes.prototype = {
             this.self.animations.add("open", [1]);
             
             this.interactWith = function () {
-                if (this.player.hasKey && this.closed) {
+                if (this.closed) {
+                    console.log("Chest Opened");
                     this.self.animations.play("open", 1, false);
                     this.player.hasKey = false;
                     var i; for (i = 0; i < this.contents.length; i++) {
-                        this.contents[i].self.body.x = this.self.body.x + i * 48;
-                        this.contents[i].self.body.y = this.self.body.y;
+                        game.physics.enable(this.contents[i].self);
+                        this.contents[i].self.body.x = this.self.body.x + 90;
+                        this.contents[i].self.body.y = this.self.body.y - 5;
+                        this.contents[i].self.anchor.setTo(0.5,0.5);
+                        this.contents[i].self.body.collideWorldBounds = true;
+                        
                     }
                     this.closed = false;
                 }
@@ -476,7 +510,7 @@ demo.classes.prototype = {
             
             // Spell casting
             this.castAOE = function () {
-                if (this.hasAOE && game.input.keyboard.isDown(Phaser.Keyboard.K) && this.aoeTimer < game.time.now && this.mana > 0) {
+                if (this.hasAOE && game.input.keyboard.isDown(Phaser.Keyboard.K) && this.aoeTimer < game.time.now && this.mana > 0.2) {
                     console.log("IM WORKING HAHA");
                     this.aoeTimer = game.time.now + 1000;
                     this.aoeExists = true;

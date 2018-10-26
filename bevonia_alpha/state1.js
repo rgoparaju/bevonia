@@ -37,6 +37,7 @@ demo.state1.prototype = {
         bat1_1 = new Bat(896, 368, bevonia);
         spider1_1 = new Spider(1144, 76, 64, 240, "y", 1);
         skeleton1_2 = new Skeleton(1425, 320, 1312, 1606);
+//        chest1_1 = new Chest(100,895,'healthPotion',bevonia);
         
         enemies1 = [skeleton1_1, bat1_1, spider1_1, skeleton1_2]
         
@@ -46,6 +47,8 @@ demo.state1.prototype = {
         fixBrick = game.add.sprite(2592, 1989, "platforms");
         sword = new Sword(376, 528, bevonia);
         armor = new Armor(947, 688, bevonia);
+        healthPotion = new HealthPotion(400,700,bevonia)
+        manaPotion = new ManaPotion(450,700,bevonia)
         //key = new Key (200, 128, bevonia);
         spell = new aoeItem(848, 528, bevonia);
         door1 = new Door (2592, 1089, "title", bevonia);
@@ -56,13 +59,15 @@ demo.state1.prototype = {
         castSound = game.sound.add('cast');
         
         
-        items1 = [sword, armor, spell, door1];
+        items1 = [sword, armor, spell, door1,healthPotion,manaPotion];
         
         
         
     },
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms1);
+        game.physics.arcade.collide(healthPotion.self,platforms1)
+        game.physics.arcade.collide(manaPotion.self,platforms1)
         
         bars.displayStats();
         
