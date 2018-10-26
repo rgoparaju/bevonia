@@ -202,12 +202,41 @@ demo.classes.prototype = {
             }
         }
         
-        // Haven't tested
-        Potion = function (x, y, typeStr, player) {
-            // Setup
-            this.self = game.add.sprite(x, y, typeStr + "Potion");
-            this.self.anchor.setTo(0.5, 0.5);
-            game.physics.enable(this.self);
+        HealthPotion = function(x,y,player){
+            this.self = game.add.sprite(x,y,'healthPotion')
+            this.self.anchor.setTo(0.5,0.5)
+            this.self.scale.setTo(0.6,0.6)
+            game.physics.enable(this.self)
+            this.self.body.gravity.y = 1200
+            this.player = player
+            
+            this.interactWith = function(){
+                if(this.player.health < 1){
+                    console.log('health potion picked up')
+                    this.self.kill()
+                    this.player.health += 0.25
+                    if(this.player.health >= 1) this.player.health = 1
+                }
+                else console.log('health full')
+            }
+        }
+        ManaPotion = function(x,y,player){
+            this.self = game.add.sprite(x,y,'manaPotion')
+            this.self.anchor.setTo(0.5,0.5)
+            this.self.scale.setTo(0.6,0.6)
+            game.physics.enable(this.self)
+            this.self.body.gravity.y = 1200
+            this.player = player
+            
+            this.interactWith = function(){
+                if(this.player.mana < 1){
+                    console.log('mana potion picked up')
+                    this.self.kill()
+                    this.player.mana += 0.25
+                    if(this.player.mana >= 1) this.player.mana = 1
+                }
+                else console.log('mana full')
+            }
         }
         
         // Works
@@ -480,7 +509,7 @@ demo.classes.prototype = {
             
             // Spell casting
             this.castAOE = function () {
-                if (this.hasAOE && game.input.keyboard.isDown(Phaser.Keyboard.K) && this.aoeTimer < game.time.now && this.mana > 0) {
+                if (this.hasAOE && game.input.keyboard.isDown(Phaser.Keyboard.K) && this.aoeTimer < game.time.now && this.mana > 0.2) {
                     console.log("IM WORKING HAHA");
                     this.aoeTimer = game.time.now + 1000;
                     this.aoeExists = true;
