@@ -54,6 +54,7 @@ demo.classes.prototype = {
                     this.attack()
                     this.self.animations.play("fly", 12, true);
                 }
+                else this.returnToCeiling()
                 return condition;
             }
 
@@ -73,7 +74,20 @@ demo.classes.prototype = {
                 
                 this.self.body.velocity.x = velocity * xComp;
                 this.self.body.velocity.y = velocity * yComp;
-            }     
+            }
+            
+            this.returnToCeiling = function(){
+                if(!this.self.body.blocked.up){
+                    this.self.body.velocity.y = -100
+//                    console.log('bat flying to ceiling')
+                }
+                if(this.self.body.blocked.up) {
+                    this.self.animations.play("sleep", 0, true)
+                    this.self.body.velocity.x = 0
+                    this.self.body.velocity.y = 0
+//                    console.log('bat at ceiling')
+                }
+            }
         };
         
         // Patrols vertical or horizonal interval
