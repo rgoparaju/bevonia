@@ -51,6 +51,7 @@ demo.classes.prototype = {
                 
                 var condition = dx + dy < 16384
                 if (condition) {
+                    this.attack()
                     this.self.animations.play("fly", 12, true);
                 }
                 return condition;
@@ -59,6 +60,7 @@ demo.classes.prototype = {
             // Finds unit vector from bat to player, scaled vector by bat velocity
             // Bat doesn't rest until it is dead
             this.attack = function () {
+                console.log('bat is attacking')
                 var xComp = this.player.self.body.x - this.self.body.x;
                 var yComp = this.player.self.body.y - this.self.body.y;
                 
