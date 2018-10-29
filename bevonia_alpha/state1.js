@@ -51,7 +51,7 @@ demo.state1.prototype = {
         manaPotion = new ManaPotion(450,700,bevonia)
         //key = new Key (200, 128, bevonia);
         spell = new aoeItem(848, 528, bevonia);
-        door1 = new Door (2592, 1089, "title", bevonia);
+        door1 = new Door (2592, 1089, "state2", bevonia);
         
         //SFX
         jumpSound = game.sound.add("jump");

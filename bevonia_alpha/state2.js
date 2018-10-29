@@ -28,8 +28,9 @@ demo.state2.prototype = {
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
+        door2 = new Door(992, 128, "title", bevonia);
         
-        items2 = [armor2, sword2];
+        items2 = [armor2, sword2, door2];
         
         // PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
         //bat1_1 = new Bat(2112, 1666, bevonia);
@@ -43,7 +44,6 @@ demo.state2.prototype = {
         bat1_9 = new Bat(2368, 1666, bevonia);
         bat1_10 = new Bat(2400, 1666, bevonia);
         bat1_11 = new Bat(2432, 1666, bevonia);
-        
         
         // 1 troll in the troll section (2389, 368)
         troll1_1 = new Troll(2389, 376, 2262, 2317, 300, 368, bevonia);
