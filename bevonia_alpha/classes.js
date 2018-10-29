@@ -41,7 +41,6 @@ demo.classes.prototype = {
             this.self.animations.play("sleep", 0, true);
             
             // Behavior
-            // BEHAVIOR STILL A LITTLE BUGGY PLEASE HELP
             // Checks for player within 4 tile (128px) radius, returns true if satisfied
             this.watch = function () {
                 var dy = this.self.body.y - this.player.self.body.y;
@@ -175,6 +174,40 @@ demo.classes.prototype = {
             }
         };
         console.log("enemies defined");
+        
+        Troll = function (x, y, loX, hiX, loY, hiY, player) {
+            // Technical variables
+            var velocity = 310;
+            this.player = player;
+            this.asleep = true;
+            this.loX = loX; this.hiX = hiX;
+            this.loY = loY; this.hiY = hiY;
+            
+            // Setup
+            this.self = game.add.sprite(x, y, "troll");
+            this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.self.body.collideWorldBounds = true;
+            this.self.body.velocity.x = 0;
+            
+            // Animate
+            this.self.animations.add("sleep", 0);
+            this.self.animations.add("chase", [1, 2, 3])
+            this.self.animations.play("sleep", 1, "true");
+            
+            // Behavior
+            this.patrol = function () {
+                var xSatisfied = this.player.self.body.x > this.loX && this.player.self.body.x < this.hiX;
+                var ySatisfied = this.player.self.body.y > this.loY && this.player.self.body.y < this.hiY;
+                if (xSatisfied && ySatisfied && this.asleep) {
+                    this.asleep = false;
+                    this.self.body.velocity.x = -velocity;
+                    this.self.animations.play("chase", 10, true);
+                }
+            }
+            
+        }
+        
 
         
         /////////
