@@ -68,6 +68,7 @@ demo.state1.prototype = {
         game.physics.arcade.collide(bevonia.self, platforms1);
         game.physics.arcade.collide(healthPotion.self,platforms1)
         game.physics.arcade.collide(manaPotion.self,platforms1)
+        game.physics.arcade.collide(bat1_1.self,platforms1)
         
         bars.displayStats();
         
