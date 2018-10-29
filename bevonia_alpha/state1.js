@@ -24,7 +24,6 @@ demo.state1.prototype = {
         // Create new Bevonia and HUD
         //bevonia = new Bevonia(128, 128);
         bevonia = new Bevonia(128, 128, 1344);
-        bars = new Bars(bevonia);
         //inventory = new Inventory(866, 0);
         
         // Tutorial ghost test
@@ -41,6 +40,7 @@ demo.state1.prototype = {
         
         enemies1 = [skeleton1_1, bat1_1, spider1_1, skeleton1_2]
         
+        bars = new Bars(bevonia);
         
         
         // Place, store items

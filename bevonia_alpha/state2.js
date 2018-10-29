@@ -9,7 +9,7 @@ demo.state2.prototype = {
     },
     create: function () {
         // CREATE ENVIRONMENT
-        game.stage.backgroundColor = "#00ff00"
+        game.stage.backgroundColor = "#000000"
         
         map2 = game.add.tilemap("level2");
         map2.addTilesetImage("floorV4");
@@ -25,6 +25,17 @@ demo.state2.prototype = {
         
         bevonia = new Bevonia(128, 128, 1952);
         bars = new Bars(bevonia);
+        
+        // PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
+        
+        
+        // 1 troll in the troll section (2389, 368)
+        
+        // spider patrolling {(x, y) | x = 2400, 784 < y < 1264}
+        // spider patrolling {(x, y) | x = 2464, 784 < y < 1264}
+        
+        
+        // chest 1035 464
     },
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms2);
