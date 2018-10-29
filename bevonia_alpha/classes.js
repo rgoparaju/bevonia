@@ -69,8 +69,6 @@ demo.classes.prototype = {
                 xComp /= norm;
                 yComp /= norm;
                 
-                console.log([xComp, yComp]);
-                
                 this.self.body.velocity.x = velocity * xComp;
                 this.self.body.velocity.y = velocity * yComp;
             }
@@ -191,7 +189,7 @@ demo.classes.prototype = {
             this.self.body.velocity.x = 0;
             
             // Animate
-            this.self.animations.add("sleep", 0);
+            this.self.animations.add("sleep", [0]);
             this.self.animations.add("chase", [1, 2, 3])
             this.self.animations.play("sleep", 1, "true");
             

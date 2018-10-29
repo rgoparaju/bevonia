@@ -54,7 +54,7 @@ demo.art.prototype = {
         game.load.spritesheet("spider_x", "assets/sprites/spiderX.png", 48, 48);
         game.load.spritesheet("spider_y", "assets/sprites/spiderY.png", 48, 48);
         game.load.spritesheet("skeleton", "assets/sprites/skeleton.png", 32, 64);
-        game.load.spritesheet("troll", "assets/sprites/troll clone.png", 64, 64);
+        game.load.spritesheet("troll", "assets/sprites/troll clone.png", 80, 80);
         
         
     // ITEMS

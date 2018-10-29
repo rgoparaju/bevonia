@@ -26,26 +26,32 @@ demo.state2.prototype = {
         bevonia = new Bevonia(128, 128, 1952);
         bars = new Bars(bevonia);
         
+        armor2 = new Armor(1952, 1772, bevonia);
+        sword2 = new Sword(80, 818, bevonia);
+        
+        items2 = [armor2, sword2];
+        
         // PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
-        bat1_1 = new Bat(2112, 1666,bevonia);
-        bat1_2 = new Bat(2144, 1666,bevonia);
-        bat1_3 = new Bat(2176, 1666,bevonia);
-        bat1_4 = new Bat(2208, 1666,bevonia);
-        bat1_5 = new Bat(2240, 1666,bevonia);
-        bat1_6 = new Bat(2272, 1666,bevonia);
-        bat1_7 = new Bat(2304, 1666,bevonia);
-        bat1_8 = new Bat(2336, 1666,bevonia);
-        bat1_9 = new Bat(2368, 1666,bevonia);
-        bat1_10 = new Bat(2400, 1666,bevonia);
-        bat1_11 = new Bat(2432, 1666,bevonia);
+        //bat1_1 = new Bat(2112, 1666, bevonia);
+        bat1_2 = new Bat(2144, 1666, bevonia);
+        bat1_3 = new Bat(2176, 1666, bevonia);
+        bat1_4 = new Bat(2208, 1666, bevonia);
+        bat1_5 = new Bat(2240, 1666, bevonia);
+        //bat1_6 = new Bat(2272, 1666, bevonia);
+        bat1_7 = new Bat(2304, 1666, bevonia);
+        bat1_8 = new Bat(2336, 1666, bevonia);
+        bat1_9 = new Bat(2368, 1666, bevonia);
+        bat1_10 = new Bat(2400, 1666, bevonia);
+        bat1_11 = new Bat(2432, 1666, bevonia);
         
         
         // 1 troll in the troll section (2389, 368)
+        troll1_1 = new Troll(2389, 376, 2262, 2317, 300, 368, bevonia);
         
-        spider1_1 = new Spider(2400, 784, 784, 1264, "y", -1);
-        spider1_2 = new Spider(2490, 784, 784, 1264, "y", 1);
+        spider1_1 = new Spider(2408, 784, 867, 1264, "y", -1);
+        spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1);
         
-        enemies1 = [spider1_1, spider1_2,bat1_1,bat1_2,bat1_3,bat1_4,bat1_5,bat1_6,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11]
+        enemies2 = [spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
     
         
         
@@ -58,20 +64,20 @@ demo.state2.prototype = {
     },
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms2);
-        game.physics.arcade.collide(bat1_1.self,platforms2)
-        game.physics.arcade.collide(bat1_2.self,platforms2)
-        game.physics.arcade.collide(bat1_3.self,platforms2)
-        game.physics.arcade.collide(bat1_4.self,platforms2)
-        game.physics.arcade.collide(bat1_5.self,platforms2)
-        game.physics.arcade.collide(bat1_6.self,platforms2)
-        game.physics.arcade.collide(bat1_7.self,platforms2)
-        game.physics.arcade.collide(bat1_8.self,platforms2)
-        game.physics.arcade.collide(bat1_9.self,platforms2)
-        game.physics.arcade.collide(bat1_10.self,platforms2)
-        game.physics.arcade.collide(bat1_11.self,platforms2)
+        //game.physics.arcade.collide(bat1_1.self, platforms2);
+        game.physics.arcade.collide(bat1_2.self, platforms2);
+        game.physics.arcade.collide(bat1_3.self, platforms2);
+        game.physics.arcade.collide(bat1_4.self, platforms2);
+        game.physics.arcade.collide(bat1_5.self, platforms2);
+        //game.physics.arcade.collide(bat1_6.self, platforms2);
+        game.physics.arcade.collide(bat1_7.self, platforms2);
+        game.physics.arcade.collide(bat1_8.self, platforms2);
+        game.physics.arcade.collide(bat1_9.self, platforms2);
+        game.physics.arcade.collide(bat1_10.self, platforms2);
+        game.physics.arcade.collide(bat1_11.self, platforms2);
+        game.physics.arcade.collide(troll1_1.self, platforms2);
         
         bars.displayStats();
-        console.log(bevonia.self.x,bevonia.self.y);
         
         bevonia.run();
         bevonia.jump();
@@ -79,18 +85,85 @@ demo.state2.prototype = {
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
+        
         spider1_1.patrol();
         spider1_2.patrol();
-        bat1_1.watch();
+        //bat1_1.watch();
         bat1_2.watch();
         bat1_3.watch();
         bat1_4.watch();
         bat1_5.watch();
-        bat1_6.watch();
+        //bat1_6.watch();
         bat1_7.watch();
         bat1_8.watch();
         bat1_9.watch();
         bat1_10.watch();
         bat1_11.watch();
+        troll1_1.patrol();
+        
+        if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+            var i; for (i = 0; i < items2.length; i++) {
+                if (game.physics.arcade.overlap(bevonia.self, items2[i].self)) {
+                    console.log("I detect an overlap!!");
+                    items2[i].interactWith();
+                }
+            
+            }
+        }
+        
+        var j; for (j = 0; j < enemies2.length; j++) {
+            if (game.physics.arcade.overlap(bevonia.self, enemies2[j].self)) {
+                if (bevonia.stabbing) {
+                    enemies2[j].self.kill();
+                }
+                else if (bevonia.vulnerable) {
+                    bevonia.health -= bevonia.damageFactor;
+                    bevonia.vulnerable = false;
+                    bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
+                }
+            }
+        }
+        
+        // Spell enemy interaction
+        if (bevonia.aoeExists) {
+            console.log(game.physics.arcade.overlap(bevonia.playerAOE.self, enemies2));
+            // Detect a collision with either the environment or enemies
+            var k; for(k = 0; k < enemies2.length; k++) {
+                if (game.physics.arcade.overlap(bevonia.playerAOE.self, enemies2[k].self)) {
+                    bevonia.aoeSound.play();
+                    xBoom = bevonia.playerAOE.self.body.x;
+                    yBoom = bevonia.playerAOE.self.body.y;
+                    var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
+                    game.camera.shake(.02, 300);
+                    game.physics.enable(boom);
+                    enemies2[k].self.kill();
+                    boom.anchor.setTo(.5, .5);
+                    boom.scale.setTo(1.5, 1.5);
+                    boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                    bevonia.playerAOE.self.kill();
+                    boom.animations.play("explode", 9, false);
+                    bevonia.aoeExists = false;
+                }
+            }
+            if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms2, traps2])) {
+                bevonia.aoeSound.play();
+                xBoom = bevonia.playerAOE.self.body.x;
+                yBoom = bevonia.playerAOE.self.body.y;
+                var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
+                game.camera.shake(.02, 300);
+                game.physics.enable(boom);
+                boom.anchor.setTo(.5, .5);
+                boom.scale.setTo(1.5, 1.5);
+                boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                bevonia.playerAOE.self.kill();
+                boom.animations.play("explode", 9, false);
+                bevonia.aoeExists = false;
+                
+            }
+        }
+        
+        if (game.physics.arcade.collide(bevonia.self, traps2)) {
+            bevonia.health -= 1;
+        }
     }
 }
