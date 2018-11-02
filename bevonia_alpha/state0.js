@@ -56,9 +56,9 @@ demo.state0.prototype = {
         door0 = new Door(2560, 64, "state1", bevonia);
         sword0 = new Sword(48, 464, bevonia);
         armor0 = new Armor(493, 912, bevonia);
-        aoe0 = new aoeItem(595, 432, bevonia);
+        aoe0 = new aoeItem(-100, -100, bevonia);
         
-        chest0Contents = [door0];
+        chest0Contents = [aoe0];
         items0 = [armor0, sword0, door0, aoe0];
         
         chest0 = new Chest(597, 416, chest0Contents, bevonia, items0);

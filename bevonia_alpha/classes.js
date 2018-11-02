@@ -257,6 +257,9 @@ demo.classes.prototype = {
             this.self.body.gravity.y = 1200
             this.player = player
             
+            this.self.animations.add("tempt", [0, 1]);
+            this.self.animations.play("tempt", 6, true);
+            
             this.interactWith = function(){
                 if(this.player.health < 1){
                     console.log('health potion picked up')
@@ -274,6 +277,9 @@ demo.classes.prototype = {
             game.physics.enable(this.self)
             this.self.body.gravity.y = 1200
             this.player = player
+            
+            this.self.animations.add("tempt", [0, 1]);
+            this.self.animations.play("tempt", 6, true);
             
             this.interactWith = function(){
                 if(this.player.mana < 1){
