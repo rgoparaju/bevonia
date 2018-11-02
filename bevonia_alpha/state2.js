@@ -85,6 +85,7 @@ demo.state2.prototype = {
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
+        bevonia.castPrecise();
         
         spider1_1.patrol();
         spider1_2.patrol();
@@ -161,6 +162,22 @@ demo.state2.prototype = {
                 
             }
         }
+        if (bevonia.preciseExists) {
+            var l; for(l = 0; l < enemies2.length; l++) {
+                if (game.physics.arcade.overlap(bevonia.playerPrecise.self, enemies2[l].self)) {
+                    enemies2[l].self.kill();
+                    bevonia.playerPrecise.self.kill();
+                    bevonia.preciseExists = false;
+                    
+                }
+            }
+            if (game.physics.arcade.collide(bevonia.playerPrecise.self, platforms2)){
+                bevonia.playerPrecise.self.kill();
+                bevonia.preciseExists = false;
+            }
+            
+        }
+        
         
         if (game.physics.arcade.collide(bevonia.self, traps2)) {
             bevonia.health -= 1;

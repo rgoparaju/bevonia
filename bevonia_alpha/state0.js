@@ -152,6 +152,21 @@ demo.state0.prototype = {
                 
             }
         }
+        if (bevonia.preciseExists) {
+            var l; for(l = 0; l < enemies0.length; l++) {
+                if (game.physics.arcade.overlap(bevonia.playerPrecise.self, enemies0[l].self)) {
+                    enemies0[l].self.kill();
+                    bevonia.playerPrecise.self.kill();
+                    bevonia.preciseExists = false;
+                    
+                }
+            }
+            if (game.physics.arcade.collide(bevonia.playerPrecise.self, platforms0)){
+                bevonia.playerPrecise.self.kill();
+                bevonia.preciseExists = false;
+            }
+            
+        }
         
         
 
