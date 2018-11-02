@@ -76,7 +76,8 @@ demo.art.prototype = {
         game.load.spritesheet("aoeBlast", "assets/sprites/AoE Blast.png", 96, 96);
         
         // Precision spell (precise)
-        game.load.spritesheet("precise", "assets/sprites/precise.png", 32, 16);
+        game.load.spritesheet("preciseObject", "assets/sprites/preciseObject.png", 16, 16);
+        game.load.spritesheet("preciseProject", "assets/sprites/precise.png", 32, 16);
         
         
     // HEADS UP DISPLAY 

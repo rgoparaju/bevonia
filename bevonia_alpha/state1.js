@@ -78,6 +78,7 @@ demo.state1.prototype = {
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
+        bevonia.castPrecise();
         
         //ghost1.manifest();
         
@@ -111,7 +112,7 @@ demo.state1.prototype = {
         
         // Spell enemy interaction
         if (bevonia.aoeExists) {
-            console.log(game.physics.arcade.overlap(bevonia.playerAOE.self, enemies1));
+            //console.log(game.physics.arcade.overlap(bevonia.playerAOE.self, enemies1));
             // Detect a collision with either the environment or enemies
             var k; for(k = 0; k < enemies1.length; k++) {
                 if (game.physics.arcade.overlap(bevonia.playerAOE.self, enemies1[k].self)) {
@@ -145,6 +146,21 @@ demo.state1.prototype = {
                 bevonia.aoeExists = false;
                 
             }
+        }
+        if (bevonia.preciseExists) {
+            var l; for(l = 0; l < enemies1.length; l++) {
+                if (game.physics.arcade.overlap(bevonia.playerPrecise.self, enemies1[l].self)) {
+                    enemies1[l].self.kill();
+                    bevonia.playerPrecise.self.kill();
+                    bevonia.preciseExists = false;
+                    
+                }
+            }
+            if (game.physics.arcade.collide(bevonia.playerPrecise.self, platforms1)){
+                bevonia.playerPrecise.self.kill();
+                bevonia.preciseExists = false;
+            }
+            
         }
         
         if (game.physics.arcade.collide(bevonia.self, traps1)) {

@@ -86,6 +86,7 @@ demo.state0.prototype = {
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
+        bevonia.castPrecise();
         
         skeleton0.patrol();
         spider0.patrol();

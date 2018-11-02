@@ -382,7 +382,6 @@ demo.classes.prototype = {
                 this.self.kill();
             }     
         }
-        
         aoeProjectile = function (player) {
             this.player = player;
             x0 = this.player.self.body.x;
@@ -393,11 +392,44 @@ demo.classes.prototype = {
             
             this.self.anchor.set(0.5, 0.5);
             game.physics.enable(this.self);
-            this.self.animations.add("exist", [1, 2]);
+            this.self.animations.add("exist", [0, 1]);
             this.self.animations.play("exist", 10, true);
+        }
+        
+        preciseItem = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "preciseObject");
+            this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.player = player;
             
+            // Animate
+            this.self.animations.add("tempt", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+            this.self.animations.play("tempt", 6, true);
             
+            // Interaction
+            this.interactWith = function () {
+                this.player.hasPrecise = true;
+                this.self.kill();
+            }
+        }
+        preciseProjectile = function (player) {
+            // Technical variables
+            this.player = player;
+            x0 = this.player.self.body.x + 8;
+            y0 = this.player.self.body.y + 8;
+            this.self = game.add.sprite(x0, y0, "preciseProject");
             
+            // Setup
+            game.physics.enable(this.self);
+            this.self.anchor.setTo(0.5, 0.5);
+            this.self.scale.y = -1;
+            
+            // Animation
+            this.self.animations.add("exist", [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]);
+            this.self.animations.play("exist", 24, true);
+            
+            // Physics set up in Bevonia.castPrecise () 
         }
         
         
@@ -492,16 +524,19 @@ demo.classes.prototype = {
             this.vulnerable = true;
             this.stabbing = false;
             this.aoeExists = false;
+            this.preciseExists = false;
             
             // Possession variables
             this.hasSword = false;
             this.hasKey = false;
             this.damageFactor = .25;
             this.hasAOE = false;
+            this.hasPrecise = false;
             
             // Timers
             this.stabTimer = 0;
             this.aoeTimer = 0;
+            this.preciseTimer = 0;
             this.invincibilityTimer = 0;
             this.invincibilityPeriod = 2000;
         
@@ -509,6 +544,7 @@ demo.classes.prototype = {
             this.jumpSound = game.sound.add("jump");
             this.aoeSound = game.sound.add('aoe');
             this.castSound = game.sound.add('cast');
+            // pew pew for precise
             
             
         // SETUP
@@ -562,9 +598,9 @@ demo.classes.prototype = {
             }
             
             // Spell casting
+            // AOE
             this.castAOE = function () {
                 if (this.hasAOE && game.input.keyboard.isDown(Phaser.Keyboard.K) && this.aoeTimer < game.time.now && this.mana > 0.2) {
-                    console.log("IM WORKING HAHA");
                     this.aoeTimer = game.time.now + 1000;
                     this.aoeExists = true;
                     this.playerAOE = new aoeProjectile(this);
@@ -577,7 +613,23 @@ demo.classes.prototype = {
                     
                     this.mana -= .2;   
                 }
-            } 
+            }
+            // Precise
+            this.castPrecise = function () {
+                if (this.hasPrecise && game.input.keyboard.isDown(Phaser.Keyboard.J) && this.preciseTimer < game.time.now && this.mana > 0.2) {
+                    console.log("working");
+                    this.preciseTimer = game.time.now + 500;
+                    this.preciseExists = true;
+                    this.playerPrecise = new preciseProjectile(this);
+                    //sound
+                    
+                    this.playerPrecise.self.body.velocity.x = this.self.scale.x * 600;
+                    
+                    this.mana -= .1;
+                    
+                    
+                }
+            }
             
         // MOVEMENT
             // Running
