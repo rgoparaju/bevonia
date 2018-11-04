@@ -52,6 +52,7 @@ demo.state1.prototype = {
         //key = new Key (200, 128, bevonia);
         spell = new aoeItem(848, 528, bevonia);
         door1 = new Door (2592, 1089, "state2", bevonia);
+        inventory = new Inventory(bevonia)
         
         //SFX
         jumpSound = game.sound.add("jump");
@@ -92,7 +93,8 @@ demo.state1.prototype = {
             var i; for (i = 0; i < items1.length; i++) {
                 if (game.physics.arcade.overlap(bevonia.self, items1[i].self)) {
                     console.log("I detect an overlap!!");
-                    items1[i].interactWith();
+                    if(items1[i].interactWith())
+                        inventory.add(items1[i])
                 }
             
             }
