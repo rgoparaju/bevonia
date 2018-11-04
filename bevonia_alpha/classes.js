@@ -227,8 +227,19 @@ demo.classes.prototype = {
             
             // Interaction with player
             this.interactWith = function () {
-                this.player.hasSword = true;
+//                this.player.hasSword = true;
                 this.self.kill();
+                return true
+            }
+            
+            this.equip = function(){
+                console.log('test')
+                this.player.hasSword = true
+                return true
+            }
+            
+            Sword.prototype.toString = function(){
+                return 'Sword'
             }
         }
         
@@ -261,13 +272,25 @@ demo.classes.prototype = {
             this.self.animations.play("tempt", 6, true);
             
             this.interactWith = function(){
-                if(this.player.health < 1){
+                console.log('health potipn picked up')
+                this.self.kill()
+                return true
+
+            }
+            
+            this.equip = function(){
+                    if(this.player.health < 1){
                     console.log('health potion picked up')
                     this.self.kill()
                     this.player.health += 0.25
                     if(this.player.health >= 1) this.player.health = 1
+                    return true
                 }
                 else console.log('health full')
+            }
+            
+            HealthPotion.prototype.toString = function(){
+                return 'Health Potion'
             }
         }
         ManaPotion = function(x,y,player){
@@ -282,13 +305,24 @@ demo.classes.prototype = {
             this.self.animations.play("tempt", 6, true);
             
             this.interactWith = function(){
+                console.log('mana potion picked up')
+                this.self.kill()
+                return true
+
+            }
+            this.equip = function(){
                 if(this.player.mana < 1){
-                    console.log('mana potion picked up')
-                    this.self.kill()
-                    this.player.mana += 0.25
-                    if(this.player.mana >= 1) this.player.mana = 1
-                }
-                else console.log('mana full')
+                 console.log('mana potion picked up')
+                 this.self.kill()
+                 this.player.mana += 0.25
+                 if(this.player.mana >= 1) this.player.mana = 1
+                 return true
+             }
+             else console.log('mana full')
+            }
+            
+            ManaPotion.prototype.toString = function(){
+                return 'Mana Potion'
             }
         }
         
@@ -361,6 +395,82 @@ demo.classes.prototype = {
         }
         console.log("items defined");
         
+        //INVENTORY
+        Inventory = function(player){
+            console.log('inventory created')
+            this.player = player
+            this.x = 325
+            this.y = 8
+            this.self = game.add.sprite(this.x,this.y,'inventory')
+            this.numOfItemsInInventory = 0
+            this.self.fixedToCamera = true
+            
+            this.selection = game.add.sprite(335,18,'inventorySelect')
+            this.selection.fixedToCamera = true
+            
+            this.contents = []
+            this.add = function(item) {
+                console.log('item is transferred to inventory')
+                this.contents.push(item)
+                this.numOfItemsInInventory++
+//                for(var x = 0; x < this.contents.length; x++) console.log(this.contents[x])
+//                console.log(this.contents)
+                console.log(this.numOfItemsInInventory)
+                this.display()
+            }
+            
+            this.display = function(){
+                for(var x = 0; x < this.contents.length; x++){
+                    switch(this.contents[x].toString()){
+                    case 'Sword':
+                        tempSword = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8,this.y + 28,'sword')
+                        tempSword.anchor.setTo(0.5,0.5)
+                        tempSword.scale.setTo(0.5,0.5)
+                        tempSword.fixedToCamera = true
+//                        console.log('sword should display')
+                        break;
+                    case 'Health Potion':
+                        tempHealthPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8,this.y + 28,'healthPotion')
+                        tempHealthPotion.anchor.setTo(0.5,0.5)
+                        tempHealthPotion.scale.setTo(-0.5,0.5)
+                        tempHealthPotion.fixedToCamera = true
+                        break
+                    case 'Mana Potion':
+                        tempManaPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8,this.y + 28,'manaPotion')
+                        tempManaPotion.anchor.setTo(0.5,0.5)
+                        tempManaPotion.scale.setTo(0.5,0.5)
+                        tempManaPotion.fixedToCamera = true
+                        break
+                }}
+//                console.log('test display')
+                    
+            }
+            this.selector = function(){
+                var keyList = []
+                keyList.push(Phaser.Keyboard.ONE)
+                keyList.push(Phaser.Keyboard.TWO)
+                keyList.push(Phaser.Keyboard.THREE)
+                keyList.push(Phaser.Keyboard.FOUR)
+                keyList.push(Phaser.Keyboard.FIVE)
+                for(var x = 0; x < keyList.length; x++){
+                    if(game.input.keyboard.isDown(keyList[x])){
+                        this.selection.kill()
+                        this.selection = game.add.sprite(335 + (keyList[x] - 49)*36,18,'inventorySelect')
+                        this.selection.fixedToCamera = true
+                        
+                        if(this.contents[keyList[x]-49] != null){
+                             if(this.contents[keyList[x]-49].equip()){
+                                 this.contents.pop(keyList[x]-49)
+                                 this.numOfItemsInInventory--
+                             }
+//                            for(var x = 0; x < this.contents.length; x++) this.display(this.contents[x])
+                        }
+                    }
+                        
+                }
+            }
+
+        }
         
         /////////////////
         //SPELL OBJECTS//
