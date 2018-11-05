@@ -90,6 +90,7 @@ demo.classes.prototype = {
         // Patrols vertical or horizonal interval
         // directionStr is allowed to be "x" or "y"
         Spider = function (x, y, lowBound, upBound, directionStr, scaleX) {
+            
             // Technical variables
             this.lowBound = lowBound;
             this.upBound = upBound;
@@ -97,6 +98,7 @@ demo.classes.prototype = {
             var velocity = 200;
             
             // Setup
+            this.spiderSound = game.sound.add('spiderSound');
             this.self = game.add.sprite(x, y, "spider_" + this.direction);
             this.self.anchor.setTo(0.5, 0.5);
             this.self.scale.x = scaleX;
@@ -108,6 +110,11 @@ demo.classes.prototype = {
             else {
                 this.self.body.velocity.y = -velocity;
             }
+            
+//            if (Math.abs(this.bevonia.self.body.x - this.self.body.x) < 20){
+//                this.spiderSound.play();            
+//                
+//            }
             
             // Animate
             this.self.animations.add("crawl", [0, 1, 2]);
@@ -224,10 +231,12 @@ demo.classes.prototype = {
             // Animate
             this.self.animations.add("spin", [0, 1]);
             this.self.animations.play("spin", 5, true);
+            this.interactSound = game.sound.add('interact');
             
             // Interaction with player
             this.interactWith = function () {
-//                this.player.hasSword = true;
+                this.player.hasSword = true;
+                this.interactSound.play();
                 this.self.kill();
                 return true
             }
@@ -298,8 +307,10 @@ demo.classes.prototype = {
         ManaPotion = function(x,y,player){
             this.self = game.add.sprite(x,y,'manaPotion')
             this.self.anchor.setTo(0.5,0.5)
+            
             this.self.scale.setTo(0.6,0.6)
             game.physics.enable(this.self)
+            this.interactSound = game.sound.add('interact');
             this.self.body.gravity.y = 1200
             this.player = player
             
@@ -308,6 +319,7 @@ demo.classes.prototype = {
             
             this.interactWith = function(){
                 console.log('mana potion picked up')
+                this.interactSound.play();
                 this.self.kill()
                 return true
 
