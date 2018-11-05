@@ -603,17 +603,7 @@ demo.classes.prototype = {
                 this.healthBar.scale.x = this.player.health;
                 this.manaBar.scale.x = this.player.mana;
             }
-        }
-        
-        Inventory = function (player) {
-            // Technical variables
-            this.player = player;
-            
-            // Setup
-            this.self = game.add.sprite(866, 0, "inventory");
-            this.self.fixedToCamera = true;
-        }
-        
+        }       
         
         
         Bevonia = function (x, y, deathY) {
