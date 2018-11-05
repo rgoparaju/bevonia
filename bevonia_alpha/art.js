@@ -65,6 +65,8 @@ demo.art.prototype = {
         game.load.spritesheet("healthPotion", "assets/sprites/health potion.png", 36, 49);
         game.load.spritesheet("manaPotion", "assets/sprites/mana potion.png", 36, 49);
         game.load.image("door", "assets/sprites/door.png")
+        game.load.image('inventory','assets/sprites/inventory.png')
+        game.load.image('inventorySelect','assets/sprites/inventory selector.png')
         //aoe spell scroll
         //precise spell scroll
         
