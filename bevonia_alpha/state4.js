@@ -30,6 +30,10 @@ demo.state4.prototype = {
         
         items5 = [door5, aoe5];
         
+        backgroundMusic = game.add.audio('boss');
+        backgroundMusic.loop = true;
+        backgroundMusic.play();   
+        
         
         
         

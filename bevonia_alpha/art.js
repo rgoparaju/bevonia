@@ -113,6 +113,7 @@ demo.art.prototype = {
         game.load.audio('interact','assets/sounds/interact.mp3');
         game.load.audio('levelOne', 'assets/sounds/level1.mp3');
         game.load.audio('levelTwo', 'assets/sounds/level2.mp3');
+        game.load.audio('boss', 'assets/sounds/BossMusic.mp3');
                 
         
         
