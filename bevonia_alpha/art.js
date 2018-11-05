@@ -55,6 +55,8 @@ demo.art.prototype = {
         game.load.spritesheet("spider_y", "assets/sprites/spiderY.png", 48, 48);
         game.load.spritesheet("skeleton", "assets/sprites/skeleton.png", 32, 64);
         game.load.spritesheet("troll", "assets/sprites/troll clone.png", 80, 80);
+        game.load.spritesheet("dragon", "assets/sprites/betterDragon.png", 128, 256);
+        game.load.spritesheet("fireball", "assets/sprites/fireball.png", 32, 32);
         
         
     // ITEMS
@@ -106,6 +108,7 @@ demo.art.prototype = {
         game.load.audio('skeletonDeath', 'assets/sounds/skeldeath.mp3');
         game.load.audio('bat', 'assets/sounds/bat.mp3');
         game.load.audio('batDeath', 'assets/sounds/batdeath.mp3');
+        game.load.audio("trollRoar", "assets/sounds/trollroar.mp3");
         game.load.audio('interact','assets/sounds/interact.mp3');
         game.load.audio('levelOne', 'assets/sounds/level1.mp3');
         game.load.audio('levelTwo', 'assets/sounds/level2.mp3');
