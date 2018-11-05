@@ -32,10 +32,10 @@ demo.state1.prototype = {
         
         
         // Place enemies
-        skeleton1_1 = new Skeleton(48, 896, 48, 736);
+        skeleton1_1 = new Skeleton(48, 896, 48, 736, bevonia);
         bat1_1 = new Bat(896, 368, bevonia);
-        spider1_1 = new Spider(1144, 76, 64, 240, "y", 1);
-        skeleton1_2 = new Skeleton(1425, 320, 1312, 1606);
+        spider1_1 = new Spider(1144, 76, 64, 240, "y", 1, bevonia);
+        skeleton1_2 = new Skeleton(1425, 320, 1312, 1606, bevonia);
 //        chest1_1 = new Chest(100,895,'healthPotion',bevonia);
         
         enemies1 = [skeleton1_1, bat1_1, spider1_1, skeleton1_2]
