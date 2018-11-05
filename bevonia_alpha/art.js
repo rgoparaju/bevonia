@@ -31,9 +31,10 @@ demo.art.prototype = {
         //
         
         // Level Three
-        //
-        //
-        //
+        game.load.tilemap('level3','assets/tilemaps/level3.json',null,Phaser.Tilemap.TILED_JSON)
+        game.load.image('floor tile V4',"assets/tilesets_backgrounds/floorV4.png", 32, 32)
+        game.load.image('deathSpikes',"assets/tilesets_backgrounds/deathSpikes.png")
+        game.load.image('bg3','assets/tilesets_backgrounds/background level 3 ver3.png',3200,1600)
         
         // Level Four
         //
@@ -55,6 +56,8 @@ demo.art.prototype = {
         game.load.spritesheet("spider_y", "assets/sprites/spiderY.png", 48, 48);
         game.load.spritesheet("skeleton", "assets/sprites/skeleton.png", 32, 64);
         game.load.spritesheet("troll", "assets/sprites/troll clone.png", 80, 80);
+        game.load.spritesheet("dragon", "assets/sprites/betterDragon.png", 128, 256);
+        game.load.spritesheet("fireball", "assets/sprites/fireball.png", 32, 32);
         
         
     // ITEMS
@@ -106,6 +109,7 @@ demo.art.prototype = {
         game.load.audio('skeletonDeath', 'assets/sounds/skeldeath.mp3');
         game.load.audio('batSound', 'assets/sounds/bat.mp3');
         game.load.audio('batDeath', 'assets/sounds/batdeath.mp3');
+        game.load.audio("trollRoar", "assets/sounds/trollroar.mp3");
         game.load.audio('interact','assets/sounds/interact.mp3');
         game.load.audio('levelOne', 'assets/sounds/level1.mp3');
         game.load.audio('levelTwo', 'assets/sounds/level2.mp3');

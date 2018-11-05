@@ -234,6 +234,7 @@ demo.classes.prototype = {
             this.self.animations.add("sleep", [0]);
             this.self.animations.add("chase", [1, 2, 3])
             this.self.animations.play("sleep", 1, "true");
+            this.roar = game.sound.add('trollRoar');
             
             // Behavior
             this.patrol = function () {
@@ -241,6 +242,7 @@ demo.classes.prototype = {
                 var ySatisfied = this.player.self.body.y > this.loY && this.player.self.body.y < this.hiY;
                 if (xSatisfied && ySatisfied && this.asleep) {
                     this.asleep = false;
+                    this.roar.play();
                     this.self.body.velocity.x = -velocity;
                     this.self.animations.play("chase", 10, true);
                 }
@@ -848,9 +850,63 @@ demo.classes.prototype = {
 
             console.log("princess successfully created");
         }
+        
+        
+        Fireball = function (x, y, player) {
+            x0 = x; 
+            y0 = y;
+            
+            this.self = game.add.sprite(x0, y0, "fireball");
+            this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.self.animations.add("exist", [0, 1]);
+            this.self.animations.play("exist", 12, true)
+            
+            this.self.body.velocity.x = -600;
+            this.self.body.velocity.y = Math.abs(y0 - player.self.body.y);
+            
+            this.manageExistence = function () {
+                if (this.self.body.x < 0 || this.self.body.y > 512) {
+                    this.self.kill()
+                }
+            }
+            
+        }
+        
+        Dragon = function (spawnPointArray, player) {
+            // Technical variables
+            this.spawnPointArray = spawnPointArray;
+            this.player = player;
+            this.attacking = false;
+            this.attackTimer = 0;
+            this.health = 1;
+            
+            // Setup
+            this.self = game.add.sprite(964, 512, "dragon");
+            this.self.anchor.setTo(0.5, 0.5);
+            game.physics.enable(this.self);
+            this.self.body.collideWorldBounds = true;
+            
+            // Animate
+            this.self.animations.add("rise", [2, 3, 4, 5, 6, 7, 8]);
+            this.self.animations.add("fall", [8, 7, 6, 5, 4, 3, 2]);
+            this.self.animations.add("jet", [0, 1]);
+            this.self.animations.add("breathe" [7, 8])
+            this.self.animations.play("rise", 10, false);
+            
+            this.manageHealth = function () {
+                if (this.health <= 0) {
+                    this.self.kill();
+                }
+            }
+            
+            
+        }
             
         
         console.log("princess captured");
+        
+        
         
         
         game.state.start("title");
