@@ -97,6 +97,10 @@ demo.art.prototype = {
         game.load.audio('jump', 'assets/sounds/jump.mp3');
         game.load.audio('aoe', 'assets/sounds/aoe.mp3');
         game.load.audio('cast', 'assets/sounds/cast.mp3');
+        game.load.audio('die', 'assets/sounds/die.mp3');
+        game.load.audio('interact','assets/sounds/interact.mp3');
+        game.load.audio('levelOne', 'assets/sounds/level1.mp3');
+        game.load.audio('levelTwo', 'assets/sounds/level2.mp3');
                 
         
         

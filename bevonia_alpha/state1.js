@@ -59,6 +59,10 @@ demo.state1.prototype = {
         aoeSound = game.sound.add('aoe');
         castSound = game.sound.add('cast');
         
+        //MUSIC
+        backgroundMusic = game.add.audio('levelOne');
+        backgroundMusic.loop = true;
+        backgroundMusic.play();        
         
         items1 = [sword, armor, spell, door1,healthPotion,manaPotion];
         

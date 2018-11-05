@@ -248,6 +248,7 @@ demo.classes.prototype = {
             this.self = game.add.sprite(x, y, "helmet");
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
+            this.interactSound = game.sound.add('interact');
             this.player = player
             
             this.self.animations.add("spin", [0, 1, 2, 3]);
@@ -256,6 +257,7 @@ demo.classes.prototype = {
             this.interactWith = function () {
                 this.player.armored = "ARMORED";
                 this.player.damageFactor = .125;
+                this.interactSound.play();
                 this.self.kill();
             }
         }
@@ -390,6 +392,7 @@ demo.classes.prototype = {
             
             this.interactWith = function () {
                 game.state.start(this.targetState);
+                game.sound.stopAll();
             }
             
         }
@@ -654,6 +657,7 @@ demo.classes.prototype = {
             this.jumpSound = game.sound.add("jump");
             this.aoeSound = game.sound.add('aoe');
             this.castSound = game.sound.add('cast');
+            this.dieSound = game.sound.add('die');
             // pew pew for precise
             
             
@@ -793,7 +797,10 @@ demo.classes.prototype = {
             }
             this.die = function () {
                 if (this.health <= 0 || this.self.body.y > this.deathY) {
+                    game.sound.stopAll();
+                    this.dieSound.play();
                     game.state.start(game.state.current);
+
                 }
             }
 

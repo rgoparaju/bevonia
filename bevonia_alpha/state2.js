@@ -30,6 +30,12 @@ demo.state2.prototype = {
         sword2 = new Sword(80, 818, bevonia);
         door2 = new Door(992, 128, "title", bevonia);
         
+        //MUSIC
+        backgroundMusic = game.add.audio('levelTwo');
+        backgroundMusic.loop = true;
+        backgroundMusic.play();        
+        
+        
         items2 = [armor2, sword2, door2];
         
         // PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
