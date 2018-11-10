@@ -105,14 +105,15 @@ demo.art.prototype = {
         game.load.audio('die', 'assets/sounds/die.mp3');
         game.load.audio('spiderSound', 'assets/sounds/spider.mp3');
         game.load.audio('spiderDeath', 'assets/sounds/spiderdeath.mp3');
-        game.load.audio('skeleton', 'assets/sounds/skeleton.mp3');
+        game.load.audio('skeletonSound', 'assets/sounds/skeleton.mp3');
         game.load.audio('skeletonDeath', 'assets/sounds/skeldeath.mp3');
-        game.load.audio('bat', 'assets/sounds/bat.mp3');
+        game.load.audio('batSound', 'assets/sounds/bat.mp3');
         game.load.audio('batDeath', 'assets/sounds/batdeath.mp3');
         game.load.audio("trollRoar", "assets/sounds/trollroar.mp3");
         game.load.audio('interact','assets/sounds/interact.mp3');
         game.load.audio('levelOne', 'assets/sounds/level1.mp3');
         game.load.audio('levelTwo', 'assets/sounds/level2.mp3');
+        game.load.audio('boss', 'assets/sounds/BossMusic.mp3');
                 
         
         

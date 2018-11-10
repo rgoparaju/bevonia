@@ -34,6 +34,9 @@ demo.classes.prototype = {
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
+            this.batSound = game.sound.add('batSound');
+            this.batDeath = game.sound.add('batDeath');
+            this.batSound.loop = true;
             
             // Animate
             this.self.animations.add("sleep", [0]);
@@ -60,6 +63,14 @@ demo.classes.prototype = {
             // Finds unit vector from bat to player, scaled vector by bat velocity
             // Bat doesn't rest until it is dead
             this.attack = function () {
+                if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
+                this.batSound.play(); 
+            } 
+            if (this.self.alive == false){
+//                this.batDeath.play();
+                this.batSound.stop();
+                
+            }
                 //console.log('bat is attacking')
                 var xComp = this.player.self.body.x - this.self.body.x;
                 var yComp = this.player.self.body.y - this.self.body.y;
@@ -89,21 +100,25 @@ demo.classes.prototype = {
         
         // Patrols vertical or horizonal interval
         // directionStr is allowed to be "x" or "y"
-        Spider = function (x, y, lowBound, upBound, directionStr, scaleX) {
+        Spider = function (x, y, lowBound, upBound, directionStr, scaleX, player) {
             
             // Technical variables
             this.lowBound = lowBound;
             this.upBound = upBound;
             this.direction = directionStr;
+            this.player = player;
             var velocity = 200;
             
             // Setup
             this.spiderSound = game.sound.add('spiderSound');
+            this.spiderDeath = game.sound.add('spiderDeath');
+            this.spiderSound.loop = true;
             this.self = game.add.sprite(x, y, "spider_" + this.direction);
             this.self.anchor.setTo(0.5, 0.5);
             this.self.scale.x = scaleX;
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
+            console.log(Math.abs(this.player.self.body.x - this.self.body.x));
             if (this.direction == "x") {
                 this.self.body.velocity.x = -velocity;
             }
@@ -111,9 +126,9 @@ demo.classes.prototype = {
                 this.self.body.velocity.y = -velocity;
             }
             
-//            if (Math.abs(this.bevonia.self.body.x - this.self.body.x) < 20){
-//                this.spiderSound.play();            
-//                
+            
+//            else {
+//                this.spiderSound.stop();
 //            }
             
             // Animate
@@ -123,6 +138,14 @@ demo.classes.prototype = {
             // Behavior
             // BUGGY
             this.patrol = function () {
+                if (Math.abs(this.player.self.body.x - this.self.body.x) < 30){
+                this.spiderSound.play(); 
+            }
+                if (this.self.alive == false){
+//                this.spiderDeath.play();
+                this.spiderSound.stop();
+                
+            }
                 if (this.direction == "x") {
                     if (this.self.body.x > this.upBound) {
                         console.log("greater");
@@ -149,11 +172,12 @@ demo.classes.prototype = {
         };
         
         // Patrols horizontal interval
-        Skeleton = function (x, y, lowBound, upBound) {
+        Skeleton = function (x, y, lowBound, upBound, player) {
             // Technical variables
             var velocity = 300;
             this.lowBound = lowBound;
             this.upBound = upBound;
+            this.player = player;
             
             // Setup
             this.self = game.add.sprite(x, y, "skeleton");
@@ -161,6 +185,9 @@ demo.classes.prototype = {
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
             this.self.body.velocity.x = velocity;
+            this.skeletonSound = game.sound.add('skeletonSound');
+            this.skeletonDeath = game.sound.add('skeletonDeath');
+            this.skeletonSound.loop = true;
             
             // Animate
             this.self.animations.add("patrol", [0, 1, 2, 3]);
@@ -168,6 +195,14 @@ demo.classes.prototype = {
     
             // Behavior
             this.patrol = function () {
+                if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
+                this.skeletonSound.play(); 
+            }
+                if (this.self.alive == false){
+//                this.skeletonDeath.play();
+                this.skeletonSound.stop();
+                
+            }
                 if (this.self.body.x > this.upBound) {
                     this.self.scale.x = -1;
                     this.self.body.velocity.x = -velocity;
@@ -278,6 +313,7 @@ demo.classes.prototype = {
             this.self.anchor.setTo(0.5,0.5)
             this.self.scale.setTo(0.6,0.6)
             game.physics.enable(this.self)
+            this.interactSound = game.sound.add('interact');
             this.self.body.gravity.y = 1200
             this.player = player
             
@@ -286,6 +322,7 @@ demo.classes.prototype = {
             
             this.interactWith = function(){
                 console.log('health potipn picked up')
+                this.interactSound.play();
                 this.self.kill()
                 return true
 
@@ -294,6 +331,7 @@ demo.classes.prototype = {
             this.equip = function(){
                     if(this.player.health < 1){
                     console.log('health potion picked up')
+                        
                     this.self.kill()
                     this.player.health += 0.25
                     if(this.player.health >= 1) this.player.health = 1
@@ -495,6 +533,7 @@ demo.classes.prototype = {
         aoeItem = function (x, y, player) {
             // Setup
             this.self = game.add.sprite(x, y, "aoeObject");
+            this.interactSound = game.sound.add('interact');
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
             this.player = player;
@@ -505,6 +544,7 @@ demo.classes.prototype = {
             
             // Interaction
             this.interactWith = function () {
+                this.interactSound.play();
                 this.player.hasAOE = true;
                 this.self.kill();
             }     

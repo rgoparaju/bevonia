@@ -54,8 +54,8 @@ demo.state2.prototype = {
         // 1 troll in the troll section (2389, 368)
         troll1_1 = new Troll(2389, 376, 2262, 2317, 300, 368, bevonia);
         
-        spider1_1 = new Spider(2408, 784, 867, 1264, "y", -1);
-        spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1);
+        spider1_1 = new Spider(2408, 784, 867, 1264, "y", -1, bevonia);
+        spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1, bevonia);
         
         enemies2 = [spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
     
