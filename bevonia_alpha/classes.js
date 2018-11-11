@@ -96,6 +96,9 @@ demo.classes.prototype = {
 //                    console.log('bat at ceiling')
                 }
             }
+            this.die = function () {
+                this.self.kill();
+            }
         };
         
         // Patrols vertical or horizonal interval
@@ -108,6 +111,7 @@ demo.classes.prototype = {
             this.direction = directionStr;
             this.player = player;
             var velocity = 200;
+            this.hitCount = 0;
             
             // Setup
             this.spiderSound = game.sound.add('spiderSound');
@@ -118,7 +122,7 @@ demo.classes.prototype = {
             this.self.scale.x = scaleX;
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
-            console.log(Math.abs(this.player.self.body.x - this.self.body.x));
+            //console.log(Math.abs(this.player.self.body.x - this.self.body.x));
             if (this.direction == "x") {
                 this.self.body.velocity.x = -velocity;
             }
@@ -136,7 +140,6 @@ demo.classes.prototype = {
             this.self.animations.play("crawl", 7, true);
             
             // Behavior
-            // BUGGY
             this.patrol = function () {
                 if (Math.abs(this.player.self.body.x - this.self.body.x) < 30){
                 this.spiderSound.play(); 
@@ -169,6 +172,11 @@ demo.classes.prototype = {
                     }
                 }
             }
+            this.die = function () {
+                if (this.hitCount == 4) {
+                    this.self.kill();
+                }
+            }
         };
         
         // Patrols horizontal interval
@@ -178,6 +186,7 @@ demo.classes.prototype = {
             this.lowBound = lowBound;
             this.upBound = upBound;
             this.player = player;
+            this.hitCount = 0;
             
             // Setup
             this.self = game.add.sprite(x, y, "skeleton");
@@ -196,7 +205,7 @@ demo.classes.prototype = {
             // Behavior
             this.patrol = function () {
                 if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
-                this.skeletonSound.play(); 
+                    this.skeletonSound.play(); 
             }
                 if (this.self.alive == false){
 //                this.skeletonDeath.play();
@@ -210,6 +219,11 @@ demo.classes.prototype = {
                 else if (this.self.body.x < this.lowBound) {
                     this.self.scale.x = 1;
                     this.self.body.velocity.x = velocity;
+                }
+            }
+            this.die = function () {
+                if (this.hitCount == 2) {
+                    this.self.kill();
                 }
             }
         };

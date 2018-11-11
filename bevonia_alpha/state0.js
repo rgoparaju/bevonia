@@ -52,7 +52,7 @@ demo.state0.prototype = {
         //inventory = new Inventory(866, 0);
         
     // PLACE ITEMS
-        //key0 = new Key(493, 917, bevonia);
+        key0 = new Key(493, 917, bevonia);
         door0 = new Door(2560, 64, "state1", bevonia);
         sword0 = new Sword(48, 464, bevonia);
         armor0 = new Armor(493, 912, bevonia);
@@ -60,13 +60,13 @@ demo.state0.prototype = {
         precise0 = new preciseItem(95, 1003, bevonia);
         
         chest0Contents = [aoe0];
-        items0 = [armor0, sword0, door0, aoe0, precise0];
+        items0 = [key0, armor0, sword0, door0, aoe0, precise0];
         
         chest0 = new Chest(597, 416, chest0Contents, bevonia, items0);
         items0.push(chest0);
         
-        skeleton0 = new Skeleton(1060, 800, 832, 1248);
-        spider0 = new Spider(56, 300, 2, 460, "y", 1);
+        skeleton0 = new Skeleton(1060, 800, 832, 1248, bevonia);
+        spider0 = new Spider(56, 300, 2, 460, "y", 1, bevonia);
         
         
         
@@ -106,7 +106,9 @@ demo.state0.prototype = {
         var j; for (j = 0; j < enemies0.length; j++) {
             if (game.physics.arcade.overlap(bevonia.self, enemies0[j].self)) {
                 if (bevonia.stabbing) {
-                    enemies0[j].self.kill();
+                    enemies0[j].hitCount += 1;
+                    enemies0[j].die();
+                    //enemies0[j].self.kill();
                 }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;
