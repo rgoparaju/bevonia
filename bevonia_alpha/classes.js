@@ -521,6 +521,7 @@ demo.classes.prototype = {
 //                for(var x = 0; x < this.contents.length; x++) console.log(this.contents[x])
                 console.log(this.contents)
                 console.log(this.numOfItemsInInventory)
+                this.display()
             }
             
             this.display = function(){
@@ -562,6 +563,7 @@ demo.classes.prototype = {
                                  this.contents.splice(keyList[x]-49,1)
                                  console.log(this.contents)
                                  this.numOfItemsInInventory--
+                                 this.display()
                              }
 //                            for(var x = 0; x < this.contents.length; x++) this.display(this.contents[x])
                         }
