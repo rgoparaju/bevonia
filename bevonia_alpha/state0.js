@@ -72,6 +72,11 @@ demo.state0.prototype = {
         
         enemies0 = [skeleton0, spider0];
         
+        //MUSIC
+        backgroundMusic = game.add.audio('tutorial');
+        backgroundMusic.loop = true;
+        backgroundMusic.play();  
+        
         
         
         

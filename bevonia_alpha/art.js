@@ -111,8 +111,10 @@ demo.art.prototype = {
         game.load.audio('batDeath', 'assets/sounds/batdeath.mp3');
         game.load.audio("trollRoar", "assets/sounds/trollroar.mp3");
         game.load.audio('interact','assets/sounds/interact.mp3');
+        game.load.audio('tutorial', 'assets/sounds/tutorial.mp3');
         game.load.audio('levelOne', 'assets/sounds/level1.mp3');
         game.load.audio('levelTwo', 'assets/sounds/level2.mp3');
+        game.load.audio('levelThree', 'assets/sounds/level3.mp3');
         game.load.audio('boss', 'assets/sounds/BossMusic.mp3');
                 
         
