@@ -313,7 +313,6 @@ demo.classes.prototype = {
                 this.player.hasSword = true;
                 this.interactSound.play();
                 this.self.kill();
-                return true
             }
             
             this.equip = function(){
@@ -359,7 +358,7 @@ demo.classes.prototype = {
             this.self.animations.play("tempt", 6, true);
             
             this.interactWith = function(){
-                console.log('health potipn picked up')
+                console.log('health potion picked up')
                 this.interactSound.play();
                 this.self.kill()
                 return true
@@ -507,35 +506,29 @@ demo.classes.prototype = {
                 this.contents.push(item)
                 this.numOfItemsInInventory++
 //                for(var x = 0; x < this.contents.length; x++) console.log(this.contents[x])
-//                console.log(this.contents)
+                console.log(this.contents)
                 console.log(this.numOfItemsInInventory)
-                this.display()
             }
             
             this.display = function(){
                 for(var x = 0; x < this.contents.length; x++){
-                    switch(this.contents[x].toString()){
-                    case 'Sword':
-                        tempSword = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8,this.y + 28,'sword')
-                        tempSword.anchor.setTo(0.5,0.5)
-                        tempSword.scale.setTo(0.5,0.5)
-                        tempSword.fixedToCamera = true
-//                        console.log('sword should display')
-                        break;
-                    case 'Health Potion':
+//                    switch(this.contents[x].toString()){
+//                    case 'Health Potion':
+                    if(this.contents[x].toString() == 'Health Potion'){
                         tempHealthPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8,this.y + 28,'healthPotion')
                         tempHealthPotion.anchor.setTo(0.5,0.5)
                         tempHealthPotion.scale.setTo(-0.5,0.5)
                         tempHealthPotion.fixedToCamera = true
-                        break
-                    case 'Mana Potion':
+                    }
+                    else if(this.contents[x].toString() == 'Mana Potion'){
                         tempManaPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8,this.y + 28,'manaPotion')
                         tempManaPotion.anchor.setTo(0.5,0.5)
                         tempManaPotion.scale.setTo(0.5,0.5)
                         tempManaPotion.fixedToCamera = true
-                        break
-                }}
+                    }
+                }
 //                console.log('test display')
+//                for(var x; x < this.contents.length; x++) console.log(this.contents[x].toString())
                     
             }
             this.selector = function(){
@@ -553,7 +546,8 @@ demo.classes.prototype = {
                         
                         if(this.contents[keyList[x]-49] != null){
                              if(this.contents[keyList[x]-49].equip()){
-                                 this.contents.pop(keyList[x]-49)
+                                 this.contents.splice(keyList[x]-49,1)
+                                 console.log(this.contents)
                                  this.numOfItemsInInventory--
                              }
 //                            for(var x = 0; x < this.contents.length; x++) this.display(this.contents[x])
