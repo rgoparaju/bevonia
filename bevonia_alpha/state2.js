@@ -25,6 +25,8 @@ demo.state2.prototype = {
         
         bevonia = new Bevonia(128, 128, 1952);
         bars = new Bars(bevonia);
+        tempInventory = game.add.sprite(325,8,'inventory')
+        tempInventory.fixedToCamera = true
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
@@ -69,6 +71,9 @@ demo.state2.prototype = {
 //        items2.push(chest2);
     },
     update: function () {
+        inventory.selector()
+        inventory.display()        
+        
         game.physics.arcade.collide(bevonia.self, platforms2);
         //game.physics.arcade.collide(bat1_1.self, platforms2);
         game.physics.arcade.collide(bat1_2.self, platforms2);
