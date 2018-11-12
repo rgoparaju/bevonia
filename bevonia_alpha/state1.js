@@ -85,7 +85,8 @@ demo.state1.prototype = {
         bevonia.castAOE();
         bevonia.castPrecise();
         
-        //ghost1.manifest();
+        inventory.selector()
+        inventory.display()
         
         skeleton1_1.patrol();
         bat1_1.watch();
@@ -100,16 +101,16 @@ demo.state1.prototype = {
                     if(items1[i].interactWith())
                         inventory.add(items1[i])
                 }
-            
             }
         }
-        inventory.selector()
-        inventory.display()
         
         var j; for (j = 0; j < enemies1.length; j++) {
-            if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self)) {
+            if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self) && !enemies1[j].vulnerable) {
                 if (bevonia.stabbing) {
-                    enemies1[j].self.kill();
+                    enemies1[j].hitCount += 1;
+                    enemies1[j].vulnerable = true;
+                    enemies1[j].die();
+                    enemies1[j].invincibilityTimer = game.time.now + 500;
                 }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;
@@ -117,6 +118,7 @@ demo.state1.prototype = {
                     bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
                 }
             }
+            enemies1[j].manageVulnerability();
         }
         
         // Spell enemy interaction

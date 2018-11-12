@@ -109,6 +109,7 @@ demo.state0.prototype = {
                     enemies0[j].hitCount += 1;
                     enemies0[j].vulnerable = true;
                     enemies0[j].die();
+                    enemies0[j].invincibilityTimer = game.time.now + 500;
                     //enemies0[j].self.kill();
                 }
                 else if (bevonia.vulnerable) {
@@ -117,6 +118,7 @@ demo.state0.prototype = {
                     bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
                 }
             }
+            enemies0[j].manageVulnerability();
         }
         
         // Spell enemy interaction

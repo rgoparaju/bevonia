@@ -1,13 +1,3 @@
-// Don't worry about these two until the first 4 are good
-// TROLL
-
-
-
-// DRAGON
-
-//////////////////////////////////
-//ALL OBJECT CLASSES PLACED HERE//
-//////////////////////////////////
 //NOTES
 //1. Enemies and Bevonia have an attribute self which is its body attribute's parent; be careful of this when directing enemies to respond to Bevonia's position
 
@@ -96,6 +86,7 @@ demo.classes.prototype = {
 //                    console.log('bat at ceiling')
                 }
             }
+            this.manageVulnerability = function () {}
             this.die = function () {
                 this.self.kill();
             }
@@ -174,7 +165,7 @@ demo.classes.prototype = {
                 }
             }
             this.manageVulnerability = function () {
-                if (!this.vulnerable && game.time.now > this.invincibilityTimer) {
+                if (game.time.now > this.invincibilityTimer) {
                     this.vulnerable = false;
                 }
             }
@@ -194,6 +185,7 @@ demo.classes.prototype = {
             this.player = player;
             this.hitCount = 0;
             this.vulnerable = false;
+            this.invincibilityTimer = 0
             
             // Setup
             this.self = game.add.sprite(x, y, "skeleton");
@@ -229,7 +221,7 @@ demo.classes.prototype = {
                 }
             }
             this.manageVulnerability = function () {
-                if (!this.vulnerable && game.time.now > this.invincibilityTimer) {
+                if (game.time.now > this.invincibilityTimer) {
                     this.vulnerable = false;
                 }
             }
@@ -277,7 +269,7 @@ demo.classes.prototype = {
                 }
             }
             this.manageVulnerability = function () {
-                if (!this.vulnerable && game.time.now > this.invincibilityTimer) {
+                if (game.time.now > this.invincibilityTimer) {
                     this.vulnerable = false;
                 }
             }
@@ -487,7 +479,10 @@ demo.classes.prototype = {
         }
         console.log("items defined");
         
-        //INVENTORY
+        
+        /////////////
+        //INVENTORY//
+        /////////////
         Inventory = function(player){
             console.log('inventory created')
             this.player = player
@@ -510,27 +505,34 @@ demo.classes.prototype = {
                 console.log(this.numOfItemsInInventory)
             }
             
-            this.display = function(){
-                for(var x = 0; x < this.contents.length; x++){
-//                    switch(this.contents[x].toString()){
-//                    case 'Health Potion':
-                    if(this.contents[x].toString() == 'Health Potion'){
-                        tempHealthPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8,this.y + 28,'healthPotion')
-                        tempHealthPotion.anchor.setTo(0.5,0.5)
-                        tempHealthPotion.scale.setTo(-0.5,0.5)
-                        tempHealthPotion.fixedToCamera = true
-                    }
-                    else if(this.contents[x].toString() == 'Mana Potion'){
-                        tempManaPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8,this.y + 28,'manaPotion')
-                        tempManaPotion.anchor.setTo(0.5,0.5)
-                        tempManaPotion.scale.setTo(0.5,0.5)
-                        tempManaPotion.fixedToCamera = true
-                    }
-                }
-//                console.log('test display')
-//                for(var x; x < this.contents.length; x++) console.log(this.contents[x].toString())
-                    
+//            this.display = function(){
+//                for(var x = 0; x < this.contents.length; x++){
+////                    switch(this.contents[x].toString()){
+////                    case 'Health Potion':
+//                    if(this.contents[x].toString() == 'Health Potion'){
+//                        console.log("I'm running");
+//                        tempHealthPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'healthPotion')
+//                        tempHealthPotion.anchor.setTo(0.5,0.5)
+//                        tempHealthPotion.scale.setTo(-0.5,0.5)
+//                        tempHealthPotion.fixedToCamera = true
+//                    }
+//                    else if(this.contents[x].toString() == 'Mana Potion'){
+//                        tempManaPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'manaPotion')
+//                        tempManaPotion.anchor.setTo(0.5, 0.5)
+//                        tempManaPotion.scale.setTo(0.5, 0.5)
+//                        tempManaPotion.fixedToCamera = true
+//                    }
+//                }
+////                console.log('test display')
+////                for(var x; x < this.contents.length; x++) console.log(this.contents[x].toString())
+//                    
+//            }
+            
+            this.display = function () {
+                
             }
+            
+            
             this.selector = function(){
                 var keyList = []
                 keyList.push(Phaser.Keyboard.ONE)
