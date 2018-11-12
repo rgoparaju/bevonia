@@ -104,9 +104,10 @@ demo.state0.prototype = {
         
         // Enemy interaction
         var j; for (j = 0; j < enemies0.length; j++) {
-            if (game.physics.arcade.overlap(bevonia.self, enemies0[j].self)) {
+            if (game.physics.arcade.overlap(bevonia.self, enemies0[j].self) && !enemies0[j].vulnerable) {
                 if (bevonia.stabbing) {
                     enemies0[j].hitCount += 1;
+                    enemies0[j].vulnerable = true;
                     enemies0[j].die();
                     //enemies0[j].self.kill();
                 }

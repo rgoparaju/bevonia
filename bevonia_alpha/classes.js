@@ -112,6 +112,7 @@ demo.classes.prototype = {
             this.player = player;
             var velocity = 200;
             this.hitCount = 0;
+            this.vulnerable = false;
             
             // Setup
             this.spiderSound = game.sound.add('spiderSound');
@@ -172,6 +173,11 @@ demo.classes.prototype = {
                     }
                 }
             }
+            this.manageVulnerability = function () {
+                if (!this.vulnerable && game.time.now > this.invincibilityTimer) {
+                    this.vulnerable = false;
+                }
+            }
             this.die = function () {
                 if (this.hitCount == 4) {
                     this.self.kill();
@@ -187,6 +193,7 @@ demo.classes.prototype = {
             this.upBound = upBound;
             this.player = player;
             this.hitCount = 0;
+            this.vulnerable = false;
             
             // Setup
             this.self = game.add.sprite(x, y, "skeleton");
@@ -221,6 +228,11 @@ demo.classes.prototype = {
                     this.self.body.velocity.x = velocity;
                 }
             }
+            this.manageVulnerability = function () {
+                if (!this.vulnerable && game.time.now > this.invincibilityTimer) {
+                    this.vulnerable = false;
+                }
+            }
             this.die = function () {
                 if (this.hitCount == 2) {
                     this.self.kill();
@@ -236,6 +248,9 @@ demo.classes.prototype = {
             this.asleep = true;
             this.loX = loX; this.hiX = hiX;
             this.loY = loY; this.hiY = hiY;
+            this.hitCount = 0;
+            this.vulnerable = false;
+            this.invincibilityTimer = 0;
             
             // Setup
             this.self = game.add.sprite(x, y, "troll");
@@ -261,7 +276,16 @@ demo.classes.prototype = {
                     this.self.animations.play("chase", 10, true);
                 }
             }
-            
+            this.manageVulnerability = function () {
+                if (!this.vulnerable && game.time.now > this.invincibilityTimer) {
+                    this.vulnerable = false;
+                }
+            }
+            this.die = function () {
+                if (this.hitCount == 10) {
+                    this.self.kill();
+                }
+            }
         }
         
 
