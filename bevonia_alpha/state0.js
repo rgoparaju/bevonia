@@ -48,14 +48,13 @@ demo.state0.prototype = {
         
     // CREATE BEVONIA
         bevonia = new Bevonia(95, 1003, 1344);
-        bars = new Bars(bevonia);
         //inventory = new Inventory(866, 0);
         
     // PLACE ITEMS
-        key0 = new Key(493, 917, bevonia);
+        key0 = new Key(477, 917, bevonia);
         door0 = new Door(2560, 64, "state1", bevonia);
         sword0 = new Sword(48, 464, bevonia);
-        armor0 = new Armor(493, 912, bevonia);
+        armor0 = new Armor(509, 912, bevonia);
         aoe0 = new aoeItem(-100, -100, bevonia);
         precise0 = new preciseItem(95, 1003, bevonia);
         
@@ -68,9 +67,14 @@ demo.state0.prototype = {
         skeleton0 = new Skeleton(1060, 800, 832, 1248, bevonia);
         spider0 = new Spider(56, 300, 2, 460, "y", 1, bevonia);
         
-        
+        bars = new Bars(bevonia);        
         
         enemies0 = [skeleton0, spider0];
+        
+        //MUSIC
+        backgroundMusic = game.add.audio('tutorial');
+        backgroundMusic.loop = true;
+        backgroundMusic.play();  
         
         
         
@@ -133,7 +137,12 @@ demo.state0.prototype = {
                     var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
                     game.camera.shake(.02, 300);
                     game.physics.enable(boom);
-                    enemies0[k].self.kill();
+                    
+                    enemies0[k].hitCount += 2;
+                    enemies0[k].vulnerable = true;
+                    enemies0[k].die();
+                    enemies0[k].invincibilityTimer = game.time.now + 500;
+                    
                     boom.anchor.setTo(.5, .5);
                     boom.scale.setTo(1.5, 1.5);
                     boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);

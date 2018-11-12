@@ -24,7 +24,6 @@ demo.state2.prototype = {
         map2.setCollision([2, 3, 4, 5, 6, 8], true, "traps");
         
         bevonia = new Bevonia(128, 128, 1952);
-        bars = new Bars(bevonia);
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
@@ -37,6 +36,11 @@ demo.state2.prototype = {
         
         
         items2 = [armor2, sword2, door2];
+        
+        skeleton2_1 = new Skeleton(400, 1856, 257, 892, bevonia);
+        skeleton2_2 = new Skeleton(200, 960, 192, 647, bevonia);
+        skeleton2_3 = new Skeleton(48, 576, 32, 642, bevonia);
+        skeleton2_4 = new Skeleton(710, 768, 707, 896, bevonia);
         
         // PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
         //bat1_1 = new Bat(2112, 1666, bevonia);
@@ -57,7 +61,10 @@ demo.state2.prototype = {
         spider1_1 = new Spider(2408, 784, 867, 1264, "y", -1, bevonia);
         spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1, bevonia);
         
-        enemies2 = [spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
+        bars = new Bars(bevonia);
+        tempInventory = game.add.sprite(325,8,'inventory')
+        tempInventory.fixedToCamera = true
+        enemies2 = [skeleton2_1, skeleton2_2, skeleton2_3, skeleton2_4, spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
     
         
         
@@ -69,6 +76,9 @@ demo.state2.prototype = {
 //        items2.push(chest2);
     },
     update: function () {
+        inventory.selector()
+        inventory.display()        
+        
         game.physics.arcade.collide(bevonia.self, platforms2);
         //game.physics.arcade.collide(bat1_1.self, platforms2);
         game.physics.arcade.collide(bat1_2.self, platforms2);
@@ -93,6 +103,10 @@ demo.state2.prototype = {
         bevonia.castAOE();
         bevonia.castPrecise();
         
+        skeleton2_1.patrol();
+        skeleton2_2.patrol();
+        skeleton2_3.patrol();
+        skeleton2_4.patrol();
         spider1_1.patrol();
         spider1_2.patrol();
         //bat1_1.watch();
@@ -121,7 +135,10 @@ demo.state2.prototype = {
         var j; for (j = 0; j < enemies2.length; j++) {
             if (game.physics.arcade.overlap(bevonia.self, enemies2[j].self)) {
                 if (bevonia.stabbing) {
-                    enemies2[j].self.kill();
+                    enemies2[j].hitCount += 1;
+                    enemies2[j].vulnerable = true;
+                    enemies2[j].die();
+                    enemies2[j].invincibilityTimer = game.time.now + 500;
                 }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;
@@ -129,6 +146,7 @@ demo.state2.prototype = {
                     bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
                 }
             }
+            enemies2[j].manageVulnerability();
         }
         
         // Spell enemy interaction
@@ -143,7 +161,12 @@ demo.state2.prototype = {
                     var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
                     game.camera.shake(.02, 300);
                     game.physics.enable(boom);
-                    enemies2[k].self.kill();
+                    
+                    enemies2[k].hitCount += 2;
+                    enemies2[k].vulnerable = true;
+                    enemies2[k].die();
+                    enemies2[k].invincibilityTimer = game.time.now + 500;
+                    
                     boom.anchor.setTo(.5, .5);
                     boom.scale.setTo(1.5, 1.5);
                     boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
@@ -151,6 +174,7 @@ demo.state2.prototype = {
                     boom.animations.play("explode", 9, false);
                     bevonia.aoeExists = false;
                 }
+                enemoes2[k].manageVulnerability();
             }
             if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms2, traps2])) {
                 bevonia.aoeSound.play();

@@ -1,6 +1,7 @@
 //variables
 var test;
-var bevonia;
+var bevonia = null;
+var inventory = null;
 var platforms1;
 demo.state1 = function () {};
 demo.state1.prototype = {
@@ -22,15 +23,8 @@ demo.state1.prototype = {
         map1.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
         
         // Create new Bevonia and HUD
-        //bevonia = new Bevonia(128, 128);
         bevonia = new Bevonia(128, 128, 1344);
-        //inventory = new Inventory(866, 0);
-        
-        // Tutorial ghost test
-        //ghost1 = new tutorialGhost (360, 128, bevonia, "Press A to go left, D to go right, and W to \n jump");
-        
-        
-        
+
         // Place enemies
         skeleton1_1 = new Skeleton(48, 896, 48, 736, bevonia);
         bat1_1 = new Bat(896, 368, bevonia);
@@ -103,6 +97,10 @@ demo.state1.prototype = {
                 }
             }
         }
+
+        inventory.selector()
+        inventory.display()
+
         
         var j; for (j = 0; j < enemies1.length; j++) {
             if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self) && !enemies1[j].vulnerable) {
@@ -133,7 +131,12 @@ demo.state1.prototype = {
                     var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
                     game.camera.shake(.02, 300);
                     game.physics.enable(boom);
-                    enemies1[k].self.kill();
+                    
+                    enemies1[k].hitCount += 2;
+                    enemies1[k].vulnerable = true;
+                    enemies1[k].die();
+                    enemies1[k].invincibilityTimer = game.time.now + 500;
+                    
                     boom.anchor.setTo(.5, .5);
                     boom.scale.setTo(1.5, 1.5);
                     boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
@@ -141,6 +144,7 @@ demo.state1.prototype = {
                     boom.animations.play("explode", 9, false);
                     bevonia.aoeExists = false;
                 }
+            enemies1[k].manageVulnerability();
             }
             if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms1, traps1])) {
                 bevonia.aoeSound.play();

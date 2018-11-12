@@ -18,6 +18,7 @@ demo.classes.prototype = {
             // Technical variables
             var velocity = 212;
             this.player = player;
+            var counter = 0;
             
             // Setup
             this.self = game.add.sprite(x, y, "bat");
@@ -56,10 +57,14 @@ demo.classes.prototype = {
                 if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
                 this.batSound.play(); 
             } 
-            if (this.self.alive == false){
-//                this.batDeath.play();
+            if (this.self.alive == false && counter == 0){
+                this.batDeath.play();
                 this.batSound.stop();
+                counter++;
                 
+            }
+            if (this.self.alive == false){
+                this.batSound.stop();
             }
                 //console.log('bat is attacking')
                 var xComp = this.player.self.body.x - this.self.body.x;
@@ -104,6 +109,7 @@ demo.classes.prototype = {
             var velocity = 200;
             this.hitCount = 0;
             this.vulnerable = false;
+            var counter = 0;
             
             // Setup
             this.spiderSound = game.sound.add('spiderSound');
@@ -133,13 +139,16 @@ demo.classes.prototype = {
             
             // Behavior
             this.patrol = function () {
-                if (Math.abs(this.player.self.body.x - this.self.body.x) < 30){
+            if (Math.abs(this.player.self.body.x - this.self.body.x) < 30){
                 this.spiderSound.play(); 
             }
-                if (this.self.alive == false){
-//                this.spiderDeath.play();
+            if (this.self.alive == false && counter == 0){
+                this.spiderDeath.play();
                 this.spiderSound.stop();
-                
+                counter++;
+            }
+            if (this.self.alive == false){
+                    this.spiderSound.stop();
             }
                 if (this.direction == "x") {
                     if (this.self.body.x > this.upBound) {
@@ -170,7 +179,7 @@ demo.classes.prototype = {
                 }
             }
             this.die = function () {
-                if (this.hitCount == 4) {
+                if (this.hitCount >= 4) {
                     this.self.kill();
                 }
             }
@@ -185,7 +194,11 @@ demo.classes.prototype = {
             this.player = player;
             this.hitCount = 0;
             this.vulnerable = false;
+
             this.invincibilityTimer = 0
+
+            var counter = 0;
+
             
             // Setup
             this.self = game.add.sprite(x, y, "skeleton");
@@ -206,10 +219,13 @@ demo.classes.prototype = {
                 if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
                     this.skeletonSound.play(); 
             }
-                if (this.self.alive == false){
-//                this.skeletonDeath.play();
+            if (this.self.alive == false && counter == 0){
+                this.skeletonDeath.play();
                 this.skeletonSound.stop();
-                
+                counter++;
+            }
+                if (this.self.alive == false){
+                this.skeletonSound.stop();
             }
                 if (this.self.body.x > this.upBound) {
                     this.self.scale.x = -1;
@@ -226,7 +242,7 @@ demo.classes.prototype = {
                 }
             }
             this.die = function () {
-                if (this.hitCount == 2) {
+                if (this.hitCount >= 2) {
                     this.self.kill();
                 }
             }
@@ -274,7 +290,7 @@ demo.classes.prototype = {
                 }
             }
             this.die = function () {
-                if (this.hitCount == 10) {
+                if (this.hitCount >= 10) {
                     this.self.kill();
                 }
             }
@@ -503,6 +519,7 @@ demo.classes.prototype = {
 //                for(var x = 0; x < this.contents.length; x++) console.log(this.contents[x])
                 console.log(this.contents)
                 console.log(this.numOfItemsInInventory)
+                this.display()
             }
             
 //            this.display = function(){
@@ -551,6 +568,7 @@ demo.classes.prototype = {
                                  this.contents.splice(keyList[x]-49,1)
                                  console.log(this.contents)
                                  this.numOfItemsInInventory--
+                                 this.display()
                              }
 //                            for(var x = 0; x < this.contents.length; x++) this.display(this.contents[x])
                         }
@@ -860,8 +878,8 @@ demo.classes.prototype = {
                 }
                 else {
                     this.self.animations.play(this.armored + "jump", 1, true);
-                    if (this.self.body.velocity.y > 1000) {
-                        this.self.body.velocity.y = 1000;
+                    if (this.self.body.velocity.y > 900) {
+                        this.self.body.velocity.y = 900;
                     }
                 }
             }           
