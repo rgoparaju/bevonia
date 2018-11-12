@@ -1,6 +1,7 @@
 //variables
 var test;
-var bevonia;
+var bevonia = null;
+var inventory = null;
 var platforms1;
 demo.state1 = function () {};
 demo.state1.prototype = {
