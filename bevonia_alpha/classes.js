@@ -28,6 +28,7 @@ demo.classes.prototype = {
             // Technical variables
             var velocity = 212;
             this.player = player;
+            var counter = 0;
             
             // Setup
             this.self = game.add.sprite(x, y, "bat");
@@ -66,10 +67,14 @@ demo.classes.prototype = {
                 if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
                 this.batSound.play(); 
             } 
-            if (this.self.alive == false){
-//                this.batDeath.play();
+            if (this.self.alive == false && counter == 0){
+                this.batDeath.play();
                 this.batSound.stop();
+                counter++;
                 
+            }
+            if (this.self.alive == false){
+                this.batSound.stop();
             }
                 //console.log('bat is attacking')
                 var xComp = this.player.self.body.x - this.self.body.x;
@@ -113,6 +118,7 @@ demo.classes.prototype = {
             var velocity = 200;
             this.hitCount = 0;
             this.vulnerable = false;
+            var counter = 0;
             
             // Setup
             this.spiderSound = game.sound.add('spiderSound');
@@ -142,13 +148,16 @@ demo.classes.prototype = {
             
             // Behavior
             this.patrol = function () {
-                if (Math.abs(this.player.self.body.x - this.self.body.x) < 30){
+            if (Math.abs(this.player.self.body.x - this.self.body.x) < 30){
                 this.spiderSound.play(); 
             }
-                if (this.self.alive == false){
-//                this.spiderDeath.play();
+            if (this.self.alive == false && counter == 0){
+                this.spiderDeath.play();
                 this.spiderSound.stop();
-                
+                counter++;
+            }
+            if (this.self.alive == false){
+                    this.spiderSound.stop();
             }
                 if (this.direction == "x") {
                     if (this.self.body.x > this.upBound) {
@@ -194,6 +203,7 @@ demo.classes.prototype = {
             this.player = player;
             this.hitCount = 0;
             this.vulnerable = false;
+            var counter = 0;
             
             // Setup
             this.self = game.add.sprite(x, y, "skeleton");
@@ -214,10 +224,13 @@ demo.classes.prototype = {
                 if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
                     this.skeletonSound.play(); 
             }
-                if (this.self.alive == false){
-//                this.skeletonDeath.play();
+            if (this.self.alive == false && counter == 0){
+                this.skeletonDeath.play();
                 this.skeletonSound.stop();
-                
+                counter++;
+            }
+                if (this.self.alive == false){
+                this.skeletonSound.stop();
             }
                 if (this.self.body.x > this.upBound) {
                     this.self.scale.x = -1;
