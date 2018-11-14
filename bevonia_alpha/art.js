@@ -31,9 +31,6 @@ demo.art.prototype = {
         //
         
         // Level Three
-        
-        game.load.image('floor tile V4',"assets/tilesets_backgrounds/floorV4.png", 32, 32)
-        
         game.load.image('bg3','assets/tilesets_backgrounds/background level 3 ver3.png',3200,1600)
         
         // Level Four
