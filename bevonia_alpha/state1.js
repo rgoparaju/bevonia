@@ -99,7 +99,6 @@ demo.state1.prototype = {
         }
 
         inventory.selector()
-        inventory.display()
 
         
         var j; for (j = 0; j < enemies1.length; j++) {

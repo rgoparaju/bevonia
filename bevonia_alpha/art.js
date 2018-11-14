@@ -78,7 +78,7 @@ demo.art.prototype = {
         // Area of Effect (AoE)
         game.load.spritesheet("aoeObject", "assets/sprites/aoeObject.png", 16, 16);
         game.load.spritesheet('aoeProjectile', "assets/sprites/AoE Projectile.png", 32, 32);
-        game.load.spritesheet("aoeBlast", "assets/sprites/AoE Blast.png", 96, 96);
+        game.load.spritesheet("aoeBlast", "assets/sprites/AoE Blast.png", 144, 144);
         
         // Precision spell (precise)
         game.load.spritesheet("preciseObject", "assets/sprites/preciseObject.png", 16, 16);

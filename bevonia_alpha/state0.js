@@ -47,21 +47,27 @@ demo.state0.prototype = {
         K.animations.play("flash", 4, true);
         
     // CREATE BEVONIA
+        door0 = new Door(2560, 64, "state1", null);
+        chest0 = new Chest(597, 416, null, null);
+        
         bevonia = new Bevonia(95, 1003, 1344);
         //inventory = new Inventory(866, 0);
         
     // PLACE ITEMS
         key0 = new Key(477, 917, bevonia);
-        door0 = new Door(2560, 64, "state1", bevonia);
         sword0 = new Sword(48, 464, bevonia);
         armor0 = new Armor(509, 912, bevonia);
         aoe0 = new aoeItem(-100, -100, bevonia);
-        precise0 = new preciseItem(95, 1003, bevonia);
+        precise0 = new preciseItem(250, 1013, bevonia);
         
         chest0Contents = [aoe0];
         items0 = [key0, armor0, sword0, door0, aoe0, precise0];
         
-        chest0 = new Chest(597, 416, chest0Contents, bevonia, items0);
+        
+        door0.player = bevonia;
+        chest0.contents = chest0Contents;
+        chest0.player = bevonia;
+        
         items0.push(chest0);
         
         skeleton0 = new Skeleton(1060, 800, 832, 1248, bevonia);
@@ -108,7 +114,7 @@ demo.state0.prototype = {
         
         // Enemy interaction
         var j; for (j = 0; j < enemies0.length; j++) {
-            if (game.physics.arcade.overlap(bevonia.self, enemies0[j].self) && !enemies0[j].vulnerable) {
+            if (game.physics.arcade.collide(bevonia.self, enemies0[j].self) && !enemies0[j].vulnerable) {
                 if (bevonia.stabbing) {
                     enemies0[j].hitCount += 1;
                     enemies0[j].vulnerable = true;
@@ -145,7 +151,7 @@ demo.state0.prototype = {
                     
                     boom.anchor.setTo(.5, .5);
                     boom.scale.setTo(1.5, 1.5);
-                    boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                    boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6]);
                     bevonia.playerAOE.self.kill();
                     boom.animations.play("explode", 9, false);
                     bevonia.aoeExists = false;
@@ -156,10 +162,10 @@ demo.state0.prototype = {
                 xBoom = bevonia.playerAOE.self.body.x;
                 yBoom = bevonia.playerAOE.self.body.y;
                 var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
-                game.camera.shake(.02, 300);
+                game.camera.shake(.04, 300);
                 game.physics.enable(boom);
                 boom.anchor.setTo(.5, .5);
-                boom.scale.setTo(1.5, 1.5);
+                //boom.scale.setTo(1.5, 1.5);
                 boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
                 bevonia.playerAOE.self.kill();
                 boom.animations.play("explode", 9, false);

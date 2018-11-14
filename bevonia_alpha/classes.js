@@ -443,7 +443,7 @@ demo.classes.prototype = {
         }
         
         // Works
-        Chest = function (x, y, contentsArray, player, itemsArray) {
+        Chest = function (x, y, contentsArray, player) {
             // Setup
             this.self = game.add.sprite(x, y, "chest");
             this.self.anchor.setTo(0.5, 0.5);
@@ -522,31 +522,27 @@ demo.classes.prototype = {
                 this.display()
             }
             
-//            this.display = function(){
-//                for(var x = 0; x < this.contents.length; x++){
-////                    switch(this.contents[x].toString()){
-////                    case 'Health Potion':
-//                    if(this.contents[x].toString() == 'Health Potion'){
-//                        console.log("I'm running");
-//                        tempHealthPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'healthPotion')
-//                        tempHealthPotion.anchor.setTo(0.5,0.5)
-//                        tempHealthPotion.scale.setTo(-0.5,0.5)
-//                        tempHealthPotion.fixedToCamera = true
-//                    }
-//                    else if(this.contents[x].toString() == 'Mana Potion'){
-//                        tempManaPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'manaPotion')
-//                        tempManaPotion.anchor.setTo(0.5, 0.5)
-//                        tempManaPotion.scale.setTo(0.5, 0.5)
-//                        tempManaPotion.fixedToCamera = true
-//                    }
-//                }
-////                console.log('test display')
-////                for(var x; x < this.contents.length; x++) console.log(this.contents[x].toString())
-//                    
-//            }
-            
-            this.display = function () {
-                
+            this.display = function(){
+                for(var x = 0; x < this.contents.length; x++){
+//                    switch(this.contents[x].toString()){
+//                    case 'Health Potion':
+                    if(this.contents[x].toString() == 'Health Potion'){
+                        console.log("I'm running");
+                        tempHealthPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'healthPotion')
+                        tempHealthPotion.anchor.setTo(0.5,0.5)
+                        tempHealthPotion.scale.setTo(-0.5,0.5)
+                        tempHealthPotion.fixedToCamera = true
+                    }
+                    else if(this.contents[x].toString() == 'Mana Potion'){
+                        tempManaPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'manaPotion')
+                        tempManaPotion.anchor.setTo(0.5, 0.5)
+                        tempManaPotion.scale.setTo(0.5, 0.5)
+                        tempManaPotion.fixedToCamera = true
+                    }
+                }
+//                console.log('test display')
+//                for(var x; x < this.contents.length; x++) console.log(this.contents[x].toString())
+                    
             }
             
             
@@ -603,8 +599,8 @@ demo.classes.prototype = {
         }
         aoeProjectile = function (player) {
             this.player = player;
-            x0 = this.player.self.body.x;
-            y0 = this.player.self.body.y;
+            x0 = this.player.self.body.x + 16;
+            y0 = this.player.self.body.y + 24;
             this.self = game.add.sprite(x0, y0, "aoeProjectile");
             
             console.log(this.self)
@@ -771,9 +767,11 @@ demo.classes.prototype = {
             this.self.animations.add("run", [2, 3, 4, 5], 0, true);
             this.self.animations.add("jump", [1], 0, true);
             this.self.animations.add("idle", [0], 0, true);
+            this.self.animations.add("cast", [13, 14, 15], 0, true);
             this.self.animations.add("ARMOREDrun", [9, 10, 11, 12], 0, true);
             this.self.animations.add("ARMOREDjump", [8], 0, true);
             this.self.animations.add("ARMOREDidle", [7], 0, true);
+            this.self.animations.add("ARMOREDcast", [16, 16, 16], 0, true);
             this.self.animations.add("hide", [6], 0, true);
             
         // BEVONIA STAB SPRITE STUFF 
@@ -784,8 +782,8 @@ demo.classes.prototype = {
             
             // Animate
             this.stabSprite.animations.add("hide",[0], 0, true);
-            this.stabSprite.animations.add("stab",[1, 2, 3], 0, true);
-            this.stabSprite.animations.add("ARMOREDstab",[4, 5, 6], 0, true);
+            this.stabSprite.animations.add("stab",[1, 2, 3], 0, false);
+            this.stabSprite.animations.add("ARMOREDstab",[4, 5, 6], 0, false);
             this.stabSprite.animations.play("hide", 1, true);
         
             // Melee attack
@@ -822,6 +820,10 @@ demo.classes.prototype = {
                     this.playerAOE.self.body.gravity.y = 1200;
                     
                     this.mana -= .2;   
+                }
+                else if(this.aoeTimer > game.time.now) {
+                    this.self.animations.play(this.armored + "cast", 12, true);
+                    
                 }
             }
             // Precise
@@ -965,3 +967,5 @@ demo.classes.prototype = {
     
     }
 }
+
+var updateHelper = function (player, bars, inventory, enemiesArray, itemsArray) {}
