@@ -29,7 +29,7 @@ demo.state1.prototype = {
         map1.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
         
         // Create new Bevonia and HUD
-        chest1_1 = new Chest(2084, 1440, [], null);
+        chest1_1 = new Chest(2084, 1440, null, null);
         door1 = new Door (2560, 672, "state2", null);
         bevonia = new Bevonia(128, 128, 1536);
 
@@ -53,7 +53,9 @@ demo.state1.prototype = {
         healthPotion = new HealthPotion(353, 1200,bevonia)
         manaPotion = new ManaPotion(638,1200,bevonia)
         key = new Key (2562, 320, bevonia);
-        spell = new aoeItem(848, 528, bevonia);
+        exitKey = new SilverKey(0, 0, bevonia);
+        chest1_1.contents = [exitKey];
+        spell = new aoeItem(48, 856, bevonia);
         door1.player = bevonia;
         inventory = new Inventory(bevonia)
         
@@ -67,7 +69,7 @@ demo.state1.prototype = {
         backgroundMusic.loop = true;
         backgroundMusic.play();        
         
-        items1 = [sword, armor, spell, key, door1, chest1_1, healthPotion, manaPotion];
+        items1 = [sword, armor, spell, key, exitKey, door1, chest1_1, healthPotion, manaPotion];
         
         
         

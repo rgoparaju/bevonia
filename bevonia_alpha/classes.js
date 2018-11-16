@@ -448,6 +448,21 @@ demo.classes.prototype = {
                 this.self.kill();
             }
         }
+        SilverKey = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "silverKey");
+            this.self.anchor.setTo(0.5, 0.5);
+            this.player = player;
+            game.physics.enable(this.self);
+            
+            this.self.animations.add("spin", [0, 1, 2, 3, 4, 5, 6, 7]);
+            this.self.animations.play("spin", 5, true);
+            
+            this.interactWith = function () {
+                this.player.hasSilverKey = true;
+                this.self.kill();
+            }
+        }
         
         // Works
         Chest = function (x, y, contentsArray, player) {
@@ -490,9 +505,11 @@ demo.classes.prototype = {
             this.self.animations.add("open", [1], 0, true);
             
             this.interactWith = function () {
-                this.self.animations.play("open", 1, false);
-                game.state.start(this.targetState);
-                game.sound.stopAll();
+                if (this.player.hasSilverKey) {
+                    this.self.animations.play("open", 1, false);
+                    game.state.start(this.targetState);
+                    game.sound.stopAll();
+                }
             }
             
         }
@@ -737,6 +754,7 @@ demo.classes.prototype = {
             // Possession variables
             this.hasSword = false;
             this.hasKey = false;
+            this.hasSilverKey = false;
             this.damageFactor = .25;
             this.hasAOE = false;
             this.hasPrecise = false;

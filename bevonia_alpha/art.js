@@ -60,6 +60,7 @@ demo.art.prototype = {
     // ITEMS
         game.load.spritesheet("helmet", "assets/sprites/helmet.png", 32, 32);
         game.load.spritesheet("key", "assets/sprites/key.png", 32, 32);
+        game.load.spritesheet("silverKey", "assets/sprites/silverKey.png", 32, 32);
         game.load.spritesheet("sword", "assets/sprites/sword.png", 32, 64);   
         game.load.spritesheet("chest", "assets/sprites/chest.png", 64, 64);
         game.load.spritesheet("healthPotion", "assets/sprites/health potion.png", 36, 49);
