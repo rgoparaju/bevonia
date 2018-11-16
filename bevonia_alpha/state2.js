@@ -5,6 +5,7 @@ demo.state2.prototype = {
     preload: function () {
         // LOAD TILEMAP
         game.load.tilemap("level2", "assets/tilemaps/level2.json", null, Phaser.Tilemap.TILED_JSON);
+        game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png", 32, 32);
         
     },
     create: function () {

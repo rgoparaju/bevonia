@@ -5,16 +5,22 @@ var inventory = null;
 var platforms1;
 demo.state1 = function () {};
 demo.state1.prototype = {
+    preload: function () {
+        // Load environment
+        game.load.tilemap("level1", "assets/tilemaps/level1V2.json", null, Phaser.Tilemap.TILED_JSON);
+        game.load.image("wall sprite 2", "assets/tilesets_backgrounds/wall sprite 2.png");
+        
+    },
     create: function () {
     // CREATE ENVIRONMENT
         // Background
         background1 = game.add.sprite(0, 0, "bg1");
         // Tilemap
         var map1 = game.add.tilemap("level1");
-        map1.addTilesetImage("platforms");
-        map1.addTilesetImage("spikes");
+        map1.addTilesetImage("wall sprite 2");
+        map1.addTilesetImage("deathSpikes");
         // Camera
-        game.world.setBounds(0, 0, 2624, 1344);
+        game.world.setBounds(0, 0, 2624, 1536);
         
         platforms1 = map1.createLayer("platforms");
         traps1 = map1.createLayer("traps");
@@ -23,7 +29,7 @@ demo.state1.prototype = {
         map1.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
         
         // Create new Bevonia and HUD
-        bevonia = new Bevonia(128, 128, 1344);
+        bevonia = new Bevonia(128, 128, 1536);
 
         // Place enemies
         skeleton1_1 = new Skeleton(48, 896, 48, 736, bevonia);
@@ -45,7 +51,7 @@ demo.state1.prototype = {
         manaPotion = new ManaPotion(450,700,bevonia)
         //key = new Key (200, 128, bevonia);
         spell = new aoeItem(848, 528, bevonia);
-        door1 = new Door (2592, 1089, "state2", bevonia);
+        door1 = new Door (2560, 672, "state2", bevonia);
         inventory = new Inventory(bevonia)
         
         //SFX

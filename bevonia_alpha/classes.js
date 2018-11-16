@@ -486,8 +486,10 @@ demo.classes.prototype = {
             this.player = player;
             this.targetState = targetStateStr;
             game.physics.enable(this.self);
+            this.self.animations.add("open", [1], 0, true);
             
             this.interactWith = function () {
+                this.self.animations.play("open", 1, false);
                 game.state.start(this.targetState);
                 game.sound.stopAll();
             }
@@ -631,8 +633,8 @@ demo.classes.prototype = {
         preciseProjectile = function (player) {
             // Technical variables
             this.player = player;
-            x0 = this.player.self.body.x + 8;
-            y0 = this.player.self.body.y + 8;
+            x0 = this.player.self.body.x + 24;
+            y0 = this.player.self.body.y + 24;
             this.self = game.add.sprite(x0, y0, "preciseProject");
             
             // Setup
@@ -819,9 +821,10 @@ demo.classes.prototype = {
                     this.playerAOE.self.body.velocity.y = -150;
                     this.playerAOE.self.body.gravity.y = 1200;
                     
-                    this.mana -= .2;   
+                    this.mana -= .2;
+                    var played = false
                 }
-                else if(this.aoeTimer > game.time.now) {
+                else if(this.aoeTimer - 500 > game.time.now) {
                     this.self.animations.play(this.armored + "cast", 12, true);
                     
                 }

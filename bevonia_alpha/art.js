@@ -19,9 +19,9 @@ demo.art.prototype = {
         game.load.image("deathSpikes", "assets/tilesets_backgrounds/deathSpikes.png")
         
         // Level One
-        game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
-        game.load.image("platforms", "assets/tilesets_backgrounds/wall sprite 2.png");
-        game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png");
+//        game.load.tilemap("level1V2", "assets/tilemaps/level1V2.json", null, Phaser.Tilemap.TILED_JSON);
+//        game.load.image("platforms", "assets/tilesets_backgrounds/wall sprite 2.png");
+//        game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png");
         game.load.image("bg1", "assets/tilesets_backgrounds/test background v5.png", 2624, 1344);
         
         
@@ -64,7 +64,7 @@ demo.art.prototype = {
         game.load.spritesheet("chest", "assets/sprites/chest.png", 64, 64);
         game.load.spritesheet("healthPotion", "assets/sprites/health potion.png", 36, 49);
         game.load.spritesheet("manaPotion", "assets/sprites/mana potion.png", 36, 49);
-        game.load.image("door", "assets/sprites/door.png")
+        game.load.spritesheet("door", "assets/sprites/door.png", 32, 96);
         game.load.image('inventory','assets/sprites/inventory.png')
         game.load.image('inventorySelect','assets/sprites/inventory selector.png')
         //aoe spell scroll
