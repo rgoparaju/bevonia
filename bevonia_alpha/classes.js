@@ -219,7 +219,7 @@ demo.classes.prototype = {
             
             // Animate
             this.self.animations.add("patrol", [0, 1, 2, 3]);
-            this.self.animations.play("patrol", 4, true);
+            this.self.animations.play("patrol", 8, true);
     
             // Behavior
             this.patrol = function () {
