@@ -29,29 +29,32 @@ demo.state1.prototype = {
         map1.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
         
         // Create new Bevonia and HUD
+        chest1_1 = new Chest(2084, 1440, [], null);
+        door1 = new Door (2560, 672, "state2", null);
         bevonia = new Bevonia(128, 128, 1536);
 
         // Place enemies
-        skeleton1_1 = new Skeleton(48, 896, 48, 736, bevonia);
-        bat1_1 = new Bat(896, 368, bevonia);
-        spider1_1 = new Spider(1144, 76, 64, 240, "y", 1, bevonia);
-        skeleton1_2 = new Skeleton(1425, 320, 1312, 1606, bevonia);
-//        chest1_1 = new Chest(100,895,'healthPotion',bevonia);
-        
-        enemies1 = [skeleton1_1, bat1_1, spider1_1, skeleton1_2]
+        skeleton1_1 = new Skeleton(48, 1376, 33, 640, bevonia);
+        bat1_1 = new Bat(1090, 784, bevonia);
+        bat1_2 = new Bat(2433, 974, bevonia);
+        spider1_1 = new Spider(1706, 400, 304, 592, "y", -1, bevonia);
+        spider1_2 = new Spider(1960, 950, 912, 1360, "y", -1, bevonia);
+        skeleton1_2 = new Skeleton(1316, 736, 1472, 1702, bevonia);
+        chest1_1.player = bevonia;
+        enemies1 = [skeleton1_1, bat1_1, bat1_2, spider1_1, skeleton1_2, spider1_2]
         
         bars = new Bars(bevonia);
         
         
         // Place, store items
         fixBrick = game.add.sprite(2592, 1989, "platforms");
-        sword = new Sword(376, 528, bevonia);
-        armor = new Armor(947, 688, bevonia);
-        healthPotion = new HealthPotion(400,700,bevonia)
-        manaPotion = new ManaPotion(450,700,bevonia)
-        //key = new Key (200, 128, bevonia);
+        sword = new Sword(111, 364, bevonia);
+        armor = new Armor(1104, 816, bevonia);
+        healthPotion = new HealthPotion(353, 1200,bevonia)
+        manaPotion = new ManaPotion(638,1200,bevonia)
+        key = new Key (2562, 320, bevonia);
         spell = new aoeItem(848, 528, bevonia);
-        door1 = new Door (2560, 672, "state2", bevonia);
+        door1.player = bevonia;
         inventory = new Inventory(bevonia)
         
         //SFX
@@ -64,7 +67,7 @@ demo.state1.prototype = {
         backgroundMusic.loop = true;
         backgroundMusic.play();        
         
-        items1 = [sword, armor, spell, door1,healthPotion,manaPotion];
+        items1 = [sword, armor, spell, key, door1, chest1_1, healthPotion, manaPotion];
         
         
         
@@ -74,6 +77,7 @@ demo.state1.prototype = {
         game.physics.arcade.collide(healthPotion.self,platforms1)
         game.physics.arcade.collide(manaPotion.self,platforms1)
         game.physics.arcade.collide(bat1_1.self,platforms1)
+        game.physics.arcade.collide(bat1_2.self, platforms1);
         
         bars.displayStats();
         
@@ -90,7 +94,9 @@ demo.state1.prototype = {
         
         skeleton1_1.patrol();
         bat1_1.watch();
+        bat1_2.watch();
         spider1_1.patrol();
+        spider1_2.patrol();
         skeleton1_2.patrol();
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {

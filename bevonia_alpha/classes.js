@@ -75,6 +75,13 @@ demo.classes.prototype = {
                 xComp /= norm;
                 yComp /= norm;
                 
+                if (xComp < 0) {
+                    this.self.scale.x = 1;
+                }
+                else if (xComp > 0) {
+                    this.self.scale.x = -1;
+                }
+                
                 this.self.body.velocity.x = velocity * xComp;
                 this.self.body.velocity.y = velocity * yComp;
             }
@@ -456,7 +463,7 @@ demo.classes.prototype = {
             this.self.animations.add("open", [1]);
             
             this.interactWith = function () {
-                if (this.closed) {
+                if (this.closed && this.player.hasKey) {
                     console.log("Chest Opened");
                     this.self.animations.play("open", 1, false);
                     this.player.hasKey = false;
@@ -472,13 +479,7 @@ demo.classes.prototype = {
                 }
             }
         }
-        
-        // Doesn't exist yet
-        Scroll = function (x, y, typeStr, player) {
-            // Setup
-            this.self = game.add.sprite(x, y, typeStr + "scroll");
-            this.self.anchor.setTo(0.5, 0.5);
-        }
+
         
         Door = function (x, y, targetStateStr, player) {
             // Setup
