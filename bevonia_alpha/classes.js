@@ -520,77 +520,87 @@ demo.classes.prototype = {
         //INVENTORY//
         /////////////
         Inventory = function(player){
-            console.log('inventory created')
             this.player = player
-            this.x = 325
-            this.y = 8
-            this.self = game.add.sprite(this.x,this.y,'inventory')
             this.numOfItemsInInventory = 0
-            this.self.fixedToCamera = true
-            
-            this.selection = game.add.sprite(335,18,'inventorySelect')
-            this.selection.fixedToCamera = true
-            
+            this.numOfHealthPotions = 0
+            this.numOfManaPotions = 0
             this.contents = []
+            
+            this.healthText = game.add.text(330,8,'- ' + this.numOfHealthPotions,{fontsize: '25px', fill: '#ffffff'})
+            this.healthText.fixedToCamera = true
+            this.manaText = game.add.text(330,72,'- ' + this.numOfManaPotions,{fontsize: '25px', fill: '#ffffff'})
+            this.manaText.fixedToCamera = true
+            
             this.add = function(item) {
                 console.log('item is transferred to inventory')
                 this.contents.push(item)
                 this.numOfItemsInInventory++
+                if(item.toString() == 'Health Potion') this.numOfHealthPotions++
+                if(item.toString() == 'Mana Potion') this.numOfManaPotions++
 //                for(var x = 0; x < this.contents.length; x++) console.log(this.contents[x])
                 console.log(this.contents)
-                console.log(this.numOfItemsInInventory)
+//                console.log(this.numOfItemsInInventory)
+//                console.log(this.numOfHealthPotions + ' health')
+//                console.log(this.numOfManaPotions + ' mana')
                 this.display()
             }
             
             this.display = function(){
-                for(var x = 0; x < this.contents.length; x++){
-//                    switch(this.contents[x].toString()){
-//                    case 'Health Potion':
-                    if(this.contents[x].toString() == 'Health Potion'){
-                        console.log("I'm running");
-                        tempHealthPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'healthPotion')
-                        tempHealthPotion.anchor.setTo(0.5,0.5)
-                        tempHealthPotion.scale.setTo(-0.5,0.5)
-                        tempHealthPotion.fixedToCamera = true
-                    }
-                    else if(this.contents[x].toString() == 'Mana Potion'){
-                        tempManaPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'manaPotion')
-                        tempManaPotion.anchor.setTo(0.5, 0.5)
-                        tempManaPotion.scale.setTo(0.5, 0.5)
-                        tempManaPotion.fixedToCamera = true
-                    }
-                }
-//                console.log('test display')
-//                for(var x; x < this.contents.length; x++) console.log(this.contents[x].toString())
-                    
+                displayHealth = game.add.sprite(300,8,'healthPotion')
+//                displayHealth.anchor.setTo(0.5,0.5)
+                displayHealth.scale.setTo(0.6,0.6)
+                displayHealth.fixedToCamera = true
+                displayMana = game.add.sprite(300,72,'manaPotion')
+//                displayMana.anchor.setTo(0.5,0.5)
+                displayMana.scale.setTo(0.6,0.6)
+                displayMana.fixedToCamera = true
+                
+                
+                this.healthText.text = '- ' + this.numOfHealthPotions
+                this.manaText.text = '- ' + this.numOfManaPotions    
             }
-            
+            this.display()
             
             this.selector = function(){
-                var keyList = []
-                keyList.push(Phaser.Keyboard.ONE)
-                keyList.push(Phaser.Keyboard.TWO)
-                keyList.push(Phaser.Keyboard.THREE)
-                keyList.push(Phaser.Keyboard.FOUR)
-                keyList.push(Phaser.Keyboard.FIVE)
-                for(var x = 0; x < keyList.length; x++){
-                    if(game.input.keyboard.isDown(keyList[x])){
-                        this.selection.kill()
-                        this.selection = game.add.sprite(335 + (keyList[x] - 49)*36,18,'inventorySelect')
-                        this.selection.fixedToCamera = true
-                        
-                        if(this.contents[keyList[x]-49] != null){
-                             if(this.contents[keyList[x]-49].equip()){
-                                 this.contents.splice(keyList[x]-49,1)
-                                 console.log(this.contents)
-                                 this.numOfItemsInInventory--
-                                 this.display()
-                             }
-//                            for(var x = 0; x < this.contents.length; x++) this.display(this.contents[x])
+                if(game.input.keyboard.isDown(Phaser.Keyboard.ONE) && this.numOfHealthPotions != 0){
+//                    console.log('health potion used')
+//                    console.log(this.contents.indexOf(HealthPotion))
+                    var index = 0
+                    for(var x = 0; x < this.contents.length; x++){
+                        if(this.contents[x] instanceof HealthPotion){
+                            index = x
                         }
+//                        break
                     }
-                        
+                    if(this.contents[index].equip()){
+                        this.contents.splice(index,1)
+                        this.numOfHealthPotions--
+                        this.display()
+                        console.log(this.contents)
+                    }
+                    
                 }
+                if(game.input.keyboard.isDown(Phaser.Keyboard.TWO) && this.numOfManaPotions != 0){
+//                    console.log('mana potion used')
+                    var index = 0
+                    for(var x = 0; x < this.contents.length; x++){
+                        if(this.contents[x] instanceof ManaPotion){
+                            index = x
+                        }
+//                        break
+                    }
+                    if(this.contents[index].equip()){
+                        this.contents.splice(index,1)
+                        this.numOfManaPotions--
+                        this.display()
+                        console.log(this.contents)
+                    }
+                    
+                    
+                }
+                
+                
+
             }
 
         }
