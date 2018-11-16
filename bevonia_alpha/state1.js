@@ -92,7 +92,6 @@ demo.state1.prototype = {
         bevonia.castPrecise();
         
         inventory.selector()
-        inventory.display()
         
         skeleton1_1.patrol();
         bat1_1.watch();
@@ -108,6 +107,7 @@ demo.state1.prototype = {
                     console.log("I detect an overlap!!");
                     if(items1[i].interactWith())
                         inventory.add(items1[i])
+                    inventory.display()
                 }
             }
         }
