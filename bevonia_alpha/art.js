@@ -114,6 +114,7 @@ demo.art.prototype = {
         game.load.audio('levelTwo', 'assets/sounds/level2.mp3');
         game.load.audio('levelThree', 'assets/sounds/level3.mp3');
         game.load.audio('boss', 'assets/sounds/BossMusic.mp3');
+        game.load.audio("glug", "assets/sounds/glug.mp3");
                 
         
         

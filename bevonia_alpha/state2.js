@@ -6,11 +6,13 @@ demo.state2.prototype = {
         // LOAD TILEMAP
         game.load.tilemap("level2", "assets/tilemaps/level2.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png", 32, 32);
+        game.load.image("bg2", "assets/tilesets_backgrounds/bg2.png", 2912, 1952);
         
     },
     create: function () {
         // CREATE ENVIRONMENT
-        game.stage.backgroundColor = "#000000"
+        var bg2 = game.add.sprite(0, 0, "bg2");
+        //bg2.fixedToCamera = true;
         
         map2 = game.add.tilemap("level2");
         map2.addTilesetImage("floorV4");
@@ -63,8 +65,8 @@ demo.state2.prototype = {
         spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1, bevonia);
         
         bars = new Bars(bevonia);
-        tempInventory = game.add.sprite(325,8,'inventory')
-        tempInventory.fixedToCamera = true
+//        tempInventory = game.add.sprite(325,8,'inventory')
+//        tempInventory.fixedToCamera = true
         enemies2 = [skeleton2_1, skeleton2_2, skeleton2_3, skeleton2_4, spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
     
         
@@ -129,7 +131,6 @@ demo.state2.prototype = {
                     console.log("I detect an overlap!!");
                     items2[i].interactWith();
                 }
-            
             }
         }
         

@@ -51,6 +51,12 @@ demo.state1.prototype = {
         sword = new Sword(111, 364, bevonia);
         armor = new Armor(1104, 816, bevonia);
         healthPotion = new HealthPotion(353, 1200,bevonia)
+        
+        healthPotion1 = new HealthPotion(353, 1296,bevonia)
+        healthPotion2 = new HealthPotion(362, 1296,bevonia)
+        healthPotion3 = new HealthPotion(373, 1296,bevonia)
+        healthPotion4 = new HealthPotion(383, 1296,bevonia)
+        
         manaPotion = new ManaPotion(638,1200,bevonia)
         key = new Key (2562, 320, bevonia);
         exitKey = new SilverKey(0, 0, bevonia);
@@ -69,7 +75,7 @@ demo.state1.prototype = {
         backgroundMusic.loop = true;
         backgroundMusic.play();        
         
-        items1 = [sword, armor, spell, key, exitKey, door1, chest1_1, healthPotion, manaPotion];
+        items1 = [sword, armor, spell, key, exitKey, door1, chest1_1, healthPotion, manaPotion, healthPotion1, healthPotion2, healthPotion3, healthPotion4];
         
         
         
@@ -77,6 +83,11 @@ demo.state1.prototype = {
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms1);
         game.physics.arcade.collide(healthPotion.self,platforms1)
+        game.physics.arcade.collide(healthPotion1.self,platforms1)
+        game.physics.arcade.collide(healthPotion2.self,platforms1)
+        game.physics.arcade.collide(healthPotion3.self,platforms1)
+        game.physics.arcade.collide(healthPotion4.self,platforms1)
+        
         game.physics.arcade.collide(manaPotion.self,platforms1)
         game.physics.arcade.collide(bat1_1.self,platforms1)
         game.physics.arcade.collide(bat1_2.self, platforms1);

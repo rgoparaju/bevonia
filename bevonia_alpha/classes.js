@@ -444,6 +444,8 @@ demo.classes.prototype = {
             this.self.animations.play("spin", 5, true);
             
             this.interactWith = function () {
+                this.player.keySprite = game.add.sprite(370, 8, "key");
+                this.player.keySprite.fixedToCamera = true;
                 this.player.hasKey = true;
                 this.self.kill();
             }
@@ -459,6 +461,8 @@ demo.classes.prototype = {
             this.self.animations.play("spin", 5, true);
             
             this.interactWith = function () {
+                this.player.silverKeySprite = game.add.sprite(370, 72, "silverKey");
+                this.player.silverKeySprite.fixedToCamera = true;
                 this.player.hasSilverKey = true;
                 this.self.kill();
             }
@@ -479,6 +483,7 @@ demo.classes.prototype = {
             
             this.interactWith = function () {
                 if (this.closed && this.player.hasKey) {
+                    this.player.keySprite.kill();
                     console.log("Chest Opened");
                     this.self.animations.play("open", 1, false);
                     this.player.hasKey = false;
@@ -506,6 +511,7 @@ demo.classes.prototype = {
             
             this.interactWith = function () {
                 if (this.player.hasSilverKey) {
+                    this.player.silverKeySprite.kill();
                     this.self.animations.play("open", 1, false);
                     game.state.start(this.targetState);
                     game.sound.stopAll();
@@ -562,33 +568,38 @@ demo.classes.prototype = {
             this.display()
             
             this.selector = function(){
-                if(game.input.keyboard.isDown(Phaser.Keyboard.ONE) && this.numOfHealthPotions != 0){
-//                    console.log('health potion used')
-//                    console.log(this.contents.indexOf(HealthPotion))
+                var canUseHealth = true;
+                var canUseMana = true;
+                if(game.input.keyboard.isDown(Phaser.Keyboard.ONE) && this.numOfHealthPotions != 0 && canUseHealth){
+                    // Find health potion index in this.contents
                     var index = 0
                     for(var x = 0; x < this.contents.length; x++){
                         if(this.contents[x] instanceof HealthPotion){
                             index = x
                         }
-//                        break
                     }
+                    // Use found health potion
                     if(this.contents[index].equip()){
                         this.contents.splice(index,1)
                         this.numOfHealthPotions--
                         this.display()
                         console.log(this.contents)
                     }
-                    
+                    canUseHealth = false;
                 }
+                else if(!(game.input.keyboard.isDown(Phaser.Keyboard.ONE) || canUseHealth)) {
+                    canUseHealth = true;
+                }
+                
                 if(game.input.keyboard.isDown(Phaser.Keyboard.TWO) && this.numOfManaPotions != 0){
-//                    console.log('mana potion used')
+                    // Find mana potion index in this.contents
                     var index = 0
                     for(var x = 0; x < this.contents.length; x++){
                         if(this.contents[x] instanceof ManaPotion){
                             index = x
                         }
-//                        break
                     }
+                    // Use found mana potion
                     if(this.contents[index].equip()){
                         this.contents.splice(index,1)
                         this.numOfManaPotions--
@@ -956,7 +967,6 @@ demo.classes.prototype = {
                     this.self.kill()
                 }
             }
-            
         }
         
         Dragon = function (spawnPointArray, player) {
@@ -979,6 +989,7 @@ demo.classes.prototype = {
             this.self.animations.add("jet", [0, 1]);
             this.self.animations.add("breathe" [7, 8])
             this.self.animations.play("rise", 10, false);
+            this.self.animations.play("breathe", 10, true);
             
             this.manageHealth = function () {
                 if (this.health <= 0) {
@@ -999,5 +1010,3 @@ demo.classes.prototype = {
     
     }
 }
-
-var updateHelper = function (player, bars, inventory, enemiesArray, itemsArray) {}
