@@ -54,9 +54,12 @@ demo.classes.prototype = {
             // Finds unit vector from bat to player, scaled vector by bat velocity
             // Bat doesn't rest until it is dead
             this.attack = function () {
-                if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
+//                var xDiff = this.player.self.body.x - this.self.body.x;
+//                var yDiff = this.player.self.body.y - this.self.body.y;
+//                if (xDiff * xDiff + yDiff * yDiff < 147456){
+//                    this.batSound.play(); 
+//                }
                 this.batSound.play(); 
-            } 
             if (this.self.alive == false && counter == 0){
                 this.batDeath.play();
                 this.batSound.stop();
@@ -146,39 +149,41 @@ demo.classes.prototype = {
             
             // Behavior
             this.patrol = function () {
-            if (Math.abs(this.player.self.body.x - this.self.body.x) < 30){
-                this.spiderSound.play(); 
-            }
-            if (this.self.alive == false && counter == 0){
-                this.spiderDeath.play();
-                this.spiderSound.stop();
-                counter++;
-            }
-            if (this.self.alive == false){
+                var xDiff = this.player.self.body.x - this.self.body.x;
+                var yDiff = this.player.self.body.y - this.self.body.y;
+                if ((xDiff * xDiff + yDiff * yDiff) < 147456){
+                    this.spiderSound.play(); 
+                }
+                if (this.self.alive == false && counter == 0){
+                    this.spiderDeath.play();
                     this.spiderSound.stop();
-            }
-                if (this.direction == "x") {
-                    if (this.self.body.x > this.upBound) {
-                        console.log("greater");
-                        this.self.scale.x = 1;
-                        this.self.body.velocity.x = -velocity;
-                    }
-                    else if (this.self.body.x < this.lowBound) {
-                        console.log("lesser");
-                        this.self.scale.x = -1;
-                        this.self.body.velocity.x = velocity;
-                    }
+                    counter++;
                 }
-                else {
-                    if (this.self.body.y > this.upBound) {
-                        this.self.scale.y = 1;
-                        this.self.body.velocity.y = -velocity;
-                    }
-                    else if (this.self.body.y < this.lowBound) {
-                        this.self.scale.y = -1;
-                        this.self.body.velocity.y = velocity;
-                    }
+                if (this.self.alive == false){
+                        this.spiderSound.stop();
                 }
+                    if (this.direction == "x") {
+                        if (this.self.body.x > this.upBound) {
+                            console.log("greater");
+                            this.self.scale.x = 1;
+                            this.self.body.velocity.x = -velocity;
+                        }
+                        else if (this.self.body.x < this.lowBound) {
+                            console.log("lesser");
+                            this.self.scale.x = -1;
+                            this.self.body.velocity.x = velocity;
+                        }
+                    }
+                    else {
+                        if (this.self.body.y > this.upBound) {
+                            this.self.scale.y = 1;
+                            this.self.body.velocity.y = -velocity;
+                        }
+                        else if (this.self.body.y < this.lowBound) {
+                            this.self.scale.y = -1;
+                            this.self.body.velocity.y = velocity;
+                        }
+                    }
             }
             this.manageVulnerability = function () {
                 if (game.time.now > this.invincibilityTimer) {
@@ -223,7 +228,9 @@ demo.classes.prototype = {
     
             // Behavior
             this.patrol = function () {
-                if (Math.abs(this.player.self.body.x - this.self.body.x) < 20){
+                var xDiff = this.player.self.body.x - this.self.body.x;
+                var yDiff = this.player.self.body.y - this.self.body.y;
+                if (xDiff * xDiff + yDiff * yDiff < 147456){
                     this.skeletonSound.play(); 
             }
             if (this.self.alive == false && counter == 0){
@@ -476,6 +483,9 @@ demo.classes.prototype = {
             this.contents = contentsArray;
             this.player = player;
             this.closed = true;
+            this.lockedSound = game.add.sound("locked");
+            this.unlockSound = game.add.sound("unlock");
+            this.soundTimer = 0;
             
             game.physics.enable(this.self);
             
@@ -487,15 +497,19 @@ demo.classes.prototype = {
                     console.log("Chest Opened");
                     this.self.animations.play("open", 1, false);
                     this.player.hasKey = false;
+                    this.unlockSound.play();
                     var i; for (i = 0; i < this.contents.length; i++) {
                         game.physics.enable(this.contents[i].self);
                         this.contents[i].self.body.x = this.self.body.x + 90;
                         this.contents[i].self.body.y = this.self.body.y - 5;
                         this.contents[i].self.anchor.setTo(0.5,0.5);
-                        this.contents[i].self.body.collideWorldBounds = true;
-                        
+                        this.contents[i].self.body.collideWorldBounds = true;   
                     }
                     this.closed = false;
+                }
+                else if (this.closed && this.soundTimer < game.time.now){
+                    this.lockedSound.play();
+                    this.soundTimer = game.time.now + 500;
                 }
             }
         }
@@ -508,13 +522,21 @@ demo.classes.prototype = {
             this.targetState = targetStateStr;
             game.physics.enable(this.self);
             this.self.animations.add("open", [1], 0, true);
+            this.lockedSound = game.add.sound("locked");
+            this.unlockSound = game.add.sound("unlock");
+            this.soundTimer = 0;
             
             this.interactWith = function () {
                 if (this.player.hasSilverKey) {
                     this.player.silverKeySprite.kill();
                     this.self.animations.play("open", 1, false);
-                    game.state.start(this.targetState);
+                    this.unlockSound.play();
                     game.sound.stopAll();
+                    game.state.start(this.targetState);
+                }
+                else if (this.soundTimer < game.time.now) {
+                    this.lockedSound.play();
+                    this.soundTimer = game.time.now + 500;
                 }
             }
             
@@ -938,6 +960,8 @@ demo.classes.prototype = {
             }
             this.die = function () {
                 if (this.health <= 0 || this.self.body.y > this.deathY) {
+                    game.sound.stopAll();
+                    game.sound.stopAll();
                     game.sound.stopAll();
                     this.dieSound.play();
                     game.state.start(game.state.current);
