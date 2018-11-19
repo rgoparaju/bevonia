@@ -1,5 +1,6 @@
 var bevonia;
 var map2;
+var inventory2 = null;
 demo.state2 = function () {};
 demo.state2.prototype = {
     preload: function () {
@@ -34,6 +35,20 @@ demo.state2.prototype = {
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
+        
+        inventory2 = new Inventory(bevonia)
+
+        for(var x = 0; x < inventory1.contents.length; x++){
+            if(inventory1.contents[x] instanceof HealthPotion){
+                tempPotion = new HealthPotion(0,0,bevonia)
+                inventory2.add(tempPotion)
+            }
+            else if(inventory1.contents[x] instanceof ManaPotion){
+                tempPotion2 = new ManaPotion(0,0,bevonia)
+                inventory2.add(tempPotion2)
+            }
+        } 
+//        console.log(inventory2.contents)
         
         //MUSIC
         backgroundMusic = game.add.audio('levelTwo');
@@ -82,7 +97,7 @@ demo.state2.prototype = {
 //        items2.push(chest2);
     },
     update: function () {
-        inventory.selector()     
+        inventory2.selector()     
         
         game.physics.arcade.collide(bevonia.self, platforms2);
         //game.physics.arcade.collide(bat1_1.self, platforms2);
