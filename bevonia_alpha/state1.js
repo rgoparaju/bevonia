@@ -1,7 +1,7 @@
 //variables
 var test;
 var bevonia = null;
-var inventory = null;
+var inventory1 = null;
 var platforms1;
 demo.state1 = function () {};
 demo.state1.prototype = {
@@ -63,7 +63,7 @@ demo.state1.prototype = {
         chest1_1.contents = [exitKey];
         spell = new aoeItem(48, 856, bevonia);
         door1.player = bevonia;
-        inventory = new Inventory(bevonia)
+        inventory1 = new Inventory(bevonia)
         
         //SFX
         jumpSound = game.sound.add("jump");
@@ -102,7 +102,7 @@ demo.state1.prototype = {
         bevonia.castAOE();
         bevonia.castPrecise();
         
-        inventory.selector()
+        inventory1.selector()
         
         skeleton1_1.patrol();
         bat1_1.watch();
@@ -117,14 +117,11 @@ demo.state1.prototype = {
                 if (game.physics.arcade.overlap(bevonia.self, items1[i].self)) {
                     console.log("I detect an overlap!!");
                     if(items1[i].interactWith())
-                        inventory.add(items1[i])
-                    inventory.display()
+                        inventory1.add(items1[i])
+                    inventory1.display()
                 }
             }
         }
-
-        inventory.selector()
-
         
         var j; for (j = 0; j < enemies1.length; j++) {
             if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self) && !enemies1[j].vulnerable) {
