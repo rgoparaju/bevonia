@@ -121,6 +121,7 @@ demo.art.prototype = {
         game.load.audio("unlock", "assets/sounds/unlock.mp3");
         game.load.audio("clink" ,"assets/sounds/clink.mp3");
         game.load.audio("jangle", "assets/sounds/keys.mp3");
+        game.load.audio("clunk", "assets/sounds/clunk.mp3");
                 
         
         

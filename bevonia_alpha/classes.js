@@ -377,7 +377,7 @@ demo.classes.prototype = {
             this.self = game.add.sprite(x, y, "helmet");
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
-            this.interactSound = game.sound.add('interact');
+            this.interactSound = game.sound.add('clunk');
             this.player = player
             
             this.self.animations.add("spin", [0, 1, 2, 3]);
