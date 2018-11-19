@@ -7,6 +7,7 @@ demo.state2.prototype = {
         game.load.tilemap("level2", "assets/tilemaps/level2.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png", 32, 32);
         game.load.image("bg2", "assets/tilesets_backgrounds/level2BG.png", 2912, 1952);
+        game.load.image("floorV5", "assets/tilesets_backgrounds/floorV5.png", 32, 32);
         
     },
     create: function () {
@@ -16,7 +17,7 @@ demo.state2.prototype = {
         
         
         map2 = game.add.tilemap("level2");
-        map2.addTilesetImage("floorV4");
+        map2.addTilesetImage("floorV5");
         map2.addTilesetImage("spikes");
         
         game.world.setBounds(0, 0, 2912, 1952);
@@ -24,7 +25,7 @@ demo.state2.prototype = {
         platforms2 = map2.createLayer("platforms");
         traps2 = map2.createLayer("traps");
         
-        map2.setCollision(1, true, "platforms");
+        map2.setCollision(10, true, "platforms");
         map2.setCollision([2, 3, 4, 5, 6, 8], true, "traps");
         door2 = new Door(992, 128, "state3", null);
         

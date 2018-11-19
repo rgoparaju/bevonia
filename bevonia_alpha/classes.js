@@ -396,7 +396,7 @@ demo.classes.prototype = {
             this.self.anchor.setTo(0.5,0.5)
             this.self.scale.setTo(0.6,0.6)
             game.physics.enable(this.self)
-            this.interactSound = game.sound.add('interact');
+            this.interactSound = game.sound.add('clink');
             this.self.body.gravity.y = 1200
             this.player = player
             
@@ -433,7 +433,7 @@ demo.classes.prototype = {
             
             this.self.scale.setTo(0.6,0.6)
             game.physics.enable(this.self)
-            this.interactSound = game.sound.add('interact');
+            this.interactSound = game.sound.add('clink');
             this.self.body.gravity.y = 1200
             this.player = player
             
@@ -470,6 +470,7 @@ demo.classes.prototype = {
             this.self.anchor.setTo(0.5, 0.5);
             this.player = player;
             game.physics.enable(this.self);
+            this.jangle = game.add.sound("jangle");
             
             this.self.animations.add("spin", [0, 1, 2, 3, 4, 5, 6, 7]);
             this.self.animations.play("spin", 5, true);
@@ -477,6 +478,7 @@ demo.classes.prototype = {
             this.interactWith = function () {
                 this.player.keySprite = game.add.sprite(370, 8, "key");
                 this.player.keySprite.fixedToCamera = true;
+                this.jangle.play();
                 this.player.hasKey = true;
                 this.self.kill();
             }
@@ -486,6 +488,7 @@ demo.classes.prototype = {
             this.self = game.add.sprite(x, y, "silverKey");
             this.self.anchor.setTo(0.5, 0.5);
             this.player = player;
+            this.jangle = game.add.sound("jangle");
             game.physics.enable(this.self);
             
             this.self.animations.add("spin", [0, 1, 2, 3, 4, 5, 6, 7]);
@@ -494,6 +497,7 @@ demo.classes.prototype = {
             this.interactWith = function () {
                 this.player.silverKeySprite = game.add.sprite(370, 72, "silverKey");
                 this.player.silverKeySprite.fixedToCamera = true;
+                this.jangle.play();
                 this.player.hasSilverKey = true;
                 this.self.kill();
             }
