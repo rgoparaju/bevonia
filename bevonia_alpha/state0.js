@@ -39,6 +39,9 @@ demo.state0.prototype = {
         E3 = game.add.sprite(100, 390, "E");
         E3.animations.add("flash", [0, 1]);
         E3.animations.play("flash", 4, true);
+        E4 = game.add.sprite(2414, 64, "E");
+        E4.animations.add("flash", [0, 1]);
+        E4.animations.play("flash", 4, true);
         L = game.add.sprite(100, 420, "L");
         L.animations.add("flash", [0, 1]);
         L.animations.play("flash", 4, true);
@@ -55,13 +58,14 @@ demo.state0.prototype = {
         
     // PLACE ITEMS
         key0 = new Key(477, 917, bevonia);
+        exitKey = new SilverKey(2414, 240, bevonia);
         sword0 = new Sword(48, 464, bevonia);
         armor0 = new Armor(509, 912, bevonia);
         aoe0 = new aoeItem(-100, -100, bevonia);
         precise0 = new preciseItem(250, 1013, bevonia);
         
         chest0Contents = [aoe0];
-        items0 = [key0, armor0, sword0, door0, aoe0, precise0];
+        items0 = [key0, exitKey, armor0, sword0, door0, aoe0, precise0];
         
         
         door0.player = bevonia;

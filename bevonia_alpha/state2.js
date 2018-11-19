@@ -5,14 +5,19 @@ demo.state2.prototype = {
     preload: function () {
         // LOAD TILEMAP
         game.load.tilemap("level2", "assets/tilemaps/level2.json", null, Phaser.Tilemap.TILED_JSON);
+        game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png", 32, 32);
+        game.load.image("bg2", "assets/tilesets_backgrounds/level2BG.png", 2912, 1952);
+        game.load.image("floorV5", "assets/tilesets_backgrounds/floorV5.png", 32, 32);
         
     },
     create: function () {
         // CREATE ENVIRONMENT
-        game.stage.backgroundColor = "#000000"
+        game.stage.backgroundColor = "#111111";
+        var bg2 = game.add.sprite(0, 0, "bg2");
+        
         
         map2 = game.add.tilemap("level2");
-        map2.addTilesetImage("floorV4");
+        map2.addTilesetImage("floorV5");
         map2.addTilesetImage("spikes");
         
         game.world.setBounds(0, 0, 2912, 1952);
@@ -20,14 +25,15 @@ demo.state2.prototype = {
         platforms2 = map2.createLayer("platforms");
         traps2 = map2.createLayer("traps");
         
-        map2.setCollision(1, true, "platforms");
+        map2.setCollision(10, true, "platforms");
         map2.setCollision([2, 3, 4, 5, 6, 8], true, "traps");
+        door2 = new Door(992, 128, "state3", null);
         
         bevonia = new Bevonia(128, 128, 1952);
+        door2.player = bevonia;
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
-        door2 = new Door(992, 128, "state4", bevonia);
         
         //MUSIC
         backgroundMusic = game.add.audio('levelTwo');
@@ -42,31 +48,31 @@ demo.state2.prototype = {
         skeleton2_3 = new Skeleton(48, 576, 32, 642, bevonia);
         skeleton2_4 = new Skeleton(710, 768, 707, 896, bevonia);
         
-        // PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
-        //bat1_1 = new Bat(2112, 1666, bevonia);
+//         PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
+//        bat1_1 = new Bat(2112, 1666, bevonia);
         bat1_2 = new Bat(2144, 1666, bevonia);
         bat1_3 = new Bat(2176, 1666, bevonia);
         bat1_4 = new Bat(2208, 1666, bevonia);
         bat1_5 = new Bat(2240, 1666, bevonia);
-        //bat1_6 = new Bat(2272, 1666, bevonia);
+//        bat1_6 = new Bat(2272, 1666, bevonia);
         bat1_7 = new Bat(2304, 1666, bevonia);
         bat1_8 = new Bat(2336, 1666, bevonia);
         bat1_9 = new Bat(2368, 1666, bevonia);
         bat1_10 = new Bat(2400, 1666, bevonia);
         bat1_11 = new Bat(2432, 1666, bevonia);
         
-        // 1 troll in the troll section (2389, 368)
+//         1 troll in the troll section (2389, 368)
         troll1_1 = new Troll(2389, 376, 2262, 2317, 300, 368, bevonia);
         
         spider1_1 = new Spider(2408, 784, 867, 1264, "y", -1, bevonia);
         spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1, bevonia);
         
         bars = new Bars(bevonia);
-        tempInventory = game.add.sprite(325,8,'inventory')
-        tempInventory.fixedToCamera = true
+//        tempInventory = game.add.sprite(325,8,'inventory')
+//        tempInventory.fixedToCamera = true
         enemies2 = [skeleton2_1, skeleton2_2, skeleton2_3, skeleton2_4, spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
     
-        
+        inventory.display()
         
         // chest 1035 464
 //        chest2Contents = [healthPotion];
@@ -76,8 +82,7 @@ demo.state2.prototype = {
 //        items2.push(chest2);
     },
     update: function () {
-        inventory.selector()
-        inventory.display()        
+        inventory.selector()     
         
         game.physics.arcade.collide(bevonia.self, platforms2);
         //game.physics.arcade.collide(bat1_1.self, platforms2);
@@ -128,7 +133,6 @@ demo.state2.prototype = {
                     console.log("I detect an overlap!!");
                     items2[i].interactWith();
                 }
-            
             }
         }
         
@@ -225,7 +229,7 @@ demo.state2.prototype = {
                     boom.animations.play("explode", 9, false);
                     bevonia.aoeExists = false;
                 }
-                enemoes2[k].manageVulnerability();
+                enemies2[k].manageVulnerability();
             }
             if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms2, traps2])) {
                 bevonia.aoeSound.play();

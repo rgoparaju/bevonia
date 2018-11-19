@@ -19,9 +19,9 @@ demo.art.prototype = {
         game.load.image("deathSpikes", "assets/tilesets_backgrounds/deathSpikes.png")
         
         // Level One
-        game.load.tilemap("level1", "assets/tilemaps/level1.json", null, Phaser.Tilemap.TILED_JSON);
-        game.load.image("platforms", "assets/tilesets_backgrounds/wall sprite 2.png");
-        game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png");
+//        game.load.tilemap("level1V2", "assets/tilemaps/level1V2.json", null, Phaser.Tilemap.TILED_JSON);
+//        game.load.image("platforms", "assets/tilesets_backgrounds/wall sprite 2.png");
+//        game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png");
         game.load.image("bg1", "assets/tilesets_backgrounds/test background v5.png", 2624, 1344);
         
         
@@ -60,11 +60,12 @@ demo.art.prototype = {
     // ITEMS
         game.load.spritesheet("helmet", "assets/sprites/helmet.png", 32, 32);
         game.load.spritesheet("key", "assets/sprites/key.png", 32, 32);
+        game.load.spritesheet("silverKey", "assets/sprites/silverKey.png", 32, 32);
         game.load.spritesheet("sword", "assets/sprites/sword.png", 32, 64);   
         game.load.spritesheet("chest", "assets/sprites/chest.png", 64, 64);
         game.load.spritesheet("healthPotion", "assets/sprites/health potion.png", 36, 49);
         game.load.spritesheet("manaPotion", "assets/sprites/mana potion.png", 36, 49);
-        game.load.image("door", "assets/sprites/door.png")
+        game.load.spritesheet("door", "assets/sprites/door.png", 32, 96);
         game.load.image('inventory','assets/sprites/inventory.png')
         game.load.image('inventorySelect','assets/sprites/inventory selector.png')
         //aoe spell scroll
@@ -100,12 +101,14 @@ demo.art.prototype = {
         game.load.audio('aoe', 'assets/sounds/aoe.mp3');
         game.load.audio('cast', 'assets/sounds/cast.mp3');
         game.load.audio('die', 'assets/sounds/die.mp3');
-        game.load.audio('spiderSound', 'assets/sounds/spider.mp3');
+        game.load.audio('spiderSound', 'assets/sounds/spiderStep.mp3');
         game.load.audio('spiderDeath', 'assets/sounds/spiderdeath.mp3');
-        game.load.audio('skeletonSound', 'assets/sounds/skeleton.mp3');
-        game.load.audio('skeletonDeath', 'assets/sounds/skeldeath.mp3');
+        game.load.audio("spiderHit", "assets/sounds/spiderHit.mp3");
+        game.load.audio('skeletonSound', 'assets/sounds/skeletonStep.mp3');
+        game.load.audio("skeletonHit", "assets/sounds/skeletonHit.mp3")
+        game.load.audio('skeletonDeath', 'assets/sounds/skeletonDeath.mp3');
         game.load.audio('batSound', 'assets/sounds/bat.mp3');
-        game.load.audio('batDeath', 'assets/sounds/batdeath.mp3');
+        game.load.audio('batDeath', 'assets/sounds/batSqueal.mp3');
         game.load.audio("trollRoar", "assets/sounds/trollroar.mp3");
         game.load.audio('interact','assets/sounds/interact.mp3');
         game.load.audio('tutorial', 'assets/sounds/tutorial.mp3');
@@ -113,6 +116,11 @@ demo.art.prototype = {
         game.load.audio('levelTwo', 'assets/sounds/level2.mp3');
         game.load.audio('levelThree', 'assets/sounds/level3.mp3');
         game.load.audio('boss', 'assets/sounds/BossMusic.mp3');
+        game.load.audio("glug", "assets/sounds/glug.mp3");
+        game.load.audio("locked", "assets/sounds/locked.mp3");
+        game.load.audio("unlock", "assets/sounds/unlock.mp3");
+        game.load.audio("clink" ,"assets/sounds/clink.mp3");
+        game.load.audio("jangle", "assets/sounds/keys.mp3");
                 
         
         

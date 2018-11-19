@@ -19,6 +19,7 @@ demo.classes.prototype = {
             var velocity = 212;
             this.player = player;
             var counter = 0;
+            this.soundTimer = 0;
             
             // Setup
             this.self = game.add.sprite(x, y, "bat");
@@ -54,6 +55,7 @@ demo.classes.prototype = {
             // Finds unit vector from bat to player, scaled vector by bat velocity
             // Bat doesn't rest until it is dead
             this.attack = function () {
+<<<<<<< HEAD
                 var x1 = this.player.self.body.x;
                 var x2 = this.self.body.x
                 var y1 = this.player.self.body.y;
@@ -63,8 +65,18 @@ demo.classes.prototype = {
                 var dist = Math.sqrt(dx * dx + dy * dy);
                 
                 if (dist < 20){
+=======
+                var xDiff = this.player.self.body.x - this.self.body.x;
+                var yDiff = this.player.self.body.y - this.self.body.y;
+                if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
+                    this.batSound.play();
+                    this.soundTimer = game.time.now + 576;
+                }
+                else if (xDiff * xDiff + yDiff * yDiff > 147456) {
+                    this.batSound.stop();
+                }
+>>>>>>> ddd418d04c45036c0f80e2fde599020a4b7a3f51
                 this.batSound.play(); 
-            } 
             if (this.self.alive == false && counter == 0){
                 this.batDeath.play();
                 this.batSound.stop();
@@ -82,6 +94,13 @@ demo.classes.prototype = {
                 
                 xComp /= norm;
                 yComp /= norm;
+                
+                if (xComp < 0) {
+                    this.self.scale.x = 1;
+                }
+                else if (xComp > 0) {
+                    this.self.scale.x = -1;
+                }
                 
                 this.self.body.velocity.x = velocity * xComp;
                 this.self.body.velocity.y = velocity * yComp;
@@ -118,10 +137,12 @@ demo.classes.prototype = {
             this.hitCount = 0;
             this.vulnerable = false;
             var counter = 0;
+            this.soundTimer = 0;
             
             // Setup
             this.spiderSound = game.sound.add('spiderSound');
             this.spiderDeath = game.sound.add('spiderDeath');
+            this.gotHit = game.sound.add("spiderHit");
             this.spiderSound.loop = true;
             this.self = game.add.sprite(x, y, "spider_" + this.direction);
             this.self.anchor.setTo(0.5, 0.5);
@@ -147,6 +168,7 @@ demo.classes.prototype = {
             
             // Behavior
             this.patrol = function () {
+<<<<<<< HEAD
                 var x1 = this.player.self.body.x;
                 var x2 = this.self.body.x
                 var y1 = this.player.self.body.y;
@@ -164,30 +186,48 @@ demo.classes.prototype = {
                 counter++;
             }
             if (this.self.alive == false){
+=======
+                var xDiff = this.player.self.body.x - this.self.body.x;
+                var yDiff = this.player.self.body.y - this.self.body.y;
+                if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
+                    this.spiderSound.play();
+                    this.soundTimer = game.time.now + 2014
+                }
+                else if (xDiff * xDiff + yDiff * yDiff > 147456) {
+>>>>>>> ddd418d04c45036c0f80e2fde599020a4b7a3f51
                     this.spiderSound.stop();
-            }
-                if (this.direction == "x") {
-                    if (this.self.body.x > this.upBound) {
-                        console.log("greater");
-                        this.self.scale.x = 1;
-                        this.self.body.velocity.x = -velocity;
-                    }
-                    else if (this.self.body.x < this.lowBound) {
-                        console.log("lesser");
-                        this.self.scale.x = -1;
-                        this.self.body.velocity.x = velocity;
-                    }
                 }
-                else {
-                    if (this.self.body.y > this.upBound) {
-                        this.self.scale.y = 1;
-                        this.self.body.velocity.y = -velocity;
-                    }
-                    else if (this.self.body.y < this.lowBound) {
-                        this.self.scale.y = -1;
-                        this.self.body.velocity.y = velocity;
-                    }
+                
+                if (this.self.alive == false && counter == 0){
+                    this.spiderDeath.play();
+                    this.spiderSound.stop();
+                    counter++;
                 }
+                if (this.self.alive == false){
+                        this.spiderSound.stop();
+                }
+                    if (this.direction == "x") {
+                        if (this.self.body.x > this.upBound) {
+                            console.log("greater");
+                            this.self.scale.x = 1;
+                            this.self.body.velocity.x = -velocity;
+                        }
+                        else if (this.self.body.x < this.lowBound) {
+                            console.log("lesser");
+                            this.self.scale.x = -1;
+                            this.self.body.velocity.x = velocity;
+                        }
+                    }
+                    else {
+                        if (this.self.body.y > this.upBound) {
+                            this.self.scale.y = 1;
+                            this.self.body.velocity.y = -velocity;
+                        }
+                        else if (this.self.body.y < this.lowBound) {
+                            this.self.scale.y = -1;
+                            this.self.body.velocity.y = velocity;
+                        }
+                    }
             }
             this.manageVulnerability = function () {
                 if (game.time.now > this.invincibilityTimer) {
@@ -197,6 +237,9 @@ demo.classes.prototype = {
             this.die = function () {
                 if (this.hitCount >= 4) {
                     this.self.kill();
+                }
+                else {
+                    this.gotHit.play();
                 }
             }
         };
@@ -210,6 +253,7 @@ demo.classes.prototype = {
             this.player = player;
             this.hitCount = 0;
             this.vulnerable = false;
+            this.soundTimer = 0;
 
             this.invincibilityTimer = 0
 
@@ -225,14 +269,16 @@ demo.classes.prototype = {
             this.self.body.velocity.x = velocity;
             this.skeletonSound = game.sound.add('skeletonSound');
             this.skeletonDeath = game.sound.add('skeletonDeath');
+            this.gotHit = game.sound.add("skeletonHit");
             this.skeletonSound.loop = true;
             
             // Animate
             this.self.animations.add("patrol", [0, 1, 2, 3]);
-            this.self.animations.play("patrol", 4, true);
+            this.self.animations.play("patrol", 8, true);
     
             // Behavior
             this.patrol = function () {
+<<<<<<< HEAD
                 var x1 = this.player.self.body.x;
                 var x2 = this.self.body.x
                 var y1 = this.player.self.body.y;
@@ -243,6 +289,16 @@ demo.classes.prototype = {
                 
             if (dist < 20){
                     this.skeletonSound.play(); 
+=======
+                var xDiff = this.player.self.body.x - this.self.body.x;
+                var yDiff = this.player.self.body.y - this.self.body.y;
+                if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
+                    this.skeletonSound.play();
+                    this.soundTimer = game.time.now + 2143;
+                }
+                else if (xDiff * xDiff + yDiff * yDiff > 147456) {
+                    this.skeletonSound.stop();
+>>>>>>> ddd418d04c45036c0f80e2fde599020a4b7a3f51
                 }
             if (this.self.alive == false && counter == 0){
                 this.skeletonDeath.play();
@@ -269,6 +325,9 @@ demo.classes.prototype = {
             this.die = function () {
                 if (this.hitCount >= 2) {
                     this.self.kill();
+                }
+                else {
+                    this.gotHit.play();
                 }
             }
         };
@@ -383,7 +442,7 @@ demo.classes.prototype = {
             this.self.anchor.setTo(0.5,0.5)
             this.self.scale.setTo(0.6,0.6)
             game.physics.enable(this.self)
-            this.interactSound = game.sound.add('interact');
+            this.interactSound = game.sound.add('clink');
             this.self.body.gravity.y = 1200
             this.player = player
             
@@ -420,7 +479,7 @@ demo.classes.prototype = {
             
             this.self.scale.setTo(0.6,0.6)
             game.physics.enable(this.self)
-            this.interactSound = game.sound.add('interact');
+            this.interactSound = game.sound.add('clink');
             this.self.body.gravity.y = 1200
             this.player = player
             
@@ -457,12 +516,35 @@ demo.classes.prototype = {
             this.self.anchor.setTo(0.5, 0.5);
             this.player = player;
             game.physics.enable(this.self);
+            this.jangle = game.add.sound("jangle");
             
             this.self.animations.add("spin", [0, 1, 2, 3, 4, 5, 6, 7]);
             this.self.animations.play("spin", 5, true);
             
             this.interactWith = function () {
+                this.player.keySprite = game.add.sprite(370, 8, "key");
+                this.player.keySprite.fixedToCamera = true;
+                this.jangle.play();
                 this.player.hasKey = true;
+                this.self.kill();
+            }
+        }
+        SilverKey = function (x, y, player) {
+            // Setup
+            this.self = game.add.sprite(x, y, "silverKey");
+            this.self.anchor.setTo(0.5, 0.5);
+            this.player = player;
+            this.jangle = game.add.sound("jangle");
+            game.physics.enable(this.self);
+            
+            this.self.animations.add("spin", [0, 1, 2, 3, 4, 5, 6, 7]);
+            this.self.animations.play("spin", 5, true);
+            
+            this.interactWith = function () {
+                this.player.silverKeySprite = game.add.sprite(370, 72, "silverKey");
+                this.player.silverKeySprite.fixedToCamera = true;
+                this.jangle.play();
+                this.player.hasSilverKey = true;
                 this.self.kill();
             }
         }
@@ -475,35 +557,37 @@ demo.classes.prototype = {
             this.contents = contentsArray;
             this.player = player;
             this.closed = true;
+            this.lockedSound = game.add.sound("locked");
+            this.unlockSound = game.add.sound("unlock");
+            this.soundTimer = 0;
             
             game.physics.enable(this.self);
             
             this.self.animations.add("open", [1]);
             
             this.interactWith = function () {
-                if (this.closed) {
+                if (this.closed && this.player.hasKey) {
+                    this.player.keySprite.kill();
                     console.log("Chest Opened");
                     this.self.animations.play("open", 1, false);
                     this.player.hasKey = false;
+                    this.unlockSound.play();
                     var i; for (i = 0; i < this.contents.length; i++) {
                         game.physics.enable(this.contents[i].self);
                         this.contents[i].self.body.x = this.self.body.x + 90;
                         this.contents[i].self.body.y = this.self.body.y - 5;
                         this.contents[i].self.anchor.setTo(0.5,0.5);
-                        this.contents[i].self.body.collideWorldBounds = true;
-                        
+                        this.contents[i].self.body.collideWorldBounds = true;   
                     }
                     this.closed = false;
                 }
+                else if (this.closed && this.soundTimer < game.time.now){
+                    this.lockedSound.play();
+                    this.soundTimer = game.time.now + 500;
+                }
             }
         }
-        
-        // Doesn't exist yet
-        Scroll = function (x, y, typeStr, player) {
-            // Setup
-            this.self = game.add.sprite(x, y, typeStr + "scroll");
-            this.self.anchor.setTo(0.5, 0.5);
-        }
+
         
         Door = function (x, y, targetStateStr, player) {
             // Setup
@@ -511,10 +595,23 @@ demo.classes.prototype = {
             this.player = player;
             this.targetState = targetStateStr;
             game.physics.enable(this.self);
+            this.self.animations.add("open", [1], 0, true);
+            this.lockedSound = game.add.sound("locked");
+            this.unlockSound = game.add.sound("unlock");
+            this.soundTimer = 0;
             
             this.interactWith = function () {
-                game.state.start(this.targetState);
-                game.sound.stopAll();
+                if (this.player.hasSilverKey) {
+                    this.player.silverKeySprite.kill();
+                    this.self.animations.play("open", 1, false);
+                    this.unlockSound.play();
+                    game.sound.stopAll();
+                    game.state.start(this.targetState);
+                }
+                else if (this.soundTimer < game.time.now) {
+                    this.lockedSound.play();
+                    this.soundTimer = game.time.now + 500;
+                }
             }
             
         }
@@ -525,77 +622,96 @@ demo.classes.prototype = {
         //INVENTORY//
         /////////////
         Inventory = function(player){
-            console.log('inventory created')
             this.player = player
-            this.x = 325
-            this.y = 8
-            this.self = game.add.sprite(this.x,this.y,'inventory')
             this.numOfItemsInInventory = 0
-            this.self.fixedToCamera = true
-            
-            this.selection = game.add.sprite(335,18,'inventorySelect')
-            this.selection.fixedToCamera = true
-            
+            this.numOfHealthPotions = 0
+            this.numOfManaPotions = 0
             this.contents = []
+            
+            this.drink = game.add.sound('glug')
+            
+            this.healthText = game.add.text(330,8,'- ' + this.numOfHealthPotions,{fontsize: '25px', fill: '#ffffff'})
+            this.healthText.fixedToCamera = true
+            this.manaText = game.add.text(330,72,'- ' + this.numOfManaPotions,{fontsize: '25px', fill: '#ffffff'})
+            this.manaText.fixedToCamera = true
+            
             this.add = function(item) {
                 console.log('item is transferred to inventory')
                 this.contents.push(item)
                 this.numOfItemsInInventory++
+                if(item.toString() == 'Health Potion') this.numOfHealthPotions++
+                if(item.toString() == 'Mana Potion') this.numOfManaPotions++
 //                for(var x = 0; x < this.contents.length; x++) console.log(this.contents[x])
                 console.log(this.contents)
-                console.log(this.numOfItemsInInventory)
+//                console.log(this.numOfItemsInInventory)
+//                console.log(this.numOfHealthPotions + ' health')
+//                console.log(this.numOfManaPotions + ' mana')
                 this.display()
             }
             
             this.display = function(){
-                for(var x = 0; x < this.contents.length; x++){
-//                    switch(this.contents[x].toString()){
-//                    case 'Health Potion':
-                    if(this.contents[x].toString() == 'Health Potion'){
-                        console.log("I'm running");
-                        tempHealthPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'healthPotion')
-                        tempHealthPotion.anchor.setTo(0.5,0.5)
-                        tempHealthPotion.scale.setTo(-0.5,0.5)
-                        tempHealthPotion.fixedToCamera = true
-                    }
-                    else if(this.contents[x].toString() == 'Mana Potion'){
-                        tempManaPotion = game.add.sprite(this.x + (35 * this.numOfItemsInInventory) - 8, this.y + 28, 'manaPotion')
-                        tempManaPotion.anchor.setTo(0.5, 0.5)
-                        tempManaPotion.scale.setTo(0.5, 0.5)
-                        tempManaPotion.fixedToCamera = true
-                    }
-                }
-//                console.log('test display')
-//                for(var x; x < this.contents.length; x++) console.log(this.contents[x].toString())
-                    
+                displayHealth = game.add.sprite(300,8,'healthPotion')
+//                displayHealth.anchor.setTo(0.5,0.5)
+                displayHealth.scale.setTo(0.6,0.6)
+                displayHealth.fixedToCamera = true
+                displayMana = game.add.sprite(300,72,'manaPotion')
+//                displayMana.anchor.setTo(0.5,0.5)
+                displayMana.scale.setTo(0.6,0.6)
+                displayMana.fixedToCamera = true
+                
+                
+                this.healthText.text = '- ' + this.numOfHealthPotions
+                this.manaText.text = '- ' + this.numOfManaPotions    
             }
-            
+            this.display()
             
             this.selector = function(){
-                var keyList = []
-                keyList.push(Phaser.Keyboard.ONE)
-                keyList.push(Phaser.Keyboard.TWO)
-                keyList.push(Phaser.Keyboard.THREE)
-                keyList.push(Phaser.Keyboard.FOUR)
-                keyList.push(Phaser.Keyboard.FIVE)
-                for(var x = 0; x < keyList.length; x++){
-                    if(game.input.keyboard.isDown(keyList[x])){
-                        this.selection.kill()
-                        this.selection = game.add.sprite(335 + (keyList[x] - 49)*36,18,'inventorySelect')
-                        this.selection.fixedToCamera = true
-                        
-                        if(this.contents[keyList[x]-49] != null){
-                             if(this.contents[keyList[x]-49].equip()){
-                                 this.contents.splice(keyList[x]-49,1)
-                                 console.log(this.contents)
-                                 this.numOfItemsInInventory--
-                                 this.display()
-                             }
-//                            for(var x = 0; x < this.contents.length; x++) this.display(this.contents[x])
+                var canUseHealth = true;
+                var canUseMana = true;
+                if(game.input.keyboard.isDown(Phaser.Keyboard.ONE) && this.numOfHealthPotions != 0 && canUseHealth){
+                    // Find health potion index in this.contents
+                    var index = 0
+                    for(var x = 0; x < this.contents.length; x++){
+                        if(this.contents[x] instanceof HealthPotion){
+                            index = x
                         }
                     }
-                        
+                    // Use found health potion
+                    if(this.contents[index].equip()){
+                        this.contents.splice(index,1)
+                        this.numOfHealthPotions--
+                        this.display()
+                        this.drink.play()
+                        console.log(this.contents)
+                    }
+                    canUseHealth = false;
                 }
+                else if(!(game.input.keyboard.isDown(Phaser.Keyboard.ONE) || canUseHealth)) {
+                    canUseHealth = true;
+                }
+                
+                if(game.input.keyboard.isDown(Phaser.Keyboard.TWO) && this.numOfManaPotions != 0){
+                    // Find mana potion index in this.contents
+                    var index = 0
+                    for(var x = 0; x < this.contents.length; x++){
+                        if(this.contents[x] instanceof ManaPotion){
+                            index = x
+                        }
+                    }
+                    // Use found mana potion
+                    if(this.contents[index].equip()){
+                        this.contents.splice(index,1)
+                        this.numOfManaPotions--
+                        this.display()
+                        this.drink.play()
+                        console.log(this.contents)
+                    }
+                    
+                    
+                }
+                
+                
+
             }
 
         }
@@ -656,8 +772,8 @@ demo.classes.prototype = {
         preciseProjectile = function (player) {
             // Technical variables
             this.player = player;
-            x0 = this.player.self.body.x + 8;
-            y0 = this.player.self.body.y + 8;
+            x0 = this.player.self.body.x + 24;
+            y0 = this.player.self.body.y + 24;
             this.self = game.add.sprite(x0, y0, "preciseProject");
             
             // Setup
@@ -759,6 +875,7 @@ demo.classes.prototype = {
             // Possession variables
             this.hasSword = false;
             this.hasKey = false;
+            this.hasSilverKey = false;
             this.damageFactor = .25;
             this.hasAOE = false;
             this.hasPrecise = false;
@@ -870,9 +987,10 @@ demo.classes.prototype = {
                     this.playerAOE.self.body.velocity.y = -150;
                     this.playerAOE.self.body.gravity.y = 1200;
                     
-                    this.mana -= .2;   
+                    this.mana -= .2;
+                    var played = false
                 }
-                else if(this.aoeTimer > game.time.now) {
+                else if(this.aoeTimer - 500 > game.time.now) {
                     this.self.animations.play(this.armored + "cast", 12, true);
                     
                 }
@@ -947,6 +1065,8 @@ demo.classes.prototype = {
             this.die = function () {
                 if (this.health <= 0 || this.self.body.y > this.deathY) {
                     game.sound.stopAll();
+                    game.sound.stopAll();
+                    game.sound.stopAll();
                     this.dieSound.play();
                     game.state.start(game.state.current);
 
@@ -975,7 +1095,6 @@ demo.classes.prototype = {
                     this.self.kill()
                 }
             }
-            
         }
         
         Dragon = function (spawnPointArray, player) {
@@ -998,6 +1117,7 @@ demo.classes.prototype = {
             this.self.animations.add("jet", [0, 1]);
             this.self.animations.add("breathe" [7, 8])
             this.self.animations.play("rise", 10, false);
+            this.self.animations.play("breathe", 10, true);
             
             this.manageHealth = function () {
                 if (this.health <= 0) {
@@ -1018,5 +1138,3 @@ demo.classes.prototype = {
     
     }
 }
-
-var updateHelper = function (player, bars, inventory, enemiesArray, itemsArray) {}
