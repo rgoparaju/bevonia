@@ -1,72 +1,103 @@
-var bossPlats, Bevonia, speed = 10;
-
-demo.state4 = function(){}
+demo.state4 = function () {};
 demo.state4.prototype = {
-    preload: function(){
-        // Load environmental assets
-        game.load.tilemap("finalboss", "assets/tilemaps/finalboss.json", null, Phaser.Tilemap.TILED_JSON);
-        game.load.image("environment", "assets/tilemaps/environment.png");
+    preload: function () {
+        // LOAD TILEMAP
+        game.load.tilemap("dragonRoom", "assets/tilemaps/dragonLairTEMP.json", null, Phaser.Tilemap.TILED_JSON);
+        game.load.image("wall sprite 2", "assets/tilesets_backgrounds/wall sprite 2.png");
         
-        // Load player
-        game.load.spritesheet("bevonia", "assets/spritesheets/Bevonia.png", 32, 48);
+        // LOAD DRAGON SPRITE
         
-        // Load "dragon"
-        game.load.spritesheet("dragon", "assets/spritesheets/dragoncrap.png");
+        
     },
-    create: function(){
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+    create: function () {
+        game.stage.backgroundColor = "#ba0000";
         
-        console.log("state4");
+        var map5 = game.add.tilemap("dragonRoom");
+        map5.addTilesetImage("wall sprite 2");
         
-        game.world.setBounds(0, 0, 2026, 608);
-        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        game.world.setBounds(0, 0, 1088, 512);
         
-        // Add map
-        var bossMap = game.add.tilemap("finalboss");
-        bossMap.addTilesetImage("environment");
+        platforms5 = map5.createLayer("platforms DRAGON");
+        map5.setCollision(1, true, "platforms DRAGON");
         
-        var bossBG = bossMap.createLayer("background");
-        bossPlats = bossMap.createLayer("platforms");
-        bossMap.setCollision(1, true, "platforms");
+        bevonia = new Bevonia(48, 32, 512);
+        bars = new Bars(bevonia);
         
-        // Add, setup Bevonia
-        Bevonia = game.add.sprite(1272, 490, "bevonia");
-        Bevonia.anchor.setTo(.5, .5);
-        Bevonia.animations.add("run", [2, 3, 4, 5], 10, true);
-        Bevonia.animations.add("jump", [1], 0, true);
-        Bevonia.animations.add("idle", [0], 0, true);
-        game.physics.enable(Bevonia);
-        game.camera.follow(Bevonia);
-        game.camera.deadzone = new Phaser.Rectangle(centerX - 300, 0, 600, 608);
+        dragonBoss = new Dragon([144, 384, 675, 912], bevonia);
         
-        Bevonia.body.gravity.y = 1100;
+        door5 = new Door(1024, 384, "title", bevonia);
+        aoe5 = new aoeItem(512, 432, bevonia);
+        
+        items5 = [door5, aoe5];
+        
+        backgroundMusic = game.add.audio('boss');
+        backgroundMusic.loop = true;
+        backgroundMusic.play();   
+        
         
         
         
     },
-    update: function(){
-        game.physics.arcade.collide(Bevonia, bossPlats);
+    update: function () {
+        game.physics.arcade.collide(bevonia.self, platforms5);
         
+        bars.displayStats();
         
-        // Player movement
-        // Direction
-        bevoFace = game.input.keyboard.isDown(Phaser.Keyboard.D) -game.input.keyboard.isDown(Phaser.Keyboard.A);     
-        // Running
-        if(bevoFace == 0) {
-            Bevonia.animations.play("idle", 0, false);
-        }
-        else {
-            Bevonia.x += bevoFace * speed;
-            Bevonia.scale.setTo(bevoFace, 1);
-            Bevonia.animations.play("run", 8, true);
-        }
-            
+        bevonia.run();
+        bevonia.jump();
+        bevonia.die();
+        bevonia.manageVulnerability();
+        bevonia.stab();
+        bevonia.castAOE();
+        bevonia.castPrecise();
         
-        if(game.input.keyboard.isDown(Phaser.Keyboard.W) && Bevonia.body.blocked.down) {
-            Bevonia.body.velocity.y -= 550;
+        dragonBoss.manageHealth();
+        
+        if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+            var i; for (i = 0; i < items5.length; i++) {
+                if (game.physics.arcade.overlap(bevonia.self, items5[i].self)) {
+                    if(items5[i].interactWith())
+                        inventory.add(items5[i])
+                }
+            }
         }
-        if(!Bevonia.body.blocked.down) {
-            Bevonia.animations.play("jump", 1, true);
-        }   
-    }
+        
+        if (bevonia.aoeExists) {
+            if (game.physics.arcade.overlap(bevonia.playerAOE.self, dragonBoss.self)) {
+                dragonBoss.health -= .25;
+                bevonia.aoeSound.play();
+                xBoom = bevonia.playerAOE.self.body.x;
+                yBoom = bevonia.playerAOE.self.body.y;
+                var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
+                game.camera.shake(.02, 300);
+                game.physics.enable(boom);
+                boom.anchor.setTo(.5, .5);
+                boom.scale.setTo(1.5, 1.5);
+                boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                bevonia.playerAOE.self.kill();
+                boom.animations.play("explode", 9, false);
+                bevonia.aoeExists = false;
+            }
+        }
+        
+        if (!dragonBoss.attacking && dragonBoss.health > 0) {
+            dragonBoss.attacking = true;
+            dragonBoss.self.animations.play("breathe", 3, false);
+            ball = new Fireball(898, 320, bevonia);
+            dragonBoss.attackTimer = game.time.now + 2000;
+        }
+        else if (dragonBoss.attackTimer < game.time.now) {
+            dragonBoss.attacking = false;
+        }
+        
+        if (game.physics.arcade.overlap(bevonia.self, dragonBoss.self)) {
+            bevonia.health = 0;
+        }
+        if (bevonia.vulnerable && game.physics.arcade.overlap(bevonia.self, ball.self)) {
+            bevonia.health -= .5;
+            bevonia.vulnerable = false;
+            bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
+        }
+        
+    }      
 }
