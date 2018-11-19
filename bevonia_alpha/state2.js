@@ -26,12 +26,13 @@ demo.state2.prototype = {
         
         map2.setCollision(1, true, "platforms");
         map2.setCollision([2, 3, 4, 5, 6, 8], true, "traps");
+        door2 = new Door(992, 128, "state3", null);
         
         bevonia = new Bevonia(128, 128, 1952);
+        door2.player = bevonia;
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
-        door2 = new Door(992, 128, "state3", bevonia);
         
         //MUSIC
         backgroundMusic = game.add.audio('levelTwo');

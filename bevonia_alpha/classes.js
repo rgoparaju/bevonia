@@ -19,6 +19,7 @@ demo.classes.prototype = {
             var velocity = 212;
             this.player = player;
             var counter = 0;
+            this.soundTimer = 0;
             
             // Setup
             this.self = game.add.sprite(x, y, "bat");
@@ -54,11 +55,15 @@ demo.classes.prototype = {
             // Finds unit vector from bat to player, scaled vector by bat velocity
             // Bat doesn't rest until it is dead
             this.attack = function () {
-//                var xDiff = this.player.self.body.x - this.self.body.x;
-//                var yDiff = this.player.self.body.y - this.self.body.y;
-//                if (xDiff * xDiff + yDiff * yDiff < 147456){
-//                    this.batSound.play(); 
-//                }
+                var xDiff = this.player.self.body.x - this.self.body.x;
+                var yDiff = this.player.self.body.y - this.self.body.y;
+                if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
+                    this.batSound.play();
+                    this.soundTimer = game.time.now + 576;
+                }
+                else if (xDiff * xDiff + yDiff * yDiff > 147456) {
+                    this.batSound.stop();
+                }
                 this.batSound.play(); 
             if (this.self.alive == false && counter == 0){
                 this.batDeath.play();
@@ -120,10 +125,12 @@ demo.classes.prototype = {
             this.hitCount = 0;
             this.vulnerable = false;
             var counter = 0;
+            this.soundTimer = 0;
             
             // Setup
             this.spiderSound = game.sound.add('spiderSound');
             this.spiderDeath = game.sound.add('spiderDeath');
+            this.gotHit = game.sound.add("spiderHit");
             this.spiderSound.loop = true;
             this.self = game.add.sprite(x, y, "spider_" + this.direction);
             this.self.anchor.setTo(0.5, 0.5);
@@ -151,9 +158,14 @@ demo.classes.prototype = {
             this.patrol = function () {
                 var xDiff = this.player.self.body.x - this.self.body.x;
                 var yDiff = this.player.self.body.y - this.self.body.y;
-                if ((xDiff * xDiff + yDiff * yDiff) < 147456){
-                    this.spiderSound.play(); 
+                if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
+                    this.spiderSound.play();
+                    this.soundTimer = game.time.now + 2014
                 }
+                else if (xDiff * xDiff + yDiff * yDiff > 147456) {
+                    this.spiderSound.stop();
+                }
+                
                 if (this.self.alive == false && counter == 0){
                     this.spiderDeath.play();
                     this.spiderSound.stop();
@@ -194,6 +206,9 @@ demo.classes.prototype = {
                 if (this.hitCount >= 4) {
                     this.self.kill();
                 }
+                else {
+                    this.gotHit.play();
+                }
             }
         };
         
@@ -206,6 +221,7 @@ demo.classes.prototype = {
             this.player = player;
             this.hitCount = 0;
             this.vulnerable = false;
+            this.soundTimer = 0;
 
             this.invincibilityTimer = 0
 
@@ -220,6 +236,7 @@ demo.classes.prototype = {
             this.self.body.velocity.x = velocity;
             this.skeletonSound = game.sound.add('skeletonSound');
             this.skeletonDeath = game.sound.add('skeletonDeath');
+            this.gotHit = game.sound.add("skeletonHit");
             this.skeletonSound.loop = true;
             
             // Animate
@@ -230,9 +247,13 @@ demo.classes.prototype = {
             this.patrol = function () {
                 var xDiff = this.player.self.body.x - this.self.body.x;
                 var yDiff = this.player.self.body.y - this.self.body.y;
-                if (xDiff * xDiff + yDiff * yDiff < 147456){
-                    this.skeletonSound.play(); 
-            }
+                if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
+                    this.skeletonSound.play();
+                    this.soundTimer = game.time.now + 2143;
+                }
+                else if (xDiff * xDiff + yDiff * yDiff > 147456) {
+                    this.skeletonSound.stop();
+                }
             if (this.self.alive == false && counter == 0){
                 this.skeletonDeath.play();
                 this.skeletonSound.stop();
@@ -258,6 +279,9 @@ demo.classes.prototype = {
             this.die = function () {
                 if (this.hitCount >= 2) {
                     this.self.kill();
+                }
+                else {
+                    this.gotHit.play();
                 }
             }
         };
