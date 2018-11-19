@@ -55,6 +55,17 @@ demo.classes.prototype = {
             // Finds unit vector from bat to player, scaled vector by bat velocity
             // Bat doesn't rest until it is dead
             this.attack = function () {
+<<<<<<< HEAD
+                var x1 = this.player.self.body.x;
+                var x2 = this.self.body.x
+                var y1 = this.player.self.body.y;
+                var y2 = this.self.body.y;
+                var dx = x1 - x2;
+                var dy = y1 - y2;                
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 20){
+=======
                 var xDiff = this.player.self.body.x - this.self.body.x;
                 var yDiff = this.player.self.body.y - this.self.body.y;
                 if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
@@ -64,6 +75,7 @@ demo.classes.prototype = {
                 else if (xDiff * xDiff + yDiff * yDiff > 147456) {
                     this.batSound.stop();
                 }
+>>>>>>> ddd418d04c45036c0f80e2fde599020a4b7a3f51
                 this.batSound.play(); 
             if (this.self.alive == false && counter == 0){
                 this.batDeath.play();
@@ -156,6 +168,25 @@ demo.classes.prototype = {
             
             // Behavior
             this.patrol = function () {
+<<<<<<< HEAD
+                var x1 = this.player.self.body.x;
+                var x2 = this.self.body.x
+                var y1 = this.player.self.body.y;
+                var y2 = this.self.body.y;
+                var dx = x1 - x2;
+                var dy = y1 - y2;                
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                
+            if (dist < 30){
+                this.spiderSound.play(); 
+            }
+            if (this.self.alive == false && counter == 0){
+                this.spiderDeath.play();
+                this.spiderSound.stop();
+                counter++;
+            }
+            if (this.self.alive == false){
+=======
                 var xDiff = this.player.self.body.x - this.self.body.x;
                 var yDiff = this.player.self.body.y - this.self.body.y;
                 if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
@@ -163,6 +194,7 @@ demo.classes.prototype = {
                     this.soundTimer = game.time.now + 2014
                 }
                 else if (xDiff * xDiff + yDiff * yDiff > 147456) {
+>>>>>>> ddd418d04c45036c0f80e2fde599020a4b7a3f51
                     this.spiderSound.stop();
                 }
                 
@@ -232,6 +264,7 @@ demo.classes.prototype = {
             this.self = game.add.sprite(x, y, "skeleton");
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
+            this.self.body.gravity.y = 1200;
             this.self.body.collideWorldBounds = true;
             this.self.body.velocity.x = velocity;
             this.skeletonSound = game.sound.add('skeletonSound');
@@ -245,6 +278,18 @@ demo.classes.prototype = {
     
             // Behavior
             this.patrol = function () {
+<<<<<<< HEAD
+                var x1 = this.player.self.body.x;
+                var x2 = this.self.body.x
+                var y1 = this.player.self.body.y;
+                var y2 = this.self.body.y;
+                var dx = x1 - x2;
+                var dy = y1 - y2;                
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                
+            if (dist < 20){
+                    this.skeletonSound.play(); 
+=======
                 var xDiff = this.player.self.body.x - this.self.body.x;
                 var yDiff = this.player.self.body.y - this.self.body.y;
                 if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
@@ -253,6 +298,7 @@ demo.classes.prototype = {
                 }
                 else if (xDiff * xDiff + yDiff * yDiff > 147456) {
                     this.skeletonSound.stop();
+>>>>>>> ddd418d04c45036c0f80e2fde599020a4b7a3f51
                 }
             if (this.self.alive == false && counter == 0){
                 this.skeletonDeath.play();
@@ -881,6 +927,32 @@ demo.classes.prototype = {
             this.stabSprite.animations.add("stab",[1, 2, 3], 0, false);
             this.stabSprite.animations.add("ARMOREDstab",[4, 5, 6], 0, false);
             this.stabSprite.animations.play("hide", 1, true);
+            
+            //Knockback
+//            this.knockbackAnimation = function() {
+//                this.self.animations.stop();
+//                this.self.frame = 1;
+//                this.self.body.sprite.alpha = 0.5;
+//                var knockedTo = 0;
+//                var distance = 75;
+//                if (knockedTo == 0){
+//                    knockedTo = (this.self.body.x - distance);
+//                    immortal = true;
+//                }
+////                this.self.body.velocity.x = -500;
+////                if (this.self.body.x <= (knockedTo + distance/2)){
+////                    this.self.body.velocity.y = 0;
+////                }
+////                else{
+////                    this.self.body.velocity.y = -100;
+////                }
+////                if (this.self.body.x <= knockedTo){
+////                    this.self.frame = 2;
+////                    knockedTo = 0;
+////                    knockback = false;
+////                }
+//                
+//            }
         
             // Melee attack
             this.stab = function () {

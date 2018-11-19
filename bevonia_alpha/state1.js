@@ -3,6 +3,7 @@ var test;
 var bevonia = null;
 var inventory = null;
 var platforms1;
+var knockedTo = 10;
 demo.state1 = function () {};
 demo.state1.prototype = {
     preload: function () {
@@ -34,6 +35,16 @@ demo.state1.prototype = {
         bevonia = new Bevonia(128, 128, 1536);
 
         // Place enemies
+<<<<<<< HEAD
+        skeleton1_1 = new Skeleton(48, 896, 48, 725, bevonia);
+        
+        bat1_1 = new Bat(896, 368, bevonia);
+        spider1_1 = new Spider(1144, 76, 64, 240, "y", 1, bevonia);
+        skeleton1_2 = new Skeleton(1425, 320, 1312, 1606, bevonia);
+//        chest1_1 = new Chest(100,895,'healthPotion',bevonia);
+        
+        enemies1 = [skeleton1_1, bat1_1, spider1_1, skeleton1_2]
+=======
         skeleton1_1 = new Skeleton(48, 1376, 33, 640, bevonia);
         bat1_1 = new Bat(1090, 784, bevonia);
         bat1_2 = new Bat(2433, 974, bevonia);
@@ -42,6 +53,7 @@ demo.state1.prototype = {
         skeleton1_2 = new Skeleton(1316, 736, 1472, 1702, bevonia);
         chest1_1.player = bevonia;
         enemies1 = [skeleton1_1, bat1_1, bat1_2, spider1_1, skeleton1_2, spider1_2]
+>>>>>>> ddd418d04c45036c0f80e2fde599020a4b7a3f51
         
         bars = new Bars(bevonia);
         
@@ -90,7 +102,11 @@ demo.state1.prototype = {
         
         game.physics.arcade.collide(manaPotion.self,platforms1)
         game.physics.arcade.collide(bat1_1.self,platforms1)
+<<<<<<< HEAD
+        game.physics.arcade.collide(skeleton1_1.self,platforms1);
+=======
         game.physics.arcade.collide(bat1_2.self, platforms1);
+>>>>>>> ddd418d04c45036c0f80e2fde599020a4b7a3f51
         
         bars.displayStats();
         
@@ -129,15 +145,68 @@ demo.state1.prototype = {
         var j; for (j = 0; j < enemies1.length; j++) {
             if (game.physics.arcade.overlap(bevonia.self, enemies1[j].self) && !enemies1[j].vulnerable) {
                 if (bevonia.stabbing) {
+                    Skeleton.prototype.toString = function(){
+                        return 'Skeleton'
+                    }
+                    
+                    if (enemies1[j].toString() == 'Skeleton'){
+                    
+                    var enemy_distance = 750;
+                    if (knockedTo == 0){
+                        enemies1[j].self.animations.stop();
+                        knockedTo = (enemies1[j].self.body.x - enemy_distance);
+                    }
+                    enemies1[j].self.body.velocity.x = 0;
+                    if (enemies1[j].self.body.x <= (knockedTo + enemy_distance/2)){
+                        enemies1[j].self.body.velocity.y = -200;
+//                        game.time.events.add(20, enemies1[j].self.body.velocity.y = -10, this);
+                    }
+                    else{
+                        enemies1[j].self.body.velocity.y = -200;
+                    }
+                    if (enemies1[j].self.body.x <= knockedTo){
+                        enemies1[j].frame = 1;
+                        knockedTo = 0;
+                        knockback = false;
+                    }
+                     enemies1[j].self.body.velocity.x = -250   
+                    }
+                    
                     enemies1[j].hitCount += 1;
                     enemies1[j].vulnerable = true;
                     enemies1[j].die();
                     enemies1[j].invincibilityTimer = game.time.now + 500;
+                    
                 }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;
+                    bevonia.self.animations.stop();
+                var distance = 1000;
+                if (knockedTo == 0){
+                    knockedTo = (bevonia.self.body.x - (distance*2));
                     bevonia.vulnerable = false;
-                    bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
+                }
+                bevonia.self.body.velocity.x = -500;
+                if (bevonia.self.body.x <= (knockedTo + distance/2)){
+                    bevonia.self.body.velocity.x = -500;
+                    bevonia.self.body.velocity.y = -200;
+                }
+                else{
+                    bevonia.self.body.velocity.y = -250;
+                    bevonia.self.body.velocity.x = -500;
+                }
+                if (bevonia.self.body.x <= knockedTo){
+                    bevonia.frame = 2;
+                    knockedTo = 0;
+                    knockback = false;
+                }
+                function invincible() {
+                    bevonia.self.body.sprite.alpha = 1;
+                }
+                    bevonia.vulnerable = false;
+                    bevonia.self.body.sprite.alpha = 0.5;
+                    bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;                   game.time.events.add(bevonia.invincibilityPeriod, invincible, this);
+                    
                 }
             }
             enemies1[j].manageVulnerability();
@@ -211,3 +280,4 @@ demo.state1.prototype = {
         //test.patrol();
     }
 }
+
