@@ -28,13 +28,19 @@ demo.state2.prototype = {
         
         map2.setCollision(10, true, "platforms");
         map2.setCollision([1, 2, 3, 4, 5, 6, , 7, 8], true, "traps");
-        door2 = new Door(992, 128, "state3", null);
+        door2 = new Door(992, 128, "title", null);
+        chest2_1 = new Chest(1030, 480, null, null);
         
         bevonia = new Bevonia(128, 128, 1952);
         door2.player = bevonia;
+        chest2_1.player = bevonia;
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
+        key2 = new Key(892, 1840, bevonia);
+        
+        exitKey2 = new SilverKey(0, 0, bevonia);
+        chest2_1.contents = [exitKey2];
         
         inventory2 = new Inventory(bevonia)
 
@@ -56,7 +62,7 @@ demo.state2.prototype = {
         backgroundMusic.play();        
         
         
-        items2 = [armor2, sword2, door2];
+        items2 = [armor2, sword2, door2, key2, exitKey2, chest2_1];
         
         skeleton2_1 = new Skeleton(400, 1856, 257, 892, bevonia);
         skeleton2_2 = new Skeleton(200, 960, 192, 647, bevonia);
@@ -155,9 +161,9 @@ demo.state2.prototype = {
             if (game.physics.arcade.overlap(bevonia.self, enemies2[j].self)) {
                 if (bevonia.stabbing) {
                     enemies2[j].hitCount += 1;
-                    enemies2[j].vulnerable = true;
+                    enemies2[j].vulnerable = false;
                     enemies2[j].die();
-                    enemies2[j].invincibilityTimer = game.time.now + 500;
+                    enemies2[j].invincibilityTimer = game.time.now + 1000;
                 }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;

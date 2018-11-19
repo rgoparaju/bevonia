@@ -57,14 +57,14 @@ demo.classes.prototype = {
             this.attack = function () {
                 var xDiff = this.player.self.body.x - this.self.body.x;
                 var yDiff = this.player.self.body.y - this.self.body.y;
-                if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
-                    this.batSound.play();
-                    this.soundTimer = game.time.now + 576;
-                }
-                else if (xDiff * xDiff + yDiff * yDiff > 147456) {
+//                if ((xDiff * xDiff + yDiff * yDiff) < 147456 && this.soundTimer < game.time.now){
+//                    this.batSound.play();
+//                    this.soundTimer = game.time.now + 576;
+//                }
+                if (xDiff * xDiff + yDiff * yDiff > 147456) {
                     this.batSound.stop();
                 }
-                this.batSound.play(); 
+                
             if (this.self.alive == false && counter == 0){
                 this.batDeath.play();
                 this.batSound.stop();
@@ -277,6 +277,7 @@ demo.classes.prototype = {
                 }
             }
             this.die = function () {
+                console.log(this.hitCount);
                 if (this.hitCount >= 2) {
                     this.self.kill();
                 }
