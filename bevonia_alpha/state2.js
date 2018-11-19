@@ -70,7 +70,7 @@ demo.state2.prototype = {
 //        tempInventory.fixedToCamera = true
         enemies2 = [skeleton2_1, skeleton2_2, skeleton2_3, skeleton2_4, spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
     
-        
+        inventory.display()
         
         // chest 1035 464
 //        chest2Contents = [healthPotion];
@@ -80,8 +80,7 @@ demo.state2.prototype = {
 //        items2.push(chest2);
     },
     update: function () {
-        inventory.selector()
-        inventory.display()        
+        inventory.selector()     
         
         game.physics.arcade.collide(bevonia.self, platforms2);
         //game.physics.arcade.collide(bat1_1.self, platforms2);
