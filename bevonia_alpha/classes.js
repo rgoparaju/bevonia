@@ -352,7 +352,7 @@ demo.classes.prototype = {
             // Animate
             this.self.animations.add("spin", [0, 1]);
             this.self.animations.play("spin", 5, true);
-            this.interactSound = game.sound.add('interact');
+            this.interactSound = game.sound.add('schlang');
             
             // Interaction with player
             this.interactWith = function () {

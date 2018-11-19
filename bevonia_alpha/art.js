@@ -122,7 +122,7 @@ demo.art.prototype = {
         game.load.audio("clink" ,"assets/sounds/clink.mp3");
         game.load.audio("jangle", "assets/sounds/keys.mp3");
         game.load.audio("clunk", "assets/sounds/clunk.mp3");
-                
+        game.load.audio("schlang", "assets/sounds/swordGet.mp3");
         
         
         // Music

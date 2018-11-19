@@ -26,7 +26,7 @@ demo.state2.prototype = {
         traps2 = map2.createLayer("traps");
         
         map2.setCollision(10, true, "platforms");
-        map2.setCollision([2, 3, 4, 5, 6, 8], true, "traps");
+        map2.setCollision([1, 2, 3, 4, 5, 6, , 7, 8], true, "traps");
         door2 = new Door(992, 128, "state3", null);
         
         bevonia = new Bevonia(128, 128, 1952);
