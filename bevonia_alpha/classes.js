@@ -578,6 +578,8 @@ demo.classes.prototype = {
             this.numOfManaPotions = 0
             this.contents = []
             
+            this.drink = game.add.sound('glug')
+            
             this.healthText = game.add.text(330,8,'- ' + this.numOfHealthPotions,{fontsize: '25px', fill: '#ffffff'})
             this.healthText.fixedToCamera = true
             this.manaText = game.add.text(330,72,'- ' + this.numOfManaPotions,{fontsize: '25px', fill: '#ffffff'})
@@ -629,6 +631,7 @@ demo.classes.prototype = {
                         this.contents.splice(index,1)
                         this.numOfHealthPotions--
                         this.display()
+                        this.drink.play()
                         console.log(this.contents)
                     }
                     canUseHealth = false;
@@ -650,6 +653,7 @@ demo.classes.prototype = {
                         this.contents.splice(index,1)
                         this.numOfManaPotions--
                         this.display()
+                        this.drink.play()
                         console.log(this.contents)
                     }
                     
