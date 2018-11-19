@@ -582,6 +582,9 @@ demo.classes.prototype = {
             this.numOfManaPotions = 0
             this.contents = []
             
+            this.healthTimer = 0
+            this.manaTimer = 0
+            
             this.drink = game.add.sound('glug')
             
             this.healthText = game.add.text(330,8,'- ' + this.numOfHealthPotions,{fontsize: '25px', fill: '#ffffff'})
@@ -622,7 +625,7 @@ demo.classes.prototype = {
             this.selector = function(){
                 var canUseHealth = true;
                 var canUseMana = true;
-                if(game.input.keyboard.isDown(Phaser.Keyboard.ONE) && this.numOfHealthPotions != 0 && canUseHealth){
+                if(game.input.keyboard.isDown(Phaser.Keyboard.ONE) && this.numOfHealthPotions != 0 && this.healthTimer < game.time.now){
                     // Find health potion index in this.contents
                     var index = 0
                     for(var x = 0; x < this.contents.length; x++){
@@ -636,15 +639,12 @@ demo.classes.prototype = {
                         this.numOfHealthPotions--
                         this.display()
                         this.drink.play()
-                        console.log(this.contents)
+//                        console.log(this.contents)
                     }
-                    canUseHealth = false;
-                }
-                else if(!(game.input.keyboard.isDown(Phaser.Keyboard.ONE) || canUseHealth)) {
-                    canUseHealth = true;
+                    this.healthTimer = game.time.now + 500
                 }
                 
-                if(game.input.keyboard.isDown(Phaser.Keyboard.TWO) && this.numOfManaPotions != 0){
+                if(game.input.keyboard.isDown(Phaser.Keyboard.TWO) && this.numOfManaPotions != 0 && this.manaTimer < game.time.now){
                     // Find mana potion index in this.contents
                     var index = 0
                     for(var x = 0; x < this.contents.length; x++){
@@ -658,9 +658,9 @@ demo.classes.prototype = {
                         this.numOfManaPotions--
                         this.display()
                         this.drink.play()
-                        console.log(this.contents)
+//                        console.log(this.contents)
                     }
-                    
+                    this.manaTimer = game.time.now + 500
                     
                 }
                 
