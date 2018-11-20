@@ -93,6 +93,7 @@ demo.state0.prototype = {
     },
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms0);
+        game.physics.arcade.collide(skeleton0.self, platforms0);
         
         bars.displayStats();
         
