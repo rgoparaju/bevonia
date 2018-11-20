@@ -1,3 +1,4 @@
+var knockedTo = 10;
 demo.state0 = function () {};
 demo.state0.prototype = {
     preload: function () {
