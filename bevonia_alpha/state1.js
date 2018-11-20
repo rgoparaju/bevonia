@@ -3,6 +3,7 @@ var test;
 var bevonia = null;
 var inventory1 = null;
 var platforms1;
+var knockedTo = 10;
 demo.state1 = function () {};
 demo.state1.prototype = {
     preload: function () {
