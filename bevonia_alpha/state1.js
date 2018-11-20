@@ -88,6 +88,8 @@ demo.state1.prototype = {
         game.physics.arcade.collide(healthPotion2.self,platforms1)
         game.physics.arcade.collide(healthPotion3.self,platforms1)
         game.physics.arcade.collide(healthPotion4.self,platforms1)
+        game.physics.arcade.collide(skeleton1_1.self,platforms1)
+        game.physics.arcade.collide(skeleton1_2.self,platforms1)
         
         game.physics.arcade.collide(manaPotion.self,platforms1)
         game.physics.arcade.collide(bat1_1.self,platforms1)
