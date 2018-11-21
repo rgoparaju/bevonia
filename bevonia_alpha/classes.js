@@ -233,6 +233,7 @@ demo.classes.prototype = {
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
+            this.self.body.gravity.y = 1200;
             this.self.body.velocity.x = velocity;
             this.skeletonSound = game.sound.add('skeletonSound');
             this.skeletonDeath = game.sound.add('skeletonDeath');
