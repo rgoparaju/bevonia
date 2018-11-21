@@ -39,7 +39,7 @@ demo.state1.prototype = {
         bat1_2 = new Bat(2433, 974, bevonia);
         spider1_1 = new Spider(1706, 400, 304, 592, "y", -1, bevonia);
         spider1_2 = new Spider(1960, 950, 912, 1360, "y", -1, bevonia);
-        skeleton1_2 = new Skeleton(1316, 736, 1472, 1702, bevonia);
+        skeleton1_2 = new Skeleton(1416, 736, 1482, 1702, bevonia);
         chest1_1.player = bevonia;
         enemies1 = [skeleton1_1, bat1_1, bat1_2, spider1_1, skeleton1_2, spider1_2]
         
