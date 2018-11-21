@@ -1,4 +1,3 @@
-var knockedTo = 10;
 demo.state0 = function () {};
 demo.state0.prototype = {
     preload: function () {
@@ -93,7 +92,6 @@ demo.state0.prototype = {
     },
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms0);
-        game.physics.arcade.collide(skeleton0.self, platforms0);
         
         bars.displayStats();
         
@@ -122,61 +120,16 @@ demo.state0.prototype = {
         var j; for (j = 0; j < enemies0.length; j++) {
             if (game.physics.arcade.overlap(bevonia.self, enemies0[j].self) && !enemies0[j].vulnerable) {
                 if (bevonia.stabbing) {
-                    Skeleton.prototype.toString = function(){
-                        return 'Skeleton'
-                    }
-                    
-                    if (enemies0[j].toString() == 'Skeleton'){
-                    
-                    var enemy_distance = 750;
-                    if (knockedTo == 0){
-                        enemies0[j].self.animations.stop();
-                        knockedTo = (enemies1[j].self.body.x - enemy_distance);
-                    }
-                    enemies0[j].self.body.velocity.x = 0;
-                    if (enemies0[j].self.body.x <= (knockedTo + enemy_distance/2)){
-                        enemies0[j].self.body.velocity.y = -200;
-                    }
-                    else{
-                        enemies0[j].self.body.velocity.y = -200;
-                    }
-                    if (enemies0[j].self.body.x <= knockedTo){
-                        enemies0[j].frame = 1;
-                        knockedTo = 0;
-                        knockback = false;
-                    }
-                     enemies0[j].self.body.velocity.x = -250   
-                    }
+                    enemies0[j].hitCount += 1;
+                    enemies0[j].vulnerable = true;
+                    enemies0[j].die();
+                    enemies0[j].invincibilityTimer = game.time.now + 500;
+                    //enemies0[j].self.kill();
+                }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;
-                    bevonia.self.animations.stop();
-                var distance = 1000;
-                if (knockedTo == 0){
-                    knockedTo = (bevonia.self.body.x - (distance*2));
                     bevonia.vulnerable = false;
-                }
-                bevonia.self.body.velocity.x = -500;
-                if (bevonia.self.body.x <= (knockedTo + distance/2)){
-                    bevonia.self.body.velocity.x = -500;
-                    bevonia.self.body.velocity.y = -200;
-                }
-                else{
-                    bevonia.self.body.velocity.y = -250;
-                    bevonia.self.body.velocity.x = -500;
-                }
-                if (bevonia.self.body.x <= knockedTo){
-                    bevonia.frame = 2;
-                    knockedTo = 0;
-                    knockback = false;
-                }
-                function invincible() {
-                    bevonia.self.body.sprite.alpha = 1;
-                }
-                    bevonia.vulnerable = false;
-                    bevonia.self.body.sprite.alpha = 0.5;
-                    bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;                   
-                    game.time.events.add(bevonia.invincibilityPeriod, invincible, this);
-                    
+                    bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;
                 }
             }
             enemies0[j].manageVulnerability();
