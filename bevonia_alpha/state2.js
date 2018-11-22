@@ -29,7 +29,7 @@ demo.state2.prototype = {
         
         map2.setCollision(10, true, "platforms");
         map2.setCollision([1, 2, 3, 4, 5, 6, , 7, 8], true, "traps");
-        door2 = new Door(992, 128, "title", null);
+        door2 = new Door(992, 128, "state3", null);
         chest2_1 = new Chest(1030, 480, null, null);
         
         bevonia = new Bevonia(128, 128, 1952);

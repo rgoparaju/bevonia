@@ -970,7 +970,7 @@ demo.classes.prototype = {
             
             // Jumping
             this.jump = function () {
-                console.log(this.self.body.velocity.y);
+                //console.log(this.self.body.velocity.y);
                 
                 this.grounded = this.self.body.blocked.down;
                     if (game.input.keyboard.isDown(Phaser.Keyboard.W) && jumpTimer == 0 && this.grounded) {
