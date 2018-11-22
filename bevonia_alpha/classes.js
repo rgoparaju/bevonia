@@ -974,18 +974,18 @@ demo.classes.prototype = {
                 
                 this.grounded = this.self.body.blocked.down;
                     if (game.input.keyboard.isDown(Phaser.Keyboard.W) && jumpTimer == 0 && this.grounded) {
-                        console.log("FUCK");
+                        //console.log("FUCK");
                         jumpTimer = 1;
                         this.self.body.velocity.y = -475;
                         this.jumpSound.play();
                     }
                     else if (game.input.keyboard.isDown(Phaser.Keyboard.W) && (jumpTimer > 0 && jumpTimer < 21)){
-                        console.log("SHIT");
+                        //console.log("SHIT");
                         jumpTimer++;
                         this.self.body.velocity.y = -475 + (jumpTimer * 7);
                     }
                     else{
-                        console.log("BITCH");
+                        //console.log("BITCH");
                         jumpTimer = 0;
                     }
                     

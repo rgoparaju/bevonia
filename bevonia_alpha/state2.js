@@ -8,7 +8,7 @@ demo.state2.prototype = {
         // LOAD TILEMAP
         game.load.tilemap("level2", "assets/tilemaps/level2.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("spikes", "assets/tilesets_backgrounds/deathSpikes.png", 32, 32);
-        game.load.image("bg2", "assets/tilesets_backgrounds/level2BG.png", 2912, 1952);
+        game.load.image("bg2", "assets/tilesets_backgrounds/bg22.png", 2912, 1952);
         game.load.image("floorV5", "assets/tilesets_backgrounds/floorV5.png", 32, 32);
         
     },
