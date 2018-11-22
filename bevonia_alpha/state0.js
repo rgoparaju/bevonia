@@ -147,6 +147,11 @@ demo.state0.prototype = {
                     }
                      enemies0[j].self.body.velocity.x = -250   
                     }
+                    enemies0[j].hitCount += 1;
+                    enemies0[j].vulnerable = true;
+                    enemies0[j].die();
+                    enemies0[j].invincibilityTimer = game.time.now + 500;
+                }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;
                     bevonia.self.animations.stop();
@@ -247,4 +252,3 @@ demo.state0.prototype = {
             bevonia.health -= 1;
         }
     }
-}
