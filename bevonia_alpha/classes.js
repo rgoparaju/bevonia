@@ -970,20 +970,32 @@ demo.classes.prototype = {
             
             // Jumping
             this.jump = function () {
+                console.log(this.self.body.velocity.y);
+                
                 this.grounded = this.self.body.blocked.down;
-                if (this.grounded) { 
-                    if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
-                        this.self.body.velocity.y -= 650;
+                    if (game.input.keyboard.isDown(Phaser.Keyboard.W) && jumpTimer == 0 && this.grounded) {
+                        console.log("FUCK");
+                        jumpTimer = 1;
+                        this.self.body.velocity.y = -475;
                         this.jumpSound.play();
                     }
-                }
-                else {
+                    else if (game.input.keyboard.isDown(Phaser.Keyboard.W) && (jumpTimer > 0 && jumpTimer < 21)){
+                        console.log("SHIT");
+                        jumpTimer++;
+                        this.self.body.velocity.y = -475 + (jumpTimer * 7);
+                    }
+                    else{
+                        console.log("BITCH");
+                        jumpTimer = 0;
+                    }
+                    
+                if (this.grounded == false){
                     this.self.animations.play(this.armored + "jump", 1, true);
                     if (this.self.body.velocity.y > 900) {
                         this.self.body.velocity.y = 900;
                     }
                 }
-            }           
+            }          
             
         // INTERACTIONS
             // Enemy interaction
