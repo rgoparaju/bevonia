@@ -184,7 +184,7 @@ demo.state0.prototype = {
                     
                 }
             }
-            }
+            
             enemies0[j].manageVulnerability();
         }
         
@@ -251,4 +251,5 @@ demo.state0.prototype = {
         if (game.physics.arcade.collide(bevonia.self, traps0)) {
             bevonia.health -= 1;
         }
+    }
     }
