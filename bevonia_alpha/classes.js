@@ -531,7 +531,7 @@ demo.classes.prototype = {
                     var i; for (i = 0; i < this.contents.length; i++) {
                         game.physics.enable(this.contents[i].self);
                         this.contents[i].self.body.x = this.self.body.x + 90;
-                        this.contents[i].self.body.y = this.self.body.y - 5;
+                        this.contents[i].self.body.y = this.self.body.y + 10;
                         this.contents[i].self.anchor.setTo(0.5,0.5);
                         this.contents[i].self.body.collideWorldBounds = true;   
                     }
