@@ -4,13 +4,14 @@ demo.state4.prototype = {
         // LOAD TILEMAP
         game.load.tilemap("dragonRoom", "assets/tilemaps/dragonLairTEMP.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("wall sprite 2", "assets/tilesets_backgrounds/wall sprite 2.png");
+        game.load.image("bg4", "assets/tilesets_backgrounds/bossBG.png", 1088, 512);
         
         // LOAD DRAGON SPRITE
         
         
     },
     create: function () {
-        game.stage.backgroundColor = "#ba0000";
+        var bg4 = game.add.sprite(0, 0, "bg4");
         
         var map5 = game.add.tilemap("dragonRoom");
         map5.addTilesetImage("wall sprite 2");
@@ -20,12 +21,13 @@ demo.state4.prototype = {
         platforms5 = map5.createLayer("platforms DRAGON");
         map5.setCollision(1, true, "platforms DRAGON");
         
+        door5 = new Door(1024, 384, "title", null);
         bevonia = new Bevonia(48, 32, 512);
+        door5.player = bevonia;
         bars = new Bars(bevonia);
         
         dragonBoss = new Dragon([144, 384, 675, 912], bevonia);
         
-        door5 = new Door(1024, 384, "title", bevonia);
         aoe5 = new aoeItem(512, 432, bevonia);
         
         items5 = [door5, aoe5];
