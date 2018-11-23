@@ -252,3 +252,4 @@ demo.state0.prototype = {
             bevonia.health -= 1;
         }
     }
+    }
