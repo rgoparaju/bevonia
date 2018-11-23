@@ -184,7 +184,7 @@ demo.state0.prototype = {
                     
                 }
             }
-            }
+            
             enemies0[j].manageVulnerability();
         }
         
