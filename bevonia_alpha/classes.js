@@ -672,6 +672,52 @@ demo.classes.prototype = {
 
         }
         
+        //CHECKPOINTS
+        Checkpoint = function(x,y,player){
+            this.self = game.add.sprite(x,y,'flag')
+            this.self.anchor.setTo(0.5,0.5)
+            game.physics.enable(this.self)
+            this.activated = false
+            this.player = player
+            
+//            this.replacementInventory = new Inventory(this.player)
+            this.replacementHealth = 1
+            this.replacementMana = 1
+            
+            this.activateCheckpoint = function(){
+                this.activated = true
+                this.player.lastResetX = x
+                this.player.lastResetY = y
+                this.replacementHealth = this.player.health
+                this.replacementMana = this.player.mana
+                
+//                for(var x = 0; x < items.contents.length; x++){
+//                    if(items.contents[x] instanceof HealthPotion){
+//                        tempPotion = new HealthPotion(0,0,this.player)
+//                        this.replacementInventory.add(tempPotion)
+//                    }
+//                    else if(items.contents[x] instanceof ManaPotion){
+//                        tempPotion2 = new ManaPotion(0,0,this.player)
+//                        this.replacementInventory.add(tempPotion2)
+//                    }
+//                }
+//                console.log(this.replacementInventory.contents)
+                
+                
+                console.log('checkpoint activated')
+//                console.log(this.activated + x + ', ' + y)
+            }
+            this.resetToCheckpoint = function(){
+                this.player.health = this.replacementHealth
+                this.player.mana = this.replacementMana
+//                this.player.body.x = this.player.lastResetX
+//                this.player.body.y = this.player.lastResetY
+//                this.player.health = this.replacementHealth
+//                this.player.mana = this.replacementMana
+                console.log('checkpointed')
+            }
+        }
+        
         /////////////////
         //SPELL OBJECTS//
         /////////////////
@@ -1010,7 +1056,14 @@ demo.classes.prototype = {
                     game.sound.stopAll();
                     game.sound.stopAll();
                     this.dieSound.play();
-                    game.state.start(game.state.current);
+                    
+//                    return true
+//                    this.health = 1
+//                    this.mana = 1
+                    this.self.body.x = this.lastResetX - 25
+                    this.self.body.y = this.lastResetY - 25
+                    return true
+//                    game.state.start(game.state.current);
 
                 }
             }
