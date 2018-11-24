@@ -33,6 +33,7 @@ demo.state1.prototype = {
         chest1_1 = new Chest(2084, 1440, null, null);
         door1 = new Door (2560, 672, "state2", null);
         bevonia = new Bevonia(128, 128, 1536);
+        flag1 = new Checkpoint(700,1222,bevonia)
 
         // Place enemies
         skeleton1_1 = new Skeleton(48, 1376, 33, 640, bevonia);
@@ -99,7 +100,6 @@ demo.state1.prototype = {
         
         bevonia.run();
         bevonia.jump();
-        bevonia.die();
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
@@ -113,6 +113,11 @@ demo.state1.prototype = {
         spider1_1.patrol();
         spider1_2.patrol();
         skeleton1_2.patrol();
+        
+        if(game.physics.arcade.overlap(bevonia.self,flag1.self) && !flag1.activated){
+            flag1.activateCheckpoint()
+        }
+        if(bevonia.die()) flag1.resetToCheckpoint()
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
             console.log("E is down okay");
