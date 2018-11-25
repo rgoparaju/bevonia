@@ -35,6 +35,7 @@ demo.state2.prototype = {
         bevonia = new Bevonia(128, 128, 1952);
         door2.player = bevonia;
         chest2_1.player = bevonia;
+        flag2_1 = new Checkpoint(1090,1145,bevonia)
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
@@ -134,7 +135,6 @@ demo.state2.prototype = {
         
         bevonia.run();
         bevonia.jump();
-        bevonia.die();
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
@@ -235,6 +235,10 @@ demo.state2.prototype = {
             }
             enemies2[j].manageVulnerability();
         }
+        if(game.physics.arcade.overlap(bevonia.self,flag1.self) && !flag2_1.activated){
+            flag2_1.activateCheckpoint()
+        }
+        if(bevonia.die()) flag2_1.resetToCheckpoint()
         
         // Spell enemy interaction
         if (bevonia.aoeExists) {
