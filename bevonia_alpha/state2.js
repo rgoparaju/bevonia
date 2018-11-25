@@ -38,7 +38,7 @@ demo.state2.prototype = {
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
-        key2 = new Key (903, 1804, bevonia);
+        key2 = new Key (903, 1860, bevonia);
         exitKey2 = new SilverKey(0, 0, bevonia);
         chest2_1.contents = [exitKey2];
         spell2 = new aoeItem(48, 1106, bevonia);

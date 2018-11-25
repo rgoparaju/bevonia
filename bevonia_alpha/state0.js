@@ -84,7 +84,7 @@ demo.state0.prototype = {
         chest0Contents = [aoe0];
         inventory0 = new Inventory(bevonia)
         
-        items0 = [key0, exitKey, armor0, sword0, door0, aoe0, precise0,healthpotion0,manapotion0];
+        items0 = [key0, exitKey, armor0, sword0, door0, aoe0, precise0];
         
         
         door0.player = bevonia;
