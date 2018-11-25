@@ -257,7 +257,7 @@ demo.state2.prototype = {
             }
             enemies2[j].manageVulnerability();
         }
-        if(game.physics.arcade.overlap(bevonia.self,flag1.self) && !flag2_1.activated){
+        if(game.physics.arcade.overlap(bevonia.self,flag2_1.self) && !flag2_1.activated){
             flag2_1.activateCheckpoint()
         }
         if(bevonia.die()) flag2_1.resetToCheckpoint()
