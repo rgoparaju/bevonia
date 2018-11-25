@@ -1052,9 +1052,9 @@ demo.classes.prototype = {
             }
             this.die = function () {
                 if (this.health <= 0 || this.self.body.y > this.deathY) {
-                    game.sound.stopAll();
-                    game.sound.stopAll();
-                    game.sound.stopAll();
+//                    game.sound.stopAll();
+//                    game.sound.stopAll();
+//                    game.sound.stopAll();
                     this.dieSound.play();
                     
 //                    return true
