@@ -855,6 +855,8 @@ demo.classes.prototype = {
         
         
         Bevonia = function (x, y, deathY) {
+            this.lastResetX = x
+            this.lastResetY = y
         // TECHNICAL VARIABLES
             // Physics
             var speed = 300;
