@@ -1,4 +1,4 @@
-var bevonia;
+var bevonia2;
 var map2;
 var knockedTo = 10;
 var inventory2 = null;
@@ -32,29 +32,30 @@ demo.state2.prototype = {
         door2 = new Door(992, 128, "state3", null);
         chest2_1 = new Chest(1030, 480, null, null);
         
-        bevonia = new Bevonia(128, 128, 1952);
-        door2.player = bevonia;
-        chest2_1.player = bevonia;
+        bevonia2 = new Bevonia(129, 129, 1952);
+        door2.player = bevonia2;
+        chest2_1.player = bevonia2;
+        flag2_1 = new Checkpoint(1090,1135,bevonia2)
         
-        armor2 = new Armor(1952, 1772, bevonia);
-        sword2 = new Sword(80, 818, bevonia);
-        key2 = new Key (903, 1804, bevonia);
-        exitKey2 = new SilverKey(0, 0, bevonia);
+        armor2 = new Armor(1952, 1772, bevonia2);
+        sword2 = new Sword(80, 818, bevonia2);
+        key2 = new Key (903, 1804, bevonia2);
+        exitKey2 = new SilverKey(0, 0, bevonia2);
         chest2_1.contents = [exitKey2];
-        spell2 = new aoeItem(48, 1106, bevonia);
-        healthPotion2_1 = new HealthPotion(1998, 592, bevonia);
-        healthPotion2_2 = new HealthPotion(32, 1392, bevonia);
-        manaPotion2_1 = new ManaPotion(2414,144, bevonia);
+        spell2 = new aoeItem(48, 1106, bevonia2);
+        healthPotion2_1 = new HealthPotion(1998, 592, bevonia2);
+        healthPotion2_2 = new HealthPotion(32, 1392, bevonia2);
+        manaPotion2_1 = new ManaPotion(2414,144, bevonia2);
         
-        inventory2 = new Inventory(bevonia)
+        inventory2 = new Inventory(bevonia2)
 
         for(var x = 0; x < inventory1.contents.length; x++){
             if(inventory1.contents[x] instanceof HealthPotion){
-                tempPotion = new HealthPotion(0,0,bevonia)
+                tempPotion = new HealthPotion(0,0,bevonia2)
                 inventory2.add(tempPotion)
             }
             else if(inventory1.contents[x] instanceof ManaPotion){
-                tempPotion2 = new ManaPotion(0,0,bevonia)
+                tempPotion2 = new ManaPotion(0,0,bevonia2)
                 inventory2.add(tempPotion2)
             }
         } 
@@ -68,48 +69,48 @@ demo.state2.prototype = {
         
         items2 = [armor2, sword2, door2,chest2_1,exitKey2,spell2,key2, healthPotion2_1, healthPotion2_2, manaPotion2_1];
         
-        skeleton2_1 = new Skeleton(400, 1856, 257, 892, bevonia);
-        skeleton2_2 = new Skeleton(200, 960, 192, 647, bevonia);
-        skeleton2_3 = new Skeleton(48, 576, 32, 642, bevonia);
-        skeleton2_4 = new Skeleton(710, 768, 707, 896, bevonia);
+        skeleton2_1 = new Skeleton(400, 1856, 257, 892, bevonia2);
+        skeleton2_2 = new Skeleton(200, 960, 192, 647, bevonia2);
+        skeleton2_3 = new Skeleton(48, 576, 32, 642, bevonia2);
+        skeleton2_4 = new Skeleton(710, 768, 707, 896, bevonia2);
         
 //         PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
-//        bat1_1 = new Bat(2112, 1666, bevonia);
-        bat1_2 = new Bat(2144, 1666, bevonia);
-        bat1_3 = new Bat(2176, 1666, bevonia);
-        bat1_4 = new Bat(2208, 1666, bevonia);
-        bat1_5 = new Bat(2240, 1666, bevonia);
-//        bat1_6 = new Bat(2272, 1666, bevonia);
-        bat1_7 = new Bat(2304, 1666, bevonia);
-        bat1_8 = new Bat(2336, 1666, bevonia);
-        bat1_9 = new Bat(2368, 1666, bevonia);
-        bat1_10 = new Bat(2400, 1666, bevonia);
-        bat1_11 = new Bat(2432, 1666, bevonia);
+//        bat1_1 = new Bat(2112, 1666, bevonia2);
+        bat1_2 = new Bat(2144, 1666, bevonia2);
+        bat1_3 = new Bat(2176, 1666, bevonia2);
+        bat1_4 = new Bat(2208, 1666, bevonia2);
+        bat1_5 = new Bat(2240, 1666, bevonia2);
+//        bat1_6 = new Bat(2272, 1666, bevonia2);
+        bat1_7 = new Bat(2304, 1666, bevonia2);
+        bat1_8 = new Bat(2336, 1666, bevonia2);
+        bat1_9 = new Bat(2368, 1666, bevonia2);
+        bat1_10 = new Bat(2400, 1666, bevonia2);
+        bat1_11 = new Bat(2432, 1666, bevonia2);
         
 //         1 troll in the troll section (2389, 368)
-        troll1_1 = new Troll(2389, 376, 2262, 2317, 300, 368, bevonia);
+        troll1_1 = new Troll(2389, 376, 2262, 2317, 300, 368, bevonia2);
         
-        spider1_1 = new Spider(2408, 784, 867, 1264, "y", -1, bevonia);
-        spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1, bevonia);
+        spider1_1 = new Spider(2408, 784, 867, 1264, "y", -1, bevonia2);
+        spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1, bevonia2);
         
-        bars = new Bars(bevonia);
+        bars = new Bars(bevonia2);
 //        tempInventory = game.add.sprite(325,8,'inventory')
 //        tempInventory.fixedToCamera = true
         enemies2 = [skeleton2_1, skeleton2_2, skeleton2_3, skeleton2_4, spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
     
-        inventory.display()
+//        inventory.display()
         
         // chest 1035 464
 //        chest2Contents = [healthPotion];
 ////        items2 = [armor2, sword2, door2, aoe2];
 //        
-//        chest2 = new Chest(1035, 464, chest2Contents, bevonia, items2);
+//        chest2 = new Chest(1035, 464, chest2Contents, bevonia2, items2);
 //        items2.push(chest2);
     },
     update: function () {
         inventory2.selector()     
         
-        game.physics.arcade.collide(bevonia.self, platforms2);
+        game.physics.arcade.collide(bevonia2.self, platforms2);
         //game.physics.arcade.collide(bat1_1.self, platforms2);
         game.physics.arcade.collide(skeleton2_1.self, platforms2);
         game.physics.arcade.collide(skeleton2_2.self, platforms2);
@@ -132,13 +133,13 @@ demo.state2.prototype = {
         
         bars.displayStats();
         
-        bevonia.run();
-        bevonia.jump();
-        bevonia.die();
-        bevonia.manageVulnerability();
-        bevonia.stab();
-        bevonia.castAOE();
-        bevonia.castPrecise();
+        bevonia2.run();
+        bevonia2.jump();
+        if(bevonia2.die()) flag2_1.resetToCheckpoint()
+        bevonia2.manageVulnerability();
+        bevonia2.stab();
+        bevonia2.castAOE();
+        bevonia2.castPrecise();
         
         skeleton2_1.patrol();
         skeleton2_2.patrol();
@@ -161,7 +162,7 @@ demo.state2.prototype = {
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
             var i; for (i = 0; i < items2.length; i++) {
-                if (game.physics.arcade.overlap(bevonia.self, items2[i].self)) {
+                if (game.physics.arcade.overlap(bevonia2.self, items2[i].self)) {
                     console.log("I detect an overlap!!");
                     items2[i].interactWith();
                 }
@@ -169,8 +170,8 @@ demo.state2.prototype = {
         }
         
         var j; for (j = 0; j < enemies2.length; j++) {
-            if (game.physics.arcade.overlap(bevonia.self, enemies2[j].self) && !enemies2[j].vulnerable) {
-                if (bevonia.stabbing) {
+            if (game.physics.arcade.overlap(bevonia2.self, enemies2[j].self) && !enemies2[j].vulnerable) {
+                if (bevonia2.stabbing) {
                     Skeleton.prototype.toString = function(){
                         return 'Skeleton'
                     }
@@ -201,50 +202,55 @@ demo.state2.prototype = {
                     enemies2[j].die();
                     enemies2[j].invincibilityTimer = game.time.now + 1000;
                 }
-                else if (bevonia.vulnerable) {
-                    bevonia.health -= bevonia.damageFactor;
-                    bevonia.self.animations.stop();
+                else if (bevonia2.vulnerable) {
+                    bevonia2.health -= bevonia2.damageFactor;
+                    bevonia2.self.animations.stop();
                 var distance = 1000;
                 if (knockedTo == 0){
-                    knockedTo = (bevonia.self.body.x - (distance*2));
-                    bevonia.vulnerable = false;
+                    knockedTo = (bevonia2.self.body.x - (distance*2));
+                    bevonia2.vulnerable = false;
                 }
-                bevonia.self.body.velocity.x = -500;
-                if (bevonia.self.body.x <= (knockedTo + distance/2)){
-                    bevonia.self.body.velocity.x = -500;
-                    bevonia.self.body.velocity.y = -200;
+                bevonia2.self.body.velocity.x = -500;
+                if (bevonia2.self.body.x <= (knockedTo + distance/2)){
+                    bevonia2.self.body.velocity.x = -500;
+                    bevonia2.self.body.velocity.y = -200;
                 }
                 else{
-                    bevonia.self.body.velocity.y = -250;
-                    bevonia.self.body.velocity.x = -500;
+                    bevonia2.self.body.velocity.y = -250;
+                    bevonia2.self.body.velocity.x = -500;
                 }
-                if (bevonia.self.body.x <= knockedTo){
-                    bevonia.frame = 2;
+                if (bevonia2.self.body.x <= knockedTo){
+                    bevonia2.frame = 2;
                     knockedTo = 0;
                     knockback = false;
                 }
                 function invincible() {
-                    bevonia.self.body.sprite.alpha = 1;
+                    bevonia2.self.body.sprite.alpha = 1;
                 }
-                    bevonia.vulnerable = false;
-                    bevonia.self.body.sprite.alpha = 0.5;
-                    bevonia.invincibilityTimer = game.time.now + bevonia.invincibilityPeriod;                   
-                    game.time.events.add(bevonia.invincibilityPeriod, invincible, this);
+                    bevonia2.vulnerable = false;
+                    bevonia2.self.body.sprite.alpha = 0.5;
+                    bevonia2.invincibilityTimer = game.time.now + bevonia2.invincibilityPeriod;                   
+                    game.time.events.add(bevonia2.invincibilityPeriod, invincible, this);
                     
                 }
             }
             enemies2[j].manageVulnerability();
         }
         
+        if(game.physics.arcade.overlap(bevonia2.self,flag2_1.self) && !flag2_1.activated){
+            flag2_1.activateCheckpoint()
+        }
+        
+        
         // Spell enemy interaction
-        if (bevonia.aoeExists) {
-            console.log(game.physics.arcade.overlap(bevonia.playerAOE.self, enemies2));
+        if (bevonia2.aoeExists) {
+            console.log(game.physics.arcade.overlap(bevonia2.playerAOE.self, enemies2));
             // Detect a collision with either the environment or enemies
             var k; for(k = 0; k < enemies2.length; k++) {
-                if (game.physics.arcade.overlap(bevonia.playerAOE.self, enemies2[k].self)) {
-                    bevonia.aoeSound.play();
-                    xBoom = bevonia.playerAOE.self.body.x;
-                    yBoom = bevonia.playerAOE.self.body.y;
+                if (game.physics.arcade.overlap(bevonia2.playerAOE.self, enemies2[k].self)) {
+                    bevonia2.aoeSound.play();
+                    xBoom = bevonia2.playerAOE.self.body.x;
+                    yBoom = bevonia2.playerAOE.self.body.y;
                     var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
                     game.camera.shake(.02, 300);
                     game.physics.enable(boom);
@@ -257,47 +263,47 @@ demo.state2.prototype = {
                     boom.anchor.setTo(.5, .5);
                     boom.scale.setTo(1.5, 1.5);
                     boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
-                    bevonia.playerAOE.self.kill();
+                    bevonia2.playerAOE.self.kill();
                     boom.animations.play("explode", 9, false);
-                    bevonia.aoeExists = false;
+                    bevonia2.aoeExists = false;
                 }
                 enemies2[k].manageVulnerability();
             }
-            if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms2, traps2])) {
-                bevonia.aoeSound.play();
-                xBoom = bevonia.playerAOE.self.body.x;
-                yBoom = bevonia.playerAOE.self.body.y;
+            if (game.physics.arcade.collide(bevonia2.playerAOE.self, [platforms2, traps2])) {
+                bevonia2.aoeSound.play();
+                xBoom = bevonia2.playerAOE.self.body.x;
+                yBoom = bevonia2.playerAOE.self.body.y;
                 var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
                 game.camera.shake(.02, 300);
                 game.physics.enable(boom);
                 boom.anchor.setTo(.5, .5);
                 boom.scale.setTo(1.5, 1.5);
                 boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
-                bevonia.playerAOE.self.kill();
+                bevonia2.playerAOE.self.kill();
                 boom.animations.play("explode", 9, false);
-                bevonia.aoeExists = false;
+                bevonia2.aoeExists = false;
                 
             }
         }
-        if (bevonia.preciseExists) {
+        if (bevonia2.preciseExists) {
             var l; for(l = 0; l < enemies2.length; l++) {
-                if (game.physics.arcade.overlap(bevonia.playerPrecise.self, enemies2[l].self)) {
+                if (game.physics.arcade.overlap(bevonia2.playerPrecise.self, enemies2[l].self)) {
                     enemies2[l].self.kill();
-                    bevonia.playerPrecise.self.kill();
-                    bevonia.preciseExists = false;
+                    bevonia2.playerPrecise.self.kill();
+                    bevonia2.preciseExists = false;
                     
                 }
             }
-            if (game.physics.arcade.collide(bevonia.playerPrecise.self, platforms2)){
-                bevonia.playerPrecise.self.kill();
-                bevonia.preciseExists = false;
+            if (game.physics.arcade.collide(bevonia2.playerPrecise.self, platforms2)){
+                bevonia2.playerPrecise.self.kill();
+                bevonia2.preciseExists = false;
             }
             
         }
         
         
-        if (game.physics.arcade.collide(bevonia.self, traps2)) {
-            bevonia.health -= 1;
+        if (game.physics.arcade.collide(bevonia2.self, traps2)) {
+            bevonia2.health -= 1;
         }
     }
 }
