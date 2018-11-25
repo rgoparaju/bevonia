@@ -70,8 +70,8 @@ demo.state2.prototype = {
         
         skeleton2_1 = new Skeleton(400, 1856, 257, 892, bevonia);
         skeleton2_2 = new Skeleton(200, 960, 192, 647, bevonia);
-        skeleton2_3 = new Skeleton(48, 576, 32, 642, bevonia);
-        skeleton2_4 = new Skeleton(710, 768, 707, 896, bevonia);
+        skeleton2_3 = new Skeleton(48, 576, 36, 642, bevonia);
+        skeleton2_4 = new Skeleton(710, 768, 707, 880, bevonia);
         
 //         PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
 //        bat1_1 = new Bat(2112, 1666, bevonia);

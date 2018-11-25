@@ -36,7 +36,7 @@ demo.state1.prototype = {
         flag1 = new Checkpoint(700,1222,bevonia)
 
         // Place enemies
-        skeleton1_1 = new Skeleton(48, 1376, 33, 640, bevonia);
+        skeleton1_1 = new Skeleton(48, 1376, 33, 625, bevonia);
         bat1_1 = new Bat(1090, 784, bevonia);
         bat1_2 = new Bat(2433, 974, bevonia);
         spider1_1 = new Spider(1706, 400, 304, 592, "y", -1, bevonia);
