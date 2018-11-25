@@ -177,29 +177,51 @@ demo.state2.prototype = {
                     
                     if (enemies2[j].toString() == 'Skeleton'){
                     
-                    var enemy_distance = 750;
+                    var enemy_distance = 1000;
                     if (knockedTo == 0){
                         enemies2[j].self.animations.stop();
-                        knockedTo = (enemies1[j].self.body.x - enemy_distance);
+                        knockedTo = (enemies2[j].self.body.x - (enemy_distance*2));
                     }
-                    enemies2[j].self.body.velocity.x = 0;
+//                    enemies2[j].self.body.velocity.x = -500;
                     if (enemies2[j].self.body.x <= (knockedTo + enemy_distance/2)){
+                        if (bevonia.self.scale.x == -1){
+//                        enemies2[j].self.body.velocity.x = -500;
                         enemies2[j].self.body.velocity.y = -200;
+                        console.log("FUCK")
+                        }
+                        else if (bevonia.self.scale.x == 1){
+                            console.log("UM");
+//                            enemies2[j].self.body.velocity.x = 500;
+                            enemies2[j].self.body.velocity.y = -200;
+                        }
+//                        game.time.events.add(20, enemies2[j].self.body.velocity.y = -10, this);
                     }
                     else{
+                        if (bevonia.self.scale.x == -1){
+//                        enemies2[j].self.body.velocity.x = -500;
                         enemies2[j].self.body.velocity.y = -200;
+                        console.log("SHIT")
+                        }
+                        else if (bevonia.self.scale.x == 1){
+                            console.log("UM SHIT");
+//                            enemies2[j].self.body.velocity.x = 500;
+                            enemies2[j].self.body.velocity.y = -200;
+                        }
                     }
                     if (enemies2[j].self.body.x <= knockedTo){
+                        console.log("BITCH")
                         enemies2[j].frame = 1;
                         knockedTo = 0;
                         knockback = false;
                     }
-                     enemies2[j].self.body.velocity.x = -250   
+//                     enemies2[j].self.body.velocity.x = -250   
                     }
+                    
                     enemies2[j].hitCount += 1;
-                    enemies2[j].vulnerable = false;
+                    enemies2[j].vulnerable = true;
                     enemies2[j].die();
-                    enemies2[j].invincibilityTimer = game.time.now + 1000;
+                    enemies2[j].invincibilityTimer = game.time.now + 500;
+                    
                 }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;
