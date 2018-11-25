@@ -43,6 +43,9 @@ demo.art.prototype = {
         game.load.spritesheet("bevonia", "assets/sprites/Bevonia.png", 32, 48);
         game.load.spritesheet("stabBevonia", "assets/sprites/bevoThrust.png", 48, 48); 
         
+    //CHECKPOINT FLAG
+        game.load.image('flag','assets/sprites/checkpoint flag.png',17,50) 
+        
     // GHOST
         game.load.spritesheet("ghost", "assets/sprites/ghost2.png", 32, 64);
         
@@ -123,6 +126,7 @@ demo.art.prototype = {
         game.load.audio("jangle", "assets/sounds/keys.mp3");
         game.load.audio("clunk", "assets/sounds/clunk.mp3");
         game.load.audio("schlang", "assets/sounds/swordGet.mp3");
+        game.load.audio("stab", "assets/sounds/stab.mp3");
         
         
         // Music

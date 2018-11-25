@@ -35,6 +35,7 @@ demo.state2.prototype = {
         bevonia = new Bevonia(128, 128, 1952);
         door2.player = bevonia;
         chest2_1.player = bevonia;
+        flag2_1 = new Checkpoint(1090,1145,bevonia)
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
@@ -70,8 +71,8 @@ demo.state2.prototype = {
         
         skeleton2_1 = new Skeleton(400, 1856, 257, 892, bevonia);
         skeleton2_2 = new Skeleton(200, 960, 192, 647, bevonia);
-        skeleton2_3 = new Skeleton(48, 576, 32, 642, bevonia);
-        skeleton2_4 = new Skeleton(710, 768, 707, 896, bevonia);
+        skeleton2_3 = new Skeleton(48, 576, 36, 642, bevonia);
+        skeleton2_4 = new Skeleton(710, 768, 707, 880, bevonia);
         
 //         PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
 //        bat1_1 = new Bat(2112, 1666, bevonia);
@@ -97,7 +98,7 @@ demo.state2.prototype = {
 //        tempInventory.fixedToCamera = true
         enemies2 = [skeleton2_1, skeleton2_2, skeleton2_3, skeleton2_4, spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
     
-        inventory.display()
+        inventory2.display()
         
         // chest 1035 464
 //        chest2Contents = [healthPotion];
@@ -134,7 +135,6 @@ demo.state2.prototype = {
         
         bevonia.run();
         bevonia.jump();
-        bevonia.die();
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
@@ -177,29 +177,51 @@ demo.state2.prototype = {
                     
                     if (enemies2[j].toString() == 'Skeleton'){
                     
-                    var enemy_distance = 750;
+                    var enemy_distance = 1000;
                     if (knockedTo == 0){
                         enemies2[j].self.animations.stop();
-                        knockedTo = (enemies1[j].self.body.x - enemy_distance);
+                        knockedTo = (enemies2[j].self.body.x - (enemy_distance*2));
                     }
-                    enemies2[j].self.body.velocity.x = 0;
+//                    enemies2[j].self.body.velocity.x = -500;
                     if (enemies2[j].self.body.x <= (knockedTo + enemy_distance/2)){
+                        if (bevonia.self.scale.x == -1){
+//                        enemies2[j].self.body.velocity.x = -500;
                         enemies2[j].self.body.velocity.y = -200;
+                        console.log("FUCK")
+                        }
+                        else if (bevonia.self.scale.x == 1){
+                            console.log("UM");
+//                            enemies2[j].self.body.velocity.x = 500;
+                            enemies2[j].self.body.velocity.y = -200;
+                        }
+//                        game.time.events.add(20, enemies2[j].self.body.velocity.y = -10, this);
                     }
                     else{
+                        if (bevonia.self.scale.x == -1){
+//                        enemies2[j].self.body.velocity.x = -500;
                         enemies2[j].self.body.velocity.y = -200;
+                        console.log("SHIT")
+                        }
+                        else if (bevonia.self.scale.x == 1){
+                            console.log("UM SHIT");
+//                            enemies2[j].self.body.velocity.x = 500;
+                            enemies2[j].self.body.velocity.y = -200;
+                        }
                     }
                     if (enemies2[j].self.body.x <= knockedTo){
+                        console.log("BITCH")
                         enemies2[j].frame = 1;
                         knockedTo = 0;
                         knockback = false;
                     }
-                     enemies2[j].self.body.velocity.x = -250   
+//                     enemies2[j].self.body.velocity.x = -250   
                     }
+                    
                     enemies2[j].hitCount += 1;
-                    enemies2[j].vulnerable = false;
+                    enemies2[j].vulnerable = true;
                     enemies2[j].die();
-                    enemies2[j].invincibilityTimer = game.time.now + 1000;
+                    enemies2[j].invincibilityTimer = game.time.now + 500;
+                    
                 }
                 else if (bevonia.vulnerable) {
                     bevonia.health -= bevonia.damageFactor;
@@ -235,6 +257,10 @@ demo.state2.prototype = {
             }
             enemies2[j].manageVulnerability();
         }
+        if(game.physics.arcade.overlap(bevonia.self,flag1.self) && !flag2_1.activated){
+            flag2_1.activateCheckpoint()
+        }
+        if(bevonia.die()) flag2_1.resetToCheckpoint()
         
         // Spell enemy interaction
         if (bevonia.aoeExists) {

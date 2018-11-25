@@ -855,6 +855,8 @@ demo.classes.prototype = {
         
         
         Bevonia = function (x, y, deathY) {
+            this.lastResetX = x
+            this.lastResetY = y
         // TECHNICAL VARIABLES
             // Physics
             var speed = 300;
@@ -894,6 +896,7 @@ demo.classes.prototype = {
             this.aoeSound = game.sound.add('aoe');
             this.castSound = game.sound.add('cast');
             this.dieSound = game.sound.add('die');
+            this.stabSound = game.sound.add('stab');
             // pew pew for precise
             
             
@@ -935,6 +938,7 @@ demo.classes.prototype = {
                 if (this.hasSword && game.input.keyboard.isDown(Phaser.Keyboard.L) && this.stabTimer < game.time.now) {
                     this.stabTimer = game.time.now + 310;
                     this.stabbing = true;
+                    this.stabSound.play();
                 }
                 else if (this.stabTimer > game.time.now) {
                     this.self.animations.play("hide", 1, false);
@@ -1052,9 +1056,9 @@ demo.classes.prototype = {
             }
             this.die = function () {
                 if (this.health <= 0 || this.self.body.y > this.deathY) {
-                    game.sound.stopAll();
-                    game.sound.stopAll();
-                    game.sound.stopAll();
+//                    game.sound.stopAll();
+//                    game.sound.stopAll();
+//                    game.sound.stopAll();
                     this.dieSound.play();
                     
 //                    return true

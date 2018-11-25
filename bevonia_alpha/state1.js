@@ -36,7 +36,7 @@ demo.state1.prototype = {
         flag1 = new Checkpoint(700,1222,bevonia)
 
         // Place enemies
-        skeleton1_1 = new Skeleton(48, 1376, 33, 640, bevonia);
+        skeleton1_1 = new Skeleton(48, 1376, 33, 625, bevonia);
         bat1_1 = new Bat(1090, 784, bevonia);
         bat1_2 = new Bat(2433, 974, bevonia);
         spider1_1 = new Spider(1706, 400, 304, 592, "y", -1, bevonia);
@@ -145,17 +145,31 @@ demo.state1.prototype = {
                         enemies1[j].self.animations.stop();
                         knockedTo = (enemies1[j].self.body.x - (enemy_distance*2));
                     }
-                    enemies1[j].self.body.velocity.x = -500;
+//                    enemies1[j].self.body.velocity.x = -500;
                     if (enemies1[j].self.body.x <= (knockedTo + enemy_distance/2)){
-                        enemies1[j].self.body.velocity.x = -500;
+                        if (bevonia.self.scale.x == -1){
+//                        enemies1[j].self.body.velocity.x = -500;
                         enemies1[j].self.body.velocity.y = -200;
                         console.log("FUCK")
+                        }
+                        else if (bevonia.self.scale.x == 1){
+                            console.log("UM");
+//                            enemies1[j].self.body.velocity.x = 500;
+                            enemies1[j].self.body.velocity.y = -200;
+                        }
 //                        game.time.events.add(20, enemies1[j].self.body.velocity.y = -10, this);
                     }
                     else{
-                        enemies1[j].self.body.velocity.x = -500;
-                        enemies1[j].self.body.velocity.y = -250;
+                        if (bevonia.self.scale.x == -1){
+//                        enemies1[j].self.body.velocity.x = -500;
+                        enemies1[j].self.body.velocity.y = -200;
                         console.log("SHIT")
+                        }
+                        else if (bevonia.self.scale.x == 1){
+                            console.log("UM SHIT");
+//                            enemies1[j].self.body.velocity.x = 500;
+                            enemies1[j].self.body.velocity.y = -200;
+                        }
                     }
                     if (enemies1[j].self.body.x <= knockedTo){
                         console.log("BITCH")
@@ -163,7 +177,7 @@ demo.state1.prototype = {
                         knockedTo = 0;
                         knockback = false;
                     }
-                     enemies1[j].self.body.velocity.x = -250   
+//                     enemies1[j].self.body.velocity.x = -250   
                     }
                     
                     enemies1[j].hitCount += 1;
