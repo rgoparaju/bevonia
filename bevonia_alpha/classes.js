@@ -894,6 +894,7 @@ demo.classes.prototype = {
             this.aoeSound = game.sound.add('aoe');
             this.castSound = game.sound.add('cast');
             this.dieSound = game.sound.add('die');
+            this.stabSound = game.sound.add('stab');
             // pew pew for precise
             
             
@@ -935,6 +936,7 @@ demo.classes.prototype = {
                 if (this.hasSword && game.input.keyboard.isDown(Phaser.Keyboard.L) && this.stabTimer < game.time.now) {
                     this.stabTimer = game.time.now + 310;
                     this.stabbing = true;
+                    this.stabSound.play();
                 }
                 else if (this.stabTimer > game.time.now) {
                     this.self.animations.play("hide", 1, false);
