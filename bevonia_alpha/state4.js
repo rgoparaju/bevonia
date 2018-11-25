@@ -3,7 +3,7 @@ demo.state4.prototype = {
     preload: function () {
         // LOAD TILEMAP
         game.load.tilemap("dragonRoom", "assets/tilemaps/dragonLairTEMP.json", null, Phaser.Tilemap.TILED_JSON);
-        game.load.image("wall sprite 2", "assets/tilesets_backgrounds/wall sprite 2.png");
+        game.load.image("basalt", "assets/tilesets_backgrounds/basalt.png");
         game.load.image("bg4", "assets/tilesets_backgrounds/bossBG.png", 1088, 512);
         
         // LOAD DRAGON SPRITE
@@ -14,7 +14,7 @@ demo.state4.prototype = {
         var bg4 = game.add.sprite(0, 0, "bg4");
         
         var map5 = game.add.tilemap("dragonRoom");
-        map5.addTilesetImage("wall sprite 2");
+        map5.addTilesetImage("basalt");
         
         game.world.setBounds(0, 0, 1088, 512);
         
