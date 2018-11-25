@@ -7,6 +7,8 @@ demo.state0.prototype = {
         game.load.spritesheet("E", "assets/sprites/E.png", 32, 32);
         game.load.spritesheet("L", "assets/sprites/L.png", 32, 32);
         game.load.spritesheet("K", "assets/sprites/K.png", 32, 32);
+        game.load.spritesheet('ONE','assets/sprites/ONE.png',32,32)
+        game.load.spritesheet('TWO','assets/sprites/TWO.png',32,32)
         
     },
     
@@ -43,19 +45,33 @@ demo.state0.prototype = {
         E4 = game.add.sprite(2414, 64, "E");
         E4.animations.add("flash", [0, 1]);
         E4.animations.play("flash", 4, true);
+        E5 = game.add.sprite(1600, 350, "E");
+        E5.animations.add("flash", [0, 1]);
+        E5.animations.play("flash", 4, true);
+        E6 = game.add.sprite(1800, 350, "E");
+        E6.animations.add("flash", [0, 1]);
+        E6.animations.play("flash", 4, true);
         L = game.add.sprite(100, 420, "L");
         L.animations.add("flash", [0, 1]);
         L.animations.play("flash", 4, true);
         K = game.add.sprite(1020, 600, "K");
         K.animations.add("flash", [1, 0]);
         K.animations.play("flash", 4, true);
+        ONE = game.add.sprite(1650,350,'ONE')
+        ONE.animations.add('flash',[0,1])
+        ONE.animations.play('flash',4,true)
+        TWO = game.add.sprite(1850,350,'TWO')
+        TWO.animations.add('flash',[0,1])
+        TWO.animations.play('flash',4,true)
+        
+        comma1 = game.add.text(1634,350,',',{fontsize: '25px', fill: '#ffffff'})
+        comma2 = game.add.text(1834,350,',',{fontsize: '25px', fill: '#ffffff'})
         
     // CREATE BEVONIA
         door0 = new Door(2560, 64, "state1", null);
         chest0 = new Chest(597, 416, null, null);
         
         bevonia = new Bevonia(95, 1003, 1344);
-        //inventory = new Inventory(866, 0);
         
     // PLACE ITEMS
         key0 = new Key(477, 917, bevonia);
@@ -66,7 +82,9 @@ demo.state0.prototype = {
         precise0 = new preciseItem(250, 1013, bevonia);
         
         chest0Contents = [aoe0];
-        items0 = [key0, exitKey, armor0, sword0, door0, aoe0, precise0];
+        inventory0 = new Inventory(bevonia)
+        
+        items0 = [key0, exitKey, armor0, sword0, door0, aoe0, precise0,healthpotion0,manapotion0];
         
         
         door0.player = bevonia;
@@ -108,11 +126,15 @@ demo.state0.prototype = {
         skeleton0.patrol();
         spider0.patrol();
         
+        inventory0.selector()
+        
         // Item interaction
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
             var i; for(i = 0; i < items0.length; i++) {
                 if (game.physics.arcade.overlap(bevonia.self, items0[i].self)) {
-                    items0[i].interactWith();
+                    if(items0[i].interactWith())
+                        inventory0.add(items0[i])
+                    inventory0.display()
                     //items0.splice(j, 1);
                 }
             }
