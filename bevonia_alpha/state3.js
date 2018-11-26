@@ -52,6 +52,8 @@ demo.state3.prototype = {
         skel3_7 = new Skeleton(2300, 912, 2276, 2496, bevonia);
         skel3_8 = new Skeleton(2000, 272, 1938, 2303, bevonia);
         skel3_9 = new Skeleton(2600, 272, 2463, 2848, bevonia);
+        skel3_10 = new Skeleton(2200, 1488, 2112, 2307, bevonia);
+        skel3_11 = new Skeleton(2500, 1488, 2467, 2687, bevonia);
         
         spider3_1 = new Spider(1608, 1200, 1216, 1424, "y", -1, bevonia);
         spider3_2 = new Spider(1880, 550, 526, 688, "y", 1, bevonia);
@@ -64,7 +66,7 @@ demo.state3.prototype = {
         bat3_3 = new Bat(1770, 34, bevonia);
         bat3_4 = new Bat(1217, 34, bevonia);
         
-        enemies3 = [skel3_1, skel3_2, skel3_3, skel3_4, skel3_5, skel3_6, skel3_7, skel3_8, skel3_9, spider3_1, spider3_2, spider3_3, spider3_4, spider3_5, bat3_1, bat3_2, bat3_3, bat3_4];
+        enemies3 = [skel3_1, skel3_2, skel3_3, skel3_4, skel3_5, skel3_6, skel3_7, skel3_8, skel3_9, skel3_10, skel3_11, spider3_1, spider3_2, spider3_3, spider3_4, spider3_5, bat3_1, bat3_2, bat3_3, bat3_4];
         
         bars = new Bars(bevonia);
         
@@ -109,6 +111,8 @@ demo.state3.prototype = {
         game.physics.arcade.collide(skel3_7.self, platforms3);
         game.physics.arcade.collide(skel3_8.self, platforms3);
         game.physics.arcade.collide(skel3_9.self, platforms3);
+        game.physics.arcade.collide(skel3_10.self, platforms3);
+        game.physics.arcade.collide(skel3_11.self, platforms3);
         game.physics.arcade.collide(bat3_1.self, platforms3);
         game.physics.arcade.collide(bat3_2.self, platforms3);
         game.physics.arcade.collide(bat3_3.self, platforms3);
@@ -123,6 +127,8 @@ demo.state3.prototype = {
         skel3_7.patrol();
         skel3_8.patrol();
         skel3_9.patrol();
+        skel3_10.patrol();
+        skel3_11.patrol();
         spider3_1.patrol();
         spider3_2.patrol();
         spider3_3.patrol();

@@ -5,6 +5,7 @@ demo.state4.prototype = {
         game.load.tilemap("dragonRoom", "assets/tilemaps/dragonLairTEMP.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("basalt", "assets/tilesets_backgrounds/basalt.png");
         game.load.image("bg4", "assets/tilesets_backgrounds/bossBG.png", 1088, 512);
+        game.load.image("dragonHealth", "assets/sprites/greenBar.png", 256, 16);
         
         // LOAD DRAGON SPRITE
         
@@ -27,7 +28,8 @@ demo.state4.prototype = {
         bars = new Bars(bevonia);
         
         dragonBoss = new Dragon(bevonia);
-        
+        dragonBar = game.add.sprite(374, 40, "dragonHealth");
+        dragonBar.fixedToCamera = true;
         aoe5 = new aoeItem(512, 432, bevonia);
         
         items5 = [door5, aoe5];
@@ -46,6 +48,7 @@ demo.state4.prototype = {
         game.physics.arcade.collide(bevonia.self, platforms5);
         
         bars.displayStats();
+        dragonBar.scale.x = dragonBoss.health;
         
         bevonia.run();
         bevonia.jump();
