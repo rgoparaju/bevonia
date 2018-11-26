@@ -36,7 +36,7 @@ demo.state4.prototype = {
         backgroundMusic.loop = true;
         backgroundMusic.play();   
         
-        
+        notReallyACheckpoint = new Checkpoint(-100,-100,bevonia)
         
         
     },
@@ -47,7 +47,7 @@ demo.state4.prototype = {
         
         bevonia.run();
         bevonia.jump();
-        bevonia.die();
+        if(bevonia.die()) notReallyACheckpoint.resetToCheckpoint()
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
