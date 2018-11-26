@@ -191,7 +191,7 @@ demo.state2.prototype = {
                         if (bevonia.self.scale.x == -1){
 //                        enemies2[j].self.body.velocity.x = -500;
                         enemies2[j].self.body.velocity.y = -200;
-                        console.log("FUCK")
+                        //console.log("FUCK")
                         }
                         else if (bevonia.self.scale.x == 1){
                             console.log("UM");
@@ -204,7 +204,7 @@ demo.state2.prototype = {
                         if (bevonia.self.scale.x == -1){
 //                        enemies2[j].self.body.velocity.x = -500;
                         enemies2[j].self.body.velocity.y = -200;
-                        console.log("SHIT")
+                        //console.log("SHIT")
                         }
                         else if (bevonia.self.scale.x == 1){
                             console.log("UM SHIT");
@@ -213,7 +213,7 @@ demo.state2.prototype = {
                         }
                     }
                     if (enemies2[j].self.body.x <= knockedTo){
-                        console.log("BITCH")
+                        //console.log("BITCH")
                         enemies2[j].frame = 1;
                         knockedTo = 0;
                         knockback = false;
