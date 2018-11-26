@@ -167,7 +167,9 @@ demo.state2.prototype = {
             var i; for (i = 0; i < items2.length; i++) {
                 if (game.physics.arcade.overlap(bevonia.self, items2[i].self)) {
                     console.log("I detect an overlap!!");
-                    items2[i].interactWith();
+                    if(items2[i].interactWith())
+                        inventory2.add(items2[i])
+                    inventory2.display()
                 }
             }
         }
