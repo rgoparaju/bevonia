@@ -1121,6 +1121,7 @@ demo.classes.prototype = {
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
             this.deathSound = game.add.sound("dragonDeath");
+            this.hurtSound = game.add.sound("dragonSpit");
             this.enterSound = game.add.sound("dragonEnter");
             this.spitSound = game.add.sound("dragonSpit");
             this.enterSound.play();

@@ -28,9 +28,23 @@ demo.state3.prototype = {
         chest3 = new Chest(1890, 768, null, null);
         
         bevonia = new Bevonia(608, 224, 1632);
+        flag3 = new Checkpoint(1430,1126,bevonia)
         
         door3.player = bevonia;
         chest3.player = bevonia;
+        
+        inventory3 = new Inventory(bevonia)
+
+        for(var x = 0; x < inventory2.contents.length; x++){
+            if(inventory2.contents[x] instanceof HealthPotion){
+                tempPotion = new HealthPotion(0,0,bevonia)
+                inventory3.add(tempPotion)
+            }
+            else if(inventory2.contents[x] instanceof ManaPotion){
+                tempPotion2 = new ManaPotion(0,0,bevonia)
+                inventory3.add(tempPotion2)
+            }
+        }
         
         armor3 = new Armor(159, 808, bevonia);
         sword3 = new Sword(257, 1424, bevonia);
@@ -82,13 +96,18 @@ demo.state3.prototype = {
         game.physics.arcade.collide(bevonia.self, platforms3)
         bevonia.run()
         bevonia.jump()
-        bevonia.die()
+        if(bevonia.die()) flag3.resetToCheckpoint()
         bevonia.manageVulnerability()
         bevonia.stab()
         bevonia.castAOE()
         bevonia.castPrecise()
         
         bars.displayStats();
+        inventory3.selector()
+        
+        if(game.physics.arcade.overlap(bevonia.self,flag3.self) && !flag3.activated){
+            flag3.activateCheckpoint()
+        }
         
 //        skel3_1
 //        skel3_2
@@ -151,7 +170,9 @@ demo.state3.prototype = {
             var i; for (i = 0; i < items3.length; i++) {
                 if (game.physics.arcade.overlap(bevonia.self, items3[i].self)) {
                     console.log("I detect an overlap!!");
-                    items3[i].interactWith();
+                    if(items3[i].interactWith())
+                        inventory3.add(items3[i])
+                    inventory3.display()
                 }
             }
         }

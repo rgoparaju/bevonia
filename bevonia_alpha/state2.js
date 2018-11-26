@@ -167,7 +167,9 @@ demo.state2.prototype = {
             var i; for (i = 0; i < items2.length; i++) {
                 if (game.physics.arcade.overlap(bevonia.self, items2[i].self)) {
                     console.log("I detect an overlap!!");
-                    items2[i].interactWith();
+                    if(items2[i].interactWith())
+                        inventory2.add(items2[i])
+                    inventory2.display()
                 }
             }
         }
@@ -191,7 +193,7 @@ demo.state2.prototype = {
                         if (bevonia.self.scale.x == -1){
 //                        enemies2[j].self.body.velocity.x = -500;
                         enemies2[j].self.body.velocity.y = -200;
-                        console.log("FUCK")
+                        //console.log("FUCK")
                         }
                         else if (bevonia.self.scale.x == 1){
                             console.log("UM");
@@ -204,7 +206,7 @@ demo.state2.prototype = {
                         if (bevonia.self.scale.x == -1){
 //                        enemies2[j].self.body.velocity.x = -500;
                         enemies2[j].self.body.velocity.y = -200;
-                        console.log("SHIT")
+                        //console.log("SHIT")
                         }
                         else if (bevonia.self.scale.x == 1){
                             console.log("UM SHIT");
@@ -213,7 +215,7 @@ demo.state2.prototype = {
                         }
                     }
                     if (enemies2[j].self.body.x <= knockedTo){
-                        console.log("BITCH")
+                        //console.log("BITCH")
                         enemies2[j].frame = 1;
                         knockedTo = 0;
                         knockback = false;
