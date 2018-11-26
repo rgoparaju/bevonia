@@ -5,6 +5,7 @@ demo.state4.prototype = {
         game.load.tilemap("dragonRoom", "assets/tilemaps/dragonLairTEMP.json", null, Phaser.Tilemap.TILED_JSON);
         game.load.image("basalt", "assets/tilesets_backgrounds/basalt.png");
         game.load.image("bg4", "assets/tilesets_backgrounds/bossBG.png", 1088, 512);
+        game.load.image("dragonHealth", "assets/sprites/greenBar.png", 256, 16);
         
         // LOAD DRAGON SPRITE
         
@@ -26,17 +27,20 @@ demo.state4.prototype = {
         door5.player = bevonia;
         bars = new Bars(bevonia);
         
-        dragonBoss = new Dragon([144, 384, 675, 912], bevonia);
-        
+        dragonBoss = new Dragon(bevonia);
+        dragonBar = game.add.sprite(374, 40, "dragonHealth");
+        dragonBar.fixedToCamera = true;
         aoe5 = new aoeItem(512, 432, bevonia);
         
         items5 = [door5, aoe5];
         
         backgroundMusic = game.add.audio('boss');
         backgroundMusic.loop = true;
-        backgroundMusic.play();   
+        backgroundMusic.play();
         
+        notDead = true;
         
+        notReallyACheckpoint = new Checkpoint(-100,-100,bevonia)
         
         
     },
@@ -44,10 +48,11 @@ demo.state4.prototype = {
         game.physics.arcade.collide(bevonia.self, platforms5);
         
         bars.displayStats();
+        dragonBar.scale.x = dragonBoss.health;
         
         bevonia.run();
         bevonia.jump();
-        bevonia.die();
+        if(bevonia.die()) notReallyACheckpoint.resetToCheckpoint()
         bevonia.manageVulnerability();
         bevonia.stab();
         bevonia.castAOE();
@@ -90,6 +95,12 @@ demo.state4.prototype = {
         }
         else if (dragonBoss.attackTimer < game.time.now) {
             dragonBoss.attacking = false;
+        }
+        
+        if (dragonBoss.health == 0 && notDead){
+            notDead = false;
+            exitKey4 = new SilverKey(550, 448, bevonia);
+            items5.push(exitKey4);
         }
         
         if (game.physics.arcade.overlap(bevonia.self, dragonBoss.self)) {

@@ -1083,32 +1083,47 @@ demo.classes.prototype = {
             this.self = game.add.sprite(x0, y0, "fireball");
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
+            this.existSound = game.sound.add("fireball");
             this.self.animations.add("exist", [0, 1]);
             this.self.animations.play("exist", 12, true)
+            this.existSound.play()
+            this.player = player;
             
-            this.self.body.velocity.x = -600;
-            this.self.body.velocity.y = Math.abs(y0 - player.self.body.y);
+            var velocity = 600
+            var dx = this.player.self.body.x - this.self.body.x;
+            var dy = this.player.self.body.y - this.self.body.y;
+            var norm = Math.sqrt(dx * dx + dy * dy);
+            dx /= norm;
+            dy /= norm;
+            
+            this.self.body.velocity.x = dx * velocity;
+            this.self.body.velocity.y = dy * velocity;
             
             this.manageExistence = function () {
                 if (this.self.body.x < 0 || this.self.body.y > 512) {
+                    this.existSound.stop();
                     this.self.kill()
                 }
             }
         }
         
-        Dragon = function (spawnPointArray, player) {
+        Dragon = function (player) {
             // Technical variables
-            this.spawnPointArray = spawnPointArray;
             this.player = player;
             this.attacking = false;
             this.attackTimer = 0;
             this.health = 1;
+            this.alive = true;
             
             // Setup
             this.self = game.add.sprite(964, 512, "dragon");
             this.self.anchor.setTo(0.5, 0.5);
             game.physics.enable(this.self);
             this.self.body.collideWorldBounds = true;
+            this.deathSound = game.add.sound("dragonDeath");
+            this.enterSound = game.add.sound("dragonEnter");
+            this.spitSound = game.add.sound("dragonSpit");
+            this.enterSound.play();
             
             // Animate
             this.self.animations.add("rise", [2, 3, 4, 5, 6, 7, 8]);
@@ -1120,11 +1135,15 @@ demo.classes.prototype = {
             
             this.manageHealth = function () {
                 if (this.health <= 0) {
-                    this.self.kill();
+                    if (this.alive) {
+                        this.deathSound.play();
+                        this.alive = false;
+                    }
+                    else {
+                        this.self.kill();
+                    }
                 }
             }
-            
-            
         }
             
         

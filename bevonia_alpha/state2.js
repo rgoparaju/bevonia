@@ -73,6 +73,8 @@ demo.state2.prototype = {
         skeleton2_2 = new Skeleton(200, 960, 192, 647, bevonia);
         skeleton2_3 = new Skeleton(48, 576, 36, 642, bevonia);
         skeleton2_4 = new Skeleton(710, 768, 707, 880, bevonia);
+        skeleton2_5 = new Skeleton(1600, 368, 1540, 1916, bevonia);
+        skeleton2_6 = new Skeleton(2000, 368, 1948, 2428, bevonia);
         
 //         PLACE 11 BATS evenly over x in range 2112, 2466 (y ~ 164)
 //        bat1_1 = new Bat(2112, 1666, bevonia);
@@ -87,8 +89,7 @@ demo.state2.prototype = {
         bat1_10 = new Bat(2400, 1666, bevonia);
         bat1_11 = new Bat(2432, 1666, bevonia);
         
-//         1 troll in the troll section (2389, 368)
-        troll1_1 = new Troll(2389, 376, 2262, 2317, 300, 368, bevonia);
+        
         
         spider1_1 = new Spider(2408, 784, 867, 1264, "y", -1, bevonia);
         spider1_2 = new Spider(2488, 784, 867, 1264, "y", 1, bevonia);
@@ -96,7 +97,7 @@ demo.state2.prototype = {
         bars = new Bars(bevonia);
 //        tempInventory = game.add.sprite(325,8,'inventory')
 //        tempInventory.fixedToCamera = true
-        enemies2 = [skeleton2_1, skeleton2_2, skeleton2_3, skeleton2_4, spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11, troll1_1]
+        enemies2 = [skeleton2_1, skeleton2_2, skeleton2_3, skeleton2_4, skeleton2_5, skeleton2_6, spider1_1, spider1_2,bat1_2,bat1_3,bat1_4,bat1_5,bat1_7,bat1_8,bat1_9,bat1_10,bat1_11]
     
         inventory2.display()
         
@@ -116,6 +117,8 @@ demo.state2.prototype = {
         game.physics.arcade.collide(skeleton2_2.self, platforms2);
         game.physics.arcade.collide(skeleton2_3.self, platforms2);
         game.physics.arcade.collide(skeleton2_4.self, platforms2);
+        game.physics.arcade.collide(skeleton2_5.self, platforms2);
+        game.physics.arcade.collide(skeleton2_6.self, platforms2);
         game.physics.arcade.collide(bat1_2.self, platforms2);
         game.physics.arcade.collide(bat1_3.self, platforms2);
         game.physics.arcade.collide(bat1_4.self, platforms2);
@@ -126,7 +129,6 @@ demo.state2.prototype = {
         game.physics.arcade.collide(bat1_9.self, platforms2);
         game.physics.arcade.collide(bat1_10.self, platforms2);
         game.physics.arcade.collide(bat1_11.self, platforms2);
-        game.physics.arcade.collide(troll1_1.self, platforms2);
         game.physics.arcade.collide(healthPotion2_1.self,platforms1)
         game.physics.arcade.collide(healthPotion2_2.self,platforms1)
         game.physics.arcade.collide(manaPotion2_1.self,platforms1)
@@ -144,6 +146,9 @@ demo.state2.prototype = {
         skeleton2_2.patrol();
         skeleton2_3.patrol();
         skeleton2_4.patrol();
+        skeleton2_5.patrol();
+        skeleton2_6.patrol();
+        
         spider1_1.patrol();
         spider1_2.patrol();
         //bat1_1.watch();
@@ -157,7 +162,6 @@ demo.state2.prototype = {
         bat1_9.watch();
         bat1_10.watch();
         bat1_11.watch();
-        troll1_1.patrol();
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
             var i; for (i = 0; i < items2.length; i++) {
