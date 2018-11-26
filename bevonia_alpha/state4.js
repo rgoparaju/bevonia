@@ -27,6 +27,19 @@ demo.state4.prototype = {
         door5.player = bevonia;
         bars = new Bars(bevonia);
         
+        inventory4 = new Inventory(bevonia)
+        
+        for(var x = 0; x < inventory3.contents.length; x++){
+            if(inventory3.contents[x] instanceof HealthPotion){
+                tempPotion = new HealthPotion(0,0,bevonia)
+                inventory4.add(tempPotion)
+            }
+            else if(inventory3.contents[x] instanceof ManaPotion){
+                tempPotion2 = new ManaPotion(0,0,bevonia)
+                inventory4.add(tempPotion2)
+            }
+        }
+        
         dragonBoss = new Dragon(bevonia);
         dragonBar = game.add.sprite(374, 40, "dragonHealth");
         dragonBar.fixedToCamera = true;
@@ -49,6 +62,8 @@ demo.state4.prototype = {
         
         bars.displayStats();
         dragonBar.scale.x = dragonBoss.health;
+        
+        inventory4.selector()
         
         bevonia.run();
         bevonia.jump();
