@@ -41,6 +41,11 @@ demo.state3.prototype = {
         
         chest3.contents = [exitKey3];
         
+        //MUSIC
+        backgroundMusic = game.add.audio('levelThree');
+        backgroundMusic.loop = true;
+        backgroundMusic.play();
+        
         items3 = [door3, chest3, armor3, sword3, key3, health3, mana3, exitKey3];
         
         

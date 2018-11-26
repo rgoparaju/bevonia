@@ -71,6 +71,7 @@ demo.state1.prototype = {
         jumpSound = game.sound.add("jump");
         aoeSound = game.sound.add('aoe');
         castSound = game.sound.add('cast');
+        getHit = game.sound.add('getHit');
         
         //MUSIC
         backgroundMusic = game.add.audio('levelOne');
@@ -150,10 +151,8 @@ demo.state1.prototype = {
                         if (bevonia.self.scale.x == -1){
 //                        enemies1[j].self.body.velocity.x = -500;
                         enemies1[j].self.body.velocity.y = -200;
-                        console.log("FUCK")
                         }
                         else if (bevonia.self.scale.x == 1){
-                            console.log("UM");
 //                            enemies1[j].self.body.velocity.x = 500;
                             enemies1[j].self.body.velocity.y = -200;
                         }
@@ -163,16 +162,13 @@ demo.state1.prototype = {
                         if (bevonia.self.scale.x == -1){
 //                        enemies1[j].self.body.velocity.x = -500;
                         enemies1[j].self.body.velocity.y = -200;
-                        console.log("SHIT")
                         }
                         else if (bevonia.self.scale.x == 1){
-                            console.log("UM SHIT");
 //                            enemies1[j].self.body.velocity.x = 500;
                             enemies1[j].self.body.velocity.y = -200;
                         }
                     }
                     if (enemies1[j].self.body.x <= knockedTo){
-                        console.log("BITCH")
                         enemies1[j].frame = 1;
                         knockedTo = 0;
                         knockback = false;
@@ -187,6 +183,7 @@ demo.state1.prototype = {
                     
                 }
                 else if (bevonia.vulnerable) {
+                    getHit.play();
                     bevonia.health -= bevonia.damageFactor;
                     bevonia.self.animations.stop();
                 var distance = 1000;
