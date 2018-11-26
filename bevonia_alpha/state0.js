@@ -93,7 +93,7 @@ demo.state0.prototype = {
         
         items0.push(chest0);
         
-        skeleton0 = new Skeleton(1060, 800, 832, 1248, bevonia);
+        skeleton0 = new Skeleton(1060, 800, 842, 1244, bevonia);
         spider0 = new Spider(56, 300, 2, 460, "y", 1, bevonia);
         
         bars = new Bars(bevonia);        

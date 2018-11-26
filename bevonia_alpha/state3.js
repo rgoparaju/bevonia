@@ -64,7 +64,12 @@ demo.state3.prototype = {
         bat3_3 = new Bat(1770, 34, bevonia);
         bat3_4 = new Bat(1217, 34, bevonia);
         
-        enemies3 = [skel3_1, skel3_2, skel3_3, skel3_4, skel3_5, skel3_6, skel3_7, skel3_8, skel3_9, spider3_1, spider3_2, spider3_3, spider3_4, spider3_5, bat3_1, bat3_2, bat3_3, bat3_4]
+        enemies3 = [skel3_1, skel3_2, skel3_3, skel3_4, skel3_5, skel3_6, skel3_7, skel3_8, skel3_9, spider3_1, spider3_2, spider3_3, spider3_4, spider3_5, bat3_1, bat3_2, bat3_3, bat3_4];
+        
+        bars = new Bars(bevonia);
+        
+        
+        
     },
     update: function(){
         game.physics.arcade.collide(bevonia.self, platforms3)
@@ -76,22 +81,24 @@ demo.state3.prototype = {
         bevonia.castAOE()
         bevonia.castPrecise()
         
-        skel3_1
-        skel3_2
-        skel3_3
-        skel3_4
-        skel3_5
-        skel3_6
-        skel3_7
-        skel3_8
-        skel3_9
-        spider3_1
-        spider3_2
-        spider3_3
-        bat3_1
-        bat3_2
-        bat3_3
-        bat3_4
+        bars.displayStats();
+        
+//        skel3_1
+//        skel3_2
+//        skel3_3
+//        skel3_4
+//        skel3_5
+//        skel3_6
+//        skel3_7
+//        skel3_8
+//        skel3_9
+//        spider3_1
+//        spider3_2
+//        spider3_3
+//        bat3_1
+//        bat3_2
+//        bat3_3
+//        bat3_4
         
         game.physics.arcade.collide(skel3_1.self, platforms3);
         game.physics.arcade.collide(skel3_2.self, platforms3);
