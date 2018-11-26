@@ -72,6 +72,7 @@ demo.state4.prototype = {
         if (bevonia.aoeExists) {
             if (game.physics.arcade.overlap(bevonia.playerAOE.self, dragonBoss.self)) {
                 dragonBoss.health -= .25;
+                dragonBoss.hurtSound.play();
                 bevonia.aoeSound.play();
                 xBoom = bevonia.playerAOE.self.body.x;
                 yBoom = bevonia.playerAOE.self.body.y;
