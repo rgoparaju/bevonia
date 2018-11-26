@@ -26,7 +26,7 @@ demo.state4.prototype = {
         door5.player = bevonia;
         bars = new Bars(bevonia);
         
-        dragonBoss = new Dragon([144, 384, 675, 912], bevonia);
+        dragonBoss = new Dragon(bevonia);
         
         aoe5 = new aoeItem(512, 432, bevonia);
         
@@ -34,7 +34,9 @@ demo.state4.prototype = {
         
         backgroundMusic = game.add.audio('boss');
         backgroundMusic.loop = true;
-        backgroundMusic.play();   
+        backgroundMusic.play();
+        
+        notDead = true;
         
         
         
@@ -90,6 +92,12 @@ demo.state4.prototype = {
         }
         else if (dragonBoss.attackTimer < game.time.now) {
             dragonBoss.attacking = false;
+        }
+        
+        if (dragonBoss.health == 0 && notDead){
+            notDead = false;
+            exitKey4 = new SilverKey(550, 448, bevonia);
+            items5.push(exitKey4);
         }
         
         if (game.physics.arcade.overlap(bevonia.self, dragonBoss.self)) {

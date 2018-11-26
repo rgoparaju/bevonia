@@ -127,6 +127,10 @@ demo.art.prototype = {
         game.load.audio("clunk", "assets/sounds/clunk.mp3");
         game.load.audio("schlang", "assets/sounds/swordGet.mp3");
         game.load.audio("stab", "assets/sounds/stab.mp3");
+        game.load.audio("fireball", "assets/sounds/fireball.mp3");
+        game.load.audio("dragonDeath", "assets/sounds/dragonDeath.mp3");
+        game.load.audio("dragonEnter", "assets/sounds/dragonEnter.mp3");
+        game.load.audio("dragonSpit", "assets/sounds/dragonSpit.mp3");
         
         
         // Music

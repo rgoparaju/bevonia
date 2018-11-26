@@ -52,6 +52,15 @@ demo.state3.prototype = {
         game.physics.arcade.collide(health3.self,platforms3)
         game.physics.arcade.collide(mana3.self,platforms3)
         
+        if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+            var i; for (i = 0; i < items3.length; i++) {
+                if (game.physics.arcade.overlap(bevonia.self, items3[i].self)) {
+                    console.log("I detect an overlap!!");
+                    items3[i].interactWith();
+                }
+            }
+        }
+        
         bevonia.run()
         bevonia.jump()
         bevonia.die()
