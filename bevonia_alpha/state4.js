@@ -23,7 +23,7 @@ demo.state4.prototype = {
         map5.setCollision(1, true, "platforms DRAGON");
         
         door5 = new Door(1024, 384, "title", null);
-        bevonia = new Bevonia(48, 32, 512);
+        bevonia = new Bevonia(52, 430, 512);
         door5.player = bevonia;
         bars = new Bars(bevonia);
         

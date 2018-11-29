@@ -51,11 +51,11 @@ demo.state2.prototype = {
 
         for(var x = 0; x < inventory1.contents.length; x++){
             if(inventory1.contents[x] instanceof HealthPotion){
-                tempPotion = new HealthPotion(0,0,bevonia)
+                tempPotion = new HealthPotion(0,1900,bevonia)
                 inventory2.add(tempPotion)
             }
             else if(inventory1.contents[x] instanceof ManaPotion){
-                tempPotion2 = new ManaPotion(0,0,bevonia)
+                tempPotion2 = new ManaPotion(0,1900,bevonia)
                 inventory2.add(tempPotion2)
             }
         } 
