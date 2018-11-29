@@ -79,12 +79,13 @@ demo.state0.prototype = {
         sword0 = new Sword(48, 464, bevonia);
         armor0 = new Armor(509, 912, bevonia);
         aoe0 = new aoeItem(-100, -100, bevonia);
-        precise0 = new preciseItem(250, 1013, bevonia);
+        health0 = new HealthPotion(1623, 400);
+        mana0 = new ManaPotion(1824, 400);
         
         chest0Contents = [aoe0];
         inventory0 = new Inventory(bevonia)
         
-        items0 = [key0, exitKey, armor0, sword0, door0, aoe0, precise0];
+        items0 = [key0, exitKey, armor0, sword0, door0, aoe0, health0, mana0];
         
         
         door0.player = bevonia;
@@ -112,6 +113,8 @@ demo.state0.prototype = {
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms0);
         game.physics.arcade.collide(skeleton0.self, platforms0);
+        game.physics.arcade.collide(health0.self, platforms0);
+        game.physics.arcade.collide(mana0.self, platforms0);
         
         bars.displayStats();
         
@@ -252,21 +255,21 @@ demo.state0.prototype = {
                 
             }
         }
-        if (bevonia.preciseExists) {
-            var l; for(l = 0; l < enemies0.length; l++) {
-                if (game.physics.arcade.overlap(bevonia.playerPrecise.self, enemies0[l].self)) {
-                    enemies0[l].self.kill();
-                    bevonia.playerPrecise.self.kill();
-                    bevonia.preciseExists = false;
-                    
-                }
-            }
-            if (game.physics.arcade.collide(bevonia.playerPrecise.self, platforms0)){
-                bevonia.playerPrecise.self.kill();
-                bevonia.preciseExists = false;
-            }
-            
-        }
+//        if (bevonia.preciseExists) {
+//            var l; for(l = 0; l < enemies0.length; l++) {
+//                if (game.physics.arcade.overlap(bevonia.playerPrecise.self, enemies0[l].self)) {
+//                    enemies0[l].self.kill();
+//                    bevonia.playerPrecise.self.kill();
+//                    bevonia.preciseExists = false;
+//                    
+//                }
+//            }
+//            if (game.physics.arcade.collide(bevonia.playerPrecise.self, platforms0)){
+//                bevonia.playerPrecise.self.kill();
+//                bevonia.preciseExists = false;
+//            }
+//            
+//        }
         
         
 

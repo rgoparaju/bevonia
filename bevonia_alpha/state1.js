@@ -37,13 +37,13 @@ demo.state1.prototype = {
 
         // Place enemies
         skeleton1_1 = new Skeleton(48, 1376, 33, 625, bevonia);
-        bat1_1 = new Bat(1090, 784, bevonia);
+        //bat1_1 = new Bat(1090, 784, bevonia);
         bat1_2 = new Bat(2433, 974, bevonia);
         spider1_1 = new Spider(1706, 400, 304, 592, "y", -1, bevonia);
         spider1_2 = new Spider(1960, 950, 912, 1360, "y", -1, bevonia);
         skeleton1_2 = new Skeleton(1416, 736, 1482, 1702, bevonia);
         chest1_1.player = bevonia;
-        enemies1 = [skeleton1_1, bat1_1, bat1_2, spider1_1, skeleton1_2, spider1_2]
+        enemies1 = [skeleton1_1, bat1_2, spider1_1, skeleton1_2, spider1_2]
         
         bars = new Bars(bevonia);
         
@@ -54,12 +54,12 @@ demo.state1.prototype = {
         armor = new Armor(1104, 816, bevonia);
         healthPotion = new HealthPotion(353, 1200,bevonia)
         
-        healthPotion1 = new HealthPotion(353, 1296,bevonia)
-        healthPotion2 = new HealthPotion(362, 1296,bevonia)
-        healthPotion3 = new HealthPotion(373, 1296,bevonia)
-        healthPotion4 = new HealthPotion(383, 1296,bevonia)
+        manaPotion1 = new ManaPotion(1614 ,1360,bevonia);
+        healthPotion2 = new HealthPotion(2432, 1136,bevonia);
+        manaPotion2 = new ManaPotion(2416, 672, bevonia)
+        manaPotion2.self.body.gravity.y = 0;
         
-        manaPotion = new ManaPotion(638,1200,bevonia)
+        manaPotion = new ManaPotion(353, 1360, bevonia)
         key = new Key (2562, 320, bevonia);
         exitKey = new SilverKey(0, 0, bevonia);
         chest1_1.contents = [exitKey];
@@ -78,7 +78,7 @@ demo.state1.prototype = {
         backgroundMusic.loop = true;
         backgroundMusic.play();        
         
-        items1 = [sword, armor, spell, key, exitKey, door1, chest1_1, healthPotion, manaPotion, healthPotion1, healthPotion2, healthPotion3, healthPotion4];
+        items1 = [sword, armor, spell, key, exitKey, door1, chest1_1, healthPotion, manaPotion, healthPotion2, manaPotion1, manaPotion2];
         
         
         
@@ -86,15 +86,14 @@ demo.state1.prototype = {
     update: function () {
         game.physics.arcade.collide(bevonia.self, platforms1);
         game.physics.arcade.collide(healthPotion.self,platforms1)
-        game.physics.arcade.collide(healthPotion1.self,platforms1)
         game.physics.arcade.collide(healthPotion2.self,platforms1)
-        game.physics.arcade.collide(healthPotion3.self,platforms1)
-        game.physics.arcade.collide(healthPotion4.self,platforms1)
+        game.physics.arcade.collide(manaPotion1.self,platforms1)
+
         game.physics.arcade.collide(skeleton1_1.self,platforms1)
         game.physics.arcade.collide(skeleton1_2.self,platforms1)
         
         game.physics.arcade.collide(manaPotion.self,platforms1)
-        game.physics.arcade.collide(bat1_1.self,platforms1)
+        //game.physics.arcade.collide(bat1_1.self,platforms1)
         game.physics.arcade.collide(bat1_2.self, platforms1);
         
         bars.displayStats();
@@ -109,7 +108,7 @@ demo.state1.prototype = {
         inventory1.selector()
         
         skeleton1_1.patrol();
-        bat1_1.watch();
+        //bat1_1.watch();
         bat1_2.watch();
         spider1_1.patrol();
         spider1_2.patrol();

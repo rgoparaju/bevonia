@@ -22,7 +22,7 @@ demo.state3.prototype = {
         traps3 = map3.createLayer("traps");
 //        
         map3.setCollision(1, true, "platforms");
-        map3.setCollision([2, 3, 4, 5, 6, 7, 8], true, "traps");
+        map3.setCollision([2, 3, 4, 5, 6, 7, 8, 9, 10, 11], true, "traps");
         
         door3 = new Door(864, 224, "state4", null);
         chest3 = new Chest(1890, 768, null, null);
@@ -49,8 +49,15 @@ demo.state3.prototype = {
         armor3 = new Armor(159, 808, bevonia);
         sword3 = new Sword(257, 1424, bevonia);
         key3 = new Key(1471, 1504, bevonia);
-        health3 = new HealthPotion(2473, 1168, bevonia);
-        mana3 = new ManaPotion(2923, 47, bevonia);
+        health3_1 = new HealthPotion(2478, 1168, bevonia);
+        health3_2 = new HealthPotion(904, 464, bevonia);
+        aoe3 = new aoeItem(382, 624, bevonia);
+        
+        
+        
+        mana3_1 = new ManaPotion(2923, 47, bevonia);
+        mana3_2 = new ManaPotion(797, 1000, bevonia);
+        mana3_2.self.body.gravity.y = 0;
         exitKey3 = new SilverKey(-8, -8, bevonia);
         
         chest3.contents = [exitKey3];
@@ -60,7 +67,7 @@ demo.state3.prototype = {
         backgroundMusic.loop = true;
         backgroundMusic.play();
         
-        items3 = [door3, chest3, armor3, sword3, key3, health3, mana3, exitKey3];
+        items3 = [door3, chest3, armor3, sword3, key3, health3_1, health3_2, mana3_1, mana3_2, exitKey3, aoe3];
         
         skel3_1 = new Skeleton(400, 592, 322, 417, bevonia);
         skel3_2 = new Skeleton(300, 1424, 127, 387, bevonia);
@@ -93,6 +100,8 @@ demo.state3.prototype = {
         
     },
     update: function(){
+        console.log([bevonia.self.body.x, bevonia.self.body.y]);
+        
         game.physics.arcade.collide(bevonia.self, platforms3)
         bevonia.run()
         bevonia.jump()
@@ -163,8 +172,10 @@ demo.state3.prototype = {
         bat3_3.watch();
         bat3_4.watch();
         
-        game.physics.arcade.collide(health3.self,platforms3)
-        game.physics.arcade.collide(mana3.self,platforms3)
+        game.physics.arcade.collide(health3_1.self,platforms3)
+        game.physics.arcade.collide(health3_2.self,platforms3)
+        game.physics.arcade.collide(mana3_1.self,platforms3)
+        game.physics.arcade.collide(mana3_2.self,platforms3)
         
         if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
             var i; for (i = 0; i < items3.length; i++) {
@@ -265,6 +276,48 @@ demo.state3.prototype = {
                 }
             }
             enemies3[j].manageVulnerability();
+        }
+        if (bevonia.aoeExists) {
+            console.log(game.physics.arcade.overlap(bevonia.playerAOE.self, enemies3));
+            // Detect a collision with either the environment or enemies
+            var k; for(k = 0; k < enemies3.length; k++) {
+                if (game.physics.arcade.overlap(bevonia.playerAOE.self, enemies3[k].self)) {
+                    bevonia.aoeSound.play();
+                    xBoom = bevonia.playerAOE.self.body.x;
+                    yBoom = bevonia.playerAOE.self.body.y;
+                    var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
+                    game.camera.shake(.02, 300);
+                    game.physics.enable(boom);
+                    
+                    enemies3[k].hitCount += 2;
+                    enemies3[k].vulnerable = true;
+                    enemies3[k].die();
+                    enemies3[k].invincibilityTimer = game.time.now + 500;
+                    
+                    boom.anchor.setTo(.5, .5);
+                    boom.scale.setTo(1.5, 1.5);
+                    boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                    bevonia.playerAOE.self.kill();
+                    boom.animations.play("explode", 9, false);
+                    bevonia.aoeExists = false;
+                }
+                enemies3[k].manageVulnerability();
+            }
+            if (game.physics.arcade.collide(bevonia.playerAOE.self, [platforms3, traps3])) {
+                bevonia.aoeSound.play();
+                xBoom = bevonia.playerAOE.self.body.x;
+                yBoom = bevonia.playerAOE.self.body.y;
+                var boom = game.add.sprite(xBoom, yBoom, "aoeBlast");
+                game.camera.shake(.02, 300);
+                game.physics.enable(boom);
+                boom.anchor.setTo(.5, .5);
+                boom.scale.setTo(1.5, 1.5);
+                boom.animations.add("explode", [0, 1, 2, 3, 4, 5, 6, 7]);
+                bevonia.playerAOE.self.kill();
+                boom.animations.play("explode", 9, false);
+                bevonia.aoeExists = false;
+                
+            }
         }
         
         

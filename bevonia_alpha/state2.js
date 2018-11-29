@@ -47,6 +47,14 @@ demo.state2.prototype = {
         healthPotion2_2 = new HealthPotion(32, 1392, bevonia);
         manaPotion2_1 = new ManaPotion(2414,144, bevonia);
         
+        mana2_1 = new ManaPotion(57, 560, bevonia);
+        mana2_2 = new ManaPotion(2480, 784, bevonia);
+        mana2_3 = new ManaPotion(1120, 256, bevonia);
+        mana2_3.self.body.gravity.y = 0;
+        health1_1 = new HealthPotion(160, 1750, bevonia);
+        health1_2 = new HealthPotion(2800, 784, bevonia);
+        health1_1.self.body.gravity.y = 0;
+        
         inventory2 = new Inventory(bevonia)
 
         for(var x = 0; x < inventory1.contents.length; x++){
@@ -67,7 +75,7 @@ demo.state2.prototype = {
         backgroundMusic.play();        
         
         
-        items2 = [armor2, sword2, door2,chest2_1,exitKey2,spell2,key2, healthPotion2_1, healthPotion2_2, manaPotion2_1];
+        items2 = [armor2, sword2, door2,chest2_1,exitKey2,spell2,key2, healthPotion2_1, healthPotion2_2, manaPotion2_1, mana2_1, mana2_2, mana2_3, health1_2, health1_1];
         
         skeleton2_1 = new Skeleton(400, 1856, 257, 892, bevonia);
         skeleton2_2 = new Skeleton(200, 960, 192, 647, bevonia);
@@ -132,6 +140,11 @@ demo.state2.prototype = {
         game.physics.arcade.collide(healthPotion2_1.self,platforms1)
         game.physics.arcade.collide(healthPotion2_2.self,platforms1)
         game.physics.arcade.collide(manaPotion2_1.self,platforms1)
+        game.physics.arcade.collide(mana2_1.self, platforms2);
+        game.physics.arcade.collide(mana2_2.self, platforms2);
+        game.physics.arcade.collide(mana2_3.self, platforms2);
+        game.physics.arcade.collide(health1_1.self, platforms2);
+        game.physics.arcade.collide(health1_2.self, platforms2);
         
         bars.displayStats();
         
