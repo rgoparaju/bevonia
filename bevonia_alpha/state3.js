@@ -57,17 +57,19 @@ demo.state3.prototype = {
         
         mana3_1 = new ManaPotion(2923, 47, bevonia);
         mana3_2 = new ManaPotion(797, 1000, bevonia);
+        mana3_3 = new ManaPotion(-8, -8, bevonia);
         mana3_2.self.body.gravity.y = 0;
-        exitKey3 = new SilverKey(-8, -8, bevonia);
+        mana3_3.self.body.gravity.y = 0;
+        exitKey3 = new SilverKey(1748, 160, bevonia);
         
-        chest3.contents = [exitKey3];
+        chest3.contents = [mana3_3];
         
         //MUSIC
         backgroundMusic = game.add.audio('levelThree');
         backgroundMusic.loop = true;
         backgroundMusic.play();
         
-        items3 = [door3, chest3, armor3, sword3, key3, health3_1, health3_2, mana3_1, mana3_2, exitKey3, aoe3];
+        items3 = [door3, chest3, armor3, sword3, key3, health3_1, health3_2, mana3_1, mana3_2, mana3_3, exitKey3, aoe3];
         
         skel3_1 = new Skeleton(400, 592, 322, 417, bevonia);
         skel3_2 = new Skeleton(300, 1424, 127, 387, bevonia);
@@ -80,6 +82,7 @@ demo.state3.prototype = {
         skel3_9 = new Skeleton(2600, 272, 2463, 2848, bevonia);
         skel3_10 = new Skeleton(2200, 1488, 2112, 2307, bevonia);
         skel3_11 = new Skeleton(2500, 1488, 2467, 2687, bevonia);
+        DorgamultothTheFinalSkeleton = new Skeleton(1000, 272, 904, 1121, bevonia);
         
         spider3_1 = new Spider(1608, 1200, 1216, 1424, "y", -1, bevonia);
         spider3_2 = new Spider(1880, 550, 526, 688, "y", 1, bevonia);
@@ -89,19 +92,20 @@ demo.state3.prototype = {
         
         bat3_1 = new Bat(2467, 1100, bevonia);
         bat3_2 = new Bat(3120, 275, bevonia);
-        bat3_3 = new Bat(1770, 34, bevonia);
-        bat3_4 = new Bat(1217, 34, bevonia);
+        bat3_3 = new Bat(1406, 34, bevonia);
+        bat3_4 = new Bat(2385, 34, bevonia);
+        bat3_5 = new Bat(2655, 34, bevonia);
+        bat3_6 = new Bat(2115, 34, bevonia);
         
-        enemies3 = [skel3_1, skel3_2, skel3_3, skel3_4, skel3_5, skel3_6, skel3_7, skel3_8, skel3_9, skel3_10, skel3_11, spider3_1, spider3_2, spider3_3, spider3_4, spider3_5, bat3_1, bat3_2, bat3_3, bat3_4];
+        
+        enemies3 = [skel3_1, skel3_2, skel3_3, skel3_4, skel3_5, skel3_6, skel3_7, skel3_8, skel3_9, skel3_10, skel3_11, spider3_1, spider3_2, spider3_3, spider3_4, spider3_5, bat3_1, bat3_2, bat3_3, bat3_4, bat3_5, bat3_6, DorgamultothTheFinalSkeleton];
         
         bars = new Bars(bevonia);
         
         
         
     },
-    update: function(){
-        console.log([bevonia.self.body.x, bevonia.self.body.y]);
-        
+    update: function(){       
         game.physics.arcade.collide(bevonia.self, platforms3)
         bevonia.run()
         bevonia.jump()
@@ -117,6 +121,10 @@ demo.state3.prototype = {
         if(game.physics.arcade.overlap(bevonia.self,flag3.self) && !flag3.activated){
             flag3.activateCheckpoint()
         }
+//        var flagTimer = 0;
+//        if (flag3.activated && flagTimer < game.time.now) {
+//            
+//        }
         
 //        skel3_1
 //        skel3_2
@@ -146,10 +154,13 @@ demo.state3.prototype = {
         game.physics.arcade.collide(skel3_9.self, platforms3);
         game.physics.arcade.collide(skel3_10.self, platforms3);
         game.physics.arcade.collide(skel3_11.self, platforms3);
+        game.physics.arcade.collide(DorgamultothTheFinalSkeleton.self, platforms3);
         game.physics.arcade.collide(bat3_1.self, platforms3);
         game.physics.arcade.collide(bat3_2.self, platforms3);
         game.physics.arcade.collide(bat3_3.self, platforms3);
         game.physics.arcade.collide(bat3_4.self, platforms3);
+        game.physics.arcade.collide(bat3_5.self, platforms3);
+        game.physics.arcade.collide(bat3_6.self, platforms3);
         
         skel3_1.patrol();
         skel3_2.patrol();
@@ -162,6 +173,7 @@ demo.state3.prototype = {
         skel3_9.patrol();
         skel3_10.patrol();
         skel3_11.patrol();
+        DorgamultothTheFinalSkeleton.patrol();
         spider3_1.patrol();
         spider3_2.patrol();
         spider3_3.patrol();
@@ -171,6 +183,8 @@ demo.state3.prototype = {
         bat3_2.watch();
         bat3_3.watch();
         bat3_4.watch();
+        bat3_5.watch();
+        bat3_6.watch();
         
         game.physics.arcade.collide(health3_1.self,platforms3)
         game.physics.arcade.collide(health3_2.self,platforms3)

@@ -33,7 +33,7 @@ demo.state1.prototype = {
         chest1_1 = new Chest(2084, 1440, null, null);
         door1 = new Door (2560, 672, "state2", null);
         bevonia = new Bevonia(128, 128, 1536);
-        flag1 = new Checkpoint(700,1222,bevonia)
+        flag1 = new Checkpoint(700,1216,bevonia)
 
         // Place enemies
         skeleton1_1 = new Skeleton(48, 1376, 33, 625, bevonia);

@@ -679,6 +679,9 @@ demo.classes.prototype = {
             game.physics.enable(this.self)
             this.activated = false
             this.player = player
+            this.self.animations.add("fallen", [0], 0, false);
+            this.self.animations.add("wave", [1,2,3,4], 0, false);
+            this.self.animations.play("fallen", 0, true);
             
 //            this.replacementInventory = new Inventory(this.player)
             this.replacementHealth = 1
@@ -686,6 +689,7 @@ demo.classes.prototype = {
             
             this.activateCheckpoint = function(){
                 this.activated = true
+                this.self.animations.play("wave", 8, true);
                 this.player.lastResetX = x
                 this.player.lastResetY = y
                 this.replacementHealth = this.player.health

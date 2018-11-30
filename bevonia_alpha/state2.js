@@ -35,7 +35,7 @@ demo.state2.prototype = {
         bevonia = new Bevonia(128, 128, 1952);
         door2.player = bevonia;
         chest2_1.player = bevonia;
-        flag2_1 = new Checkpoint(1090,1145,bevonia)
+        flag2_1 = new Checkpoint(1090,1152,bevonia)
         
         armor2 = new Armor(1952, 1772, bevonia);
         sword2 = new Sword(80, 818, bevonia);
